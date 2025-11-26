@@ -6,9 +6,9 @@
     <title>Contactlead</title>
     <link rel="stylesheet" type="text/css" href="./css/index.css">
 </head>
-<body style="height: 100vh; width: 100%; background-color: #fafafa; display: none; margin: 0; overflow-y: scroll; overscroll-behavior: none;"></body>
+<body style="height: 100vh; width: 100%; background-color: #fafafa; background-color: white; background-size: cover; background-repeat: no-repeat; display: none; margin: 0; overflow-y: scroll; overscroll-behavior: none;"></body>
 
-    <div id="topbar" style="position: absolute; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 9.3%; background-color: cadetblue; border-bottom: 3px solid black; z-index: 2;">
+    <div id="topbar" style="position: absolute; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 9.5%; background-color: lightseagreen; box-shadow: 2px 2px 2px; backdrop-filter: blur(10px); z-index: 2;">
             <h2 id="app-name" style="position: relative; font-size: xx-large; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; color: white; margin: 0px 0px 0px 12px;">Contactlead</h2>
         <div id="mobile-list-menu-icon-container" style="display: flex; height: 100%; align-items: center;">
             <img id="mobile-search-icon" src="./images/search-svgrepo-com.svg" style="width: 45px; padding: 5px; display: none;">
@@ -31,7 +31,7 @@
         <div style="display: flex; flex-direction: column; width: 100%; height: 100%;">
             <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; width: 100%; width: 84%; height: 70%; margin-left: 8%; margin-top: 7px;">
                 <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 70px; cursor: default; padding: 2.5px;">
-                    <img id="navigate-user-page-icon" src="./images/user-5-svgrepo-com.svg" style="width: 50px; height: 50px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; box-shadow: 1.4px 1.4px 1.4px;">
+                    <img id="navigate-user-page-icon" src="./images/user-5-svgrepo-com.svg" style="width: 50px; height: 50px; border: 1px solid black; border-radius: 50%; background-color: gainsboro;">
                     <p style="font-family: sans-serif; font-weight: bolder; margin: 0;" class="sidebar-icon-text">Account</p>
                 </div>
                 <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 70px; cursor: default; padding: 2.5px;">
@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    <div id="large-sidebar" style="position: fixed; width: 25%; height: 100%; top: 0%; left: 6.5%; background-color: gainsboro; border-right: 3px solid black; box-shadow: 0px 2.5px 5px; overflow-y: scroll; scrollbar-width: thin; overflow-x: hidden; overscroll-behavior: contain; z-index: 3;">
+    <div id="large-sidebar" style="position: fixed; width: 25%; height: 100%; top: 0%; left: 6.5%; background-color: rgba(211, 211, 211, 0.25); border-right: 3px solid black; box-shadow: 0px 2.5px 5px; overflow-y: scroll; scrollbar-width: thin; overflow-x: hidden; overscroll-behavior: contain; z-index: 3;">
         <div id="search-contacts-elements-container" style="position: absolute; display: flex; justify-content: center; align-items: center; width: 100%; height: 9.3%; border-bottom: 4px solid black; background-color: slategray">
             <!-- <img id="search-icon" src="./images/search-svgrepo-com.svg" style="width: 20px; margin-left: 6px;"> -->
             <input type="search" name="search-contacts" id="search-contacts-input" placeholder="Search for a contact" style="width: 91%; height: 22.5px; text-indent: 20px; border: 1px solid black; background-image: url(./images/search-svgrepo-com.svg); background-repeat: no-repeat; background-size: 16px; background-position-y: 2px; background-position-x: 0.8%; outline: none;">
@@ -101,39 +101,37 @@
     </div>
 
     <section id="login-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none;">
-        <div id="login-container" style="position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 500px; height: 90%; top: 45%; left: 50%; transform: translate(-50%, -50%);">
-            <div style="display: flex; justify-content: flex-start; width: 400px;">
-                <h2 style="font-family: sans-serif; width: 300px;">Welcome, Please login to your account.</h2>
+        <div id="login-container" style="position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 500px; height: 75%; top: 50%; left: 50%; background-color: rgba(211, 211, 211, 0.25); border-radius: 10px; transform: translate(-50%, -50%);">
+            <div style="display: flex; justify-content: center; width: 400px;">
+                <h3 style="font-family: sans-serif; color: darkslategrey; text-decoration: underline; text-underline-position: under;">Sign in to your account.</h3>
             </div>
-            <form id="login-user-form" style="display: flex; flex-direction: column; justify-content: space-between; width: 400px; height: 150px;">
-                <div>
-                    <label id="email-address-input-label" style="display: block; font-weight: bold;">Email Address</label>
-                    <input type="text" name="user-email-address" id="user-email-address-element" placeholder="example@domain.com" style="width: 100%; height: 17px; border: 1.5px solid grey; border-radius: 2.5px; margin-bottom: 5px;">
-                </div>
-                <div>
-                    <label id="password-input-label" style="display: block; font-weight: bold; margin-top: 5px;">Password</label>
-                    <input type="text" name="user-password" id="user-password-element" placeholder="Enter Password" style="width: 100%; height: 17px; border: 1.5px solid grey; border-radius: 2.5px;">
-                </div>
-                    <div id="login-button-container">
-                        <div style="display: flex; justify-content: space-between;">
-                            <label id="password-length-label" style="font-size: small; color: grey; margin-top: 5px;">Don't have an account?</label>
-                            <label id="forgot-password-label" style="font-size: small; color: grey; margin-top: 5px; margin-left: 182.3px;">Forgot password?</label>
-                        </div>
-                    <div style="display: flex; justify-content: space-between; width: 100%;">
-                        <button id="navigate-to-register-view-button">Register</button>
-                        <button id="login-user-button">Login</button>
+            <form id="login-user-form" style="display: flex; flex-direction: column; justify-content: space-around; width: 400px; height: 60%;">
+                <div id="login-input-container" style="display: flex; flex-direction: column; justify-content: space-between; height: 40%;">
+                    <div>
+                        <!-- <label id="email-address-input-label" style="display: block; color: white; font-weight: bold;">Email Address</label> -->
+                        <input type="text" name="user-email-address" id="user-email-address-element" placeholder="Username" style="width: 100%; height: 35px; border: 0.5px solid black; border-radius: 2.5px; box-sizing: border-box; margin-bottom: 5px; padding: 5px;">
                     </div>
+                    <div>
+                        <!-- <label id="password-input-label" style="display: block; font-weight: bold; margin-top: 5px;">Password</label> -->
+                        <input type="text" name="user-password" id="user-password-element" placeholder="Password" style="width: 100%; height: 35px; border: 0.5px solid black; border-radius: 2.5px; box-sizing: border-box; padding: 5px;">
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center; width: 100%;">
+                    <button id="login-user-button" style="border: none; width: 100%; height: 30px; color: white; background-color: #00d92f;">Sign In</button>
+                    <label id="forgot-password-label" style="font-size: small; color: grey; margin-top: 5px; margin-bottom: 5px;">Forgot password?</label>
+                    <button id="navigate-to-register-view-button" style="border: none; width: 100%; height: 30px; color: white; background-color: grey;">Register</button>
+                    <!-- <label id="password-length-label" style="font-size: small; color: grey; margin-top: 5px;">Don't have an account?</label> -->
                 </div>
             </form>
         </div>
     </section>
 
     <section id="mobile-login-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none;">
-         <div id="mobile-login-container" style="position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 400px; height: 90%; top: 45%; left: 50%; transform: translate(-50%, -50%);">
+         <div id="mobile-login-container" style="position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 400px; height: 60%; top: 50%; left: 50%; backdrop-filter: blur(10px); transform: translate(-50%, -50%);">
             <div style="display: flex; justify-content: flex-start; width: 300px;">
                 <h2 style="font-family: sans-serif; width: 300px;">Welcome, Please login to your account.</h2>
             </div>
-            <form id="mobile-login-user-form" style="display: flex; flex-direction: column; justify-content: space-between; width: 300px; height: 150px;">
+            <form id="mobile-login-user-form" style="display: flex; flex-direction: column; width: 300px; height: 150px;">
                 <div>
                     <label id="mobile-email-address-input-label" style="display: block; font-weight: bold;">Email Address</label>
                     <input type="text" name="user-email-address" id="mobile-user-email-address-element" placeholder="example@domain.com" style="width: 100%; height: 17px; font-size: 16px; border: 1.5px solid grey; border-radius: 2.5px; margin-bottom: 5px;">
@@ -337,7 +335,7 @@
     <section id="user-view" style="position: absolute; width: 68.5%; height: 90.5%; top: 9.5%; left: 31.5%; display: none;">
         <div id="user-header-container" style="position: absolute; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
             <div id="user-image-container" style="position: absolute; display: flex; align-items: center; height: 100%; padding: 10px;">
-                <img id="user-image" src="./images/user-5-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 0.5px solid grey; box-shadow: 2px 2px 2px; border-radius: 50%; background-color: gainsboro; object-fit: cover;">
+                <img id="user-image" src="./images/user-5-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; object-fit: cover;">
                 <div id="user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; margin: 0px 0px 0px 10px;">
                     <p id="header-user-name" style="font-weight: bold; margin: 0px;">Name</p>
                     <p id="header-user-email" style="font-style: italic; margin: 0px 0px 16px 0px;">Email</p>
@@ -457,7 +455,7 @@
     <section id="edit-user-view" style="position: absolute; width: 68.5%; height: 90.5%; top: 9.5%; left: 31.5%; display: none; overflow: hidden;">
         <div id="edit-user-image-container" style="position: absolute; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;"> 
             <div id="edit-user-image-container" style="position: absolute; display: flex; align-items: center; height: 100%; padding: 10px;">
-                <img id="edit-user-image" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 0.5px solid grey; box-shadow: 2px 2px 2px; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
+                <img id="edit-user-image" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
                 <div style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; height: 100%;">
                     <button id="edit-user-add-photo-button" type="button" style="height: 20px; margin-bottom: 10px; margin-left: 5px; z-index: 1;">Add photo</button>
                 </div>
@@ -663,9 +661,9 @@
     </section>
 
     <section id="contacts-list-view"  style="position: absolute; width: 68.5%; height: 90.5%; top: 9.5%; left: 31.5%; display: none; overflow: hidden;">
-        <div id="contacts-user-header-container" style="position: absolute; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
+        <div id="contacts-user-header-container" style="position: absolute; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px; margin-top: 1.25px;">
             <div id="contacts-user-image-container" style="display: flex; align-items: center; height: 100%; padding: 10px;">
-                <img id="contacts-user-image" src="./images/user-5-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 0.5px solid grey; box-shadow: 2px 2px 2px; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
+                <img id="contacts-user-image" src="./images/user-5-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
                 <div id="contacts-user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; margin: 0px 0px 0px 10px;">
                     <p id="contact-header-user-name" style="font-weight: bold;">Name</p>
                     <p id="contact-header-user-email" style="font-style: italic; margin: 0px 0px 16px 0px;">Email</p>
@@ -714,7 +712,7 @@
     <section id="contact-view" style="position: absolute; width: 68.5%; height: 90.5%; top: 9.5%; left: 31.5%; display: none; overflow: hidden;">
         <div id="contact-header-container" style="position: absolute; display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 4px 4px 4px;">
             <div id="contact-image-container" style="display: flex; align-items: center; width: 20%; height: 100%; padding: 10px;">
-                <img id="contact-image" src="./images/user-2-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 0.5px solid black; box-shadow: 2px 2px 2px; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
+                <img id="contact-image" src="./images/user-2-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
             </div>
             <div id="contact-name-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 60%; height: 100%;">
                 <h2 id="contact-name" style="margin: 0"></h2>
@@ -820,7 +818,7 @@
     <section id="edit-contact-view" style="position: absolute; width: 68.5%; height: 90.5%; top: 9.5%; left: 31.5%; display: none; overflow: hidden;">
         <div id="edit-contact-image-container" style="position: absolute; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
             <div id="edit-contact-image-container" style="position: absolute; display: flex; align-items: center; height: 100%; padding: 10px;">
-                <img id="edit-contact-image" src="./images/user-2-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 0.5px solid black; border-radius: 50%; box-shadow: 2px 2px 2px; background-color: gainsboro; object-fit: cover; z-index: 1;">
+                <img id="edit-contact-image" src="./images/user-2-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
                 <div style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; height: 100%;">
                     <button id="edit-contact-add-photo-button" style="height: 20px; margin-bottom: 10px; margin-left: 5px; z-index: 1;">Add photo</button>
                 </div>
@@ -1053,9 +1051,9 @@
     </section>
 
     <section id="favorites-list-view" style="position: absolute; width: 68.5%; height: 90.5%; top: 9.5%; left: 31.5%; display: none; overflow: hidden;">
-        <div id="favorites-user-header-container" style="position: absolute; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
+        <div id="favorites-user-header-container" style="position: absolute; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px; margin-top: 1.25px;">
             <div id="favorites-user-image-container" style="position: absolute; display: flex; align-items: center; height: 100%; padding: 10px;">
-                <img id="favorites-user-image" src="./images/user-5-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 0.5px solid grey; box-shadow: 2px 2px 2px; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
+                <img id="favorites-user-image" src="./images/user-5-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
                 <div id="favorites-user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; margin: 0px 0px 00px 10px;">
                     <p id="favorites-header-user-name" style="font-weight: bold; margin: 0px;">Name</p>
                     <p id="favorites-header-user-email" style="font-style: italic; margin: 0px 0px 16px 0px;">Email</p>
@@ -1285,9 +1283,9 @@
     </section>
 
     <section id="group-contacts-list-view" style="position: absolute; width: 68.5%; height: 90.5%; top: 9.5%; left: 31.5%; display: none; overflow: hidden;">
-          <div id="groups-contacts-list-user-header-container" style="position: absolute; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
+          <div id="groups-contacts-list-user-header-container" style="position: absolute; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px; margin-top: 1.25px;">
             <div id="groups-contacts-list-user-image-container" style="display: flex; align-items: center; height: 100%; padding: 10px;">
-                <img id="groups-contacts-list-user-image" src="./images/user-5-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 0.5px solid grey; box-shadow: 2px 2px 2px; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
+                <img id="groups-contacts-list-user-image" src="./images/user-5-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
                 <div id="groups-contacts-list-user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; margin: 0px 0px 0px 10px;">
                     <p id="groups-contacts-list-header-user-name" style="font-weight: bold;">Name</p>
                     <p id="groups-contacts-list-header-user-email" style="font-style: italic; margin: 0px 0px 16px 0px;">Email</p>
@@ -1329,7 +1327,7 @@
     <section id="new-contact-view" style="position: absolute; width: 68.5%; height: 90.5%; top: 9.5%; left: 31.5%; display: none; overflow: hidden;">
         <div id="new-contact-image-container" style="position: absolute; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
             <div id="new-contact-image-container" style="position: absolute; display: flex; align-items: center; height: 100%; padding: 10px;">
-                <img id="new-contact-image" src="./images/user-2-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 0.5px solid grey; box-shadow: 2px 2px 2px; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
+                <img id="new-contact-image" src="./images/user-2-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
                 <div style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; height: 100%;">
                     <button id="new-contact-add-photo-button" style="height: 20px; margin-bottom: 10px; margin-left: 5px; z-index: 1;">Add photo</button>
                 </div>

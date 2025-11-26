@@ -519,6 +519,10 @@ app.delete("/contactGroups/:user_id", async (req, res) => {
     }
 });
 
+async function helloApp() {
+    console.log("hello app")
+}
+
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`server has started on 3000`)
