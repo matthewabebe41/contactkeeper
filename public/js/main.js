@@ -4998,10 +4998,15 @@ const allUsers = await getAllUsers();
         updateContactLastName()
     });
 
-    // const updateContactGenderButton = document.querySelector("#update-contact-gender-button");
-    // updateContactGenderButton.addEventListener("click", function() {
-    //     // updateContactLastName()
-    // });
+    const updateContactGenderButton = document.querySelector("#update-contact-gender-button");
+    updateContactGenderButton.addEventListener("click", function() {
+        updateContactGender()
+    });
+
+    const updateContactBirthdayButton = document.querySelector("#update-contact-birthday-button");
+    updateContactBirthdayButton.addEventListener("click", function() {
+        updateContactBirthday()
+    });
 
     const contactEmailAddresses = await getAContactEmailAddress(user_id, contact_id);
     console.log(contactEmailAddresses)
@@ -6624,11 +6629,68 @@ async function handleEditContactLastNameInput() {
 };
 
 async function handleEditContactGenderInput() {
-    
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const url = window.location.href.toString()
+    const urlBeforeQuery = url.split('?')[0];
+    const contact_id = urlBeforeQuery.split('contact_')[1]
+    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+    const contact = await getUserContact(user_id, contact_id);
+
+    const editContactGenderElement = document.querySelector("#edit-contact-gender");
+
+    const editContactGenderObj = {
+        firstname: contact.firstname,
+        lastname: contact.lastname,
+        gender: editContactGenderElement.value,
+        birthday: contact.birthday,
+        organization: contact.organization,
+        role: contact.organization_role,
+        favorite: contact.favorite,
+        notes: contact.notes
+    };
+
+    return editContactGenderObj; 
 }
 async function handleEditContactBirthdayInput() {
-    
-}
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const url = window.location.href.toString()
+    const urlBeforeQuery = url.split('?')[0];
+    const contact_id = urlBeforeQuery.split('contact_')[1]
+    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+    const contact = await getUserContact(user_id, contact_id);
+
+    const editContactBirthdayElement = document.querySelector("#edit-contact-birthday");
+
+    const editContactBirthdayObj = {
+        firstname: contact.firstname,
+        lastname: contact.lastname,
+        gender: contact.gender,
+        birthday: editContactBirthdayElement.value,
+        organization: contact.organization,
+        role: contact.organization_role,
+        favorite: contact.favorite,
+        notes: contact.notes
+    };
+
+    return editContactBirthdayObj;   
+};
+
 async function handleEditContactOrganizationInput() {
     
 }
@@ -12327,6 +12389,110 @@ const allUsers = await getAllUsers();
 
     alert("Contact updated.")
     window.location.href = newURL
+};
+
+async function updateContactGender() {
+const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const url = window.location.href.toString()
+    const urlBeforeQuery = url.split('?')[0];
+    const contact_id = urlBeforeQuery.split('contact_')[1]
+    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+    const editContactGenderObj = await handleEditContactGenderInput();
+    // console.log(user_id)
+    // console.log(contact_id)
+
+    const firstname = editContactGenderObj.firstname;
+    const lastname = editContactGenderObj.lastname;
+    // const emailaddress = editContactGenderObj.emailaddress;
+    // const phonenumber = editContactGenderObj.phonenumber;
+    const birthday = editContactGenderObj.birthday;
+    // const homeaddress = editContactGenderObj.address;
+    const gender = editContactGenderObj.gender;
+    const organization = editContactGenderObj.organization;
+    const organization_role = editContactGenderObj.role;
+    // const website = editContactGenderObj.website;
+    const favorite = editContactGenderObj.favorite;
+    const notes = editContactGenderObj.notes;
+    // const contact_image = editContactGenderObj.contactImage;
+
+    const body = { firstname, lastname, birthday, gender, organization, organization_role, favorite, notes };
+    try {
+        const response = await fetch(`/contacts/${user_id}/${contact_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    // if (contact.firstname === editContactObject.firstname && contact.lastname === editContactObject.lastname && contact.emailaddress === editContactObject.emailaddress && contact.phonenumber === editContactObject.phonenumber) {
+    //     window.location.href = url
+    // } 
+
+    alert("Contact updated.")
+    window.location.reload()
+};
+
+async function updateContactBirthday() {
+const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const url = window.location.href.toString()
+    const urlBeforeQuery = url.split('?')[0];
+    const contact_id = urlBeforeQuery.split('contact_')[1]
+    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+    const editContactBirthdayObj = await handleEditContactBirthdayInput();
+    // console.log(user_id)
+    // console.log(contact_id)
+
+    const firstname = editContactBirthdayObj.firstname;
+    const lastname = editContactBirthdayObj.lastname;
+    // const emailaddress = editContactBirthdayObj.emailaddress;
+    // const phonenumber = editContactBirthdayObj.phonenumber;
+    const birthday = editContactBirthdayObj.birthday;
+    // const homeaddress = editContactBirthdayObj.address;
+    const gender = editContactBirthdayObj.gender;
+    const organization = editContactBirthdayObj.organization;
+    const organization_role = editContactBirthdayObj.role;
+    // const website = editContactBirthdayObj.website;
+    const favorite = editContactBirthdayObj.favorite;
+    const notes = editContactBirthdayObj.notes;
+    // const contact_image = editContactBirthdayObj.contactImage;
+
+    const body = { firstname, lastname, birthday, gender, organization, organization_role, favorite, notes };
+    try {
+        const response = await fetch(`/contacts/${user_id}/${contact_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    // if (contact.firstname === editContactObject.firstname && contact.lastname === editContactObject.lastname && contact.emailaddress === editContactObject.emailaddress && contact.phonenumber === editContactObject.phonenumber) {
+    //     window.location.href = url
+    // } 
+
+    alert("Contact updated.")
+    window.location.reload()
 };
 
 async function mobileUpdateContact() {
