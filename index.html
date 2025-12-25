@@ -730,15 +730,30 @@
         <div id="contact-information-container" style="position: absolute; display: flex; justify-content: space-around; width: 98.5%; height: 55%; top: 20%;">
             <div id="contact-information-column-one" style="display: flex; flex-direction: column; justify-content: space-around; width: 30%;">
                 <div style="display: flex; flex-direction: column; width: 285px;">
-                    <label style="font-weight: bold;">Name</label>
+                    <div style="display: flex; align-items: flex-end;">
+                        <label style="font-weight: bold;">Name</label>
+                        <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                           <select id="select-view-contact-name" style="width: 100px; height: 19px;"></select>
+                       </div>
+                    </div>
                     <textarea id="contact-full-name" readonly style="height: 60px; font-size: large; border: 1px solid black; box-shadow: 3px 3px 3px; outline: none; resize: none;"></textarea>
                 </div>
                 <div style="display: flex; flex-direction: column; width: 285px;">
-                    <label style="font-weight: bold;">Gender</label>
+                    <div style="display: flex; align-items: flex-end;">
+                        <label style="font-weight: bold;">Gender</label>
+                        <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                           <select id="select-view-contact-gender" style="width: 100px; height: 19px;"></select>
+                       </div>
+                    </div>
                     <textarea id="contact-gender" readonly style=" height: 60px; font-size: large; border: 1px solid black; box-shadow: 3px 3px 3px; outline: none; resize: none;"></textarea>
                 </div>
                 <div style="display: flex; flex-direction: column; width: 285px;">
-                    <label style="font-weight: bold;">Birthday</label>
+                    <div style="display: flex; align-items: flex-end;">
+                        <label style="font-weight: bold;">Birthday</label>
+                        <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                           <select id="select-view-contact-birthday" style="width: 100px; height: 19px;"></select>
+                       </div>
+                    </div>
                     <textarea id="contact-birthday" readonly style="height: 60px; font-size: large; border: 1px solid black; box-shadow: 3px 3px 3px; outline: none; resize: none;"></textarea>
                 </div>
             </div>
@@ -773,11 +788,21 @@
             </div>
             <div id="contact-information-column-three" style="display: flex; flex-direction: column; justify-content: space-around; width: 30%;">
                 <div style="display: flex; flex-direction: column; width: 285px;">
-                    <label style="font-weight: bold;">Organization</label>
+                    <div style="display: flex; align-items: flex-end;">
+                        <label style="font-weight: bold;">Organization</label>
+                        <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                           <select id="select-view-contact-organization" style="width: 100px; height: 19px;"></select>
+                       </div>
+                    </div>
                     <textarea id="contact-organization" readonly style="height: 60px; font-size: large; border: 1px solid black; box-shadow: 3px 3px 3px; outline: none; resize: none;"></textarea>
                 </div>
                 <div style="display: flex; flex-direction: column; width: 285px;">
-                    <label style="font-weight: bold;">Role</label>
+                    <div style="display: flex; align-items: flex-end;">
+                        <label style="font-weight: bold;">Role</label>
+                        <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                           <select id="select-view-contact-organization-role" style="width: 100px; height: 19px;"></select>
+                       </div>
+                    </div>
                     <textarea id="contact-organization-role" readonly style="height: 60px; font-size: large; border: 1px solid black; box-shadow: 3px 3px 3px; outline: none; resize: none;"></textarea>
                 </div>
                 <div style="display: flex; flex-direction: column; width: 285px;">
@@ -916,20 +941,27 @@
                                     <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
                                 </div>
                             </div>
-                            <div id="create-new-contact-email-modal" style="position: absolute; width: 400px; height: 500px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
-                                <h4>Add Contact Email</h4>
-                                <div style="display: flex; flex-direction: column;">
-                                    <label>Select a label</label>
-                                    <div>
-                                        <select id="create-new-contact-email-label-select" autocomplete="off" style="display: none;"></select>
-                                        <input id="create-new-contact-email-label-input" placeholder="Choose">
-                                    </div>
-                                    <label>Enter custom label</label>
-                                    <input id="create-new-contact-email-label-second-input">
-                                    <label>Enter emailaddress</label>
-                                    <input id="create-new-contact-email-input">
+                            <div id="create-new-contact-email-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                                <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                    <img id="close-create-new-contact-email-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px;">
                                 </div>
-                                <button id="create-contact-email-button">Done</button>
+                                <div style="display: flex; justify-content: center; width: 100%;">
+                                    <h4 style="margin: 12px;">Add Contact Email</h4>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: space-around; height: 72%; padding: 10px;">
+                                    <label style="font-weight: bold;">Select a label</label>
+                                    <div>
+                                        <select id="create-new-contact-email-label-select" autocomplete="off" style="display: none; width: 25%; border: 1px solid rgba(118, 118, 118);"></select>
+                                        <input id="create-new-contact-email-label-input" placeholder="Choose" style="width: 25%; border: 1px solid rgba(118, 118, 118); box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Enter custom label</label>
+                                    <input id="create-new-contact-email-label-second-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <label style="font-weight: bold;">Enter email address</label>
+                                    <input id="create-new-contact-email-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 5px;">
+                                        <button id="create-contact-email-button">Done</button>
+                                    </div>
+                                </div>
                             </div>
                             <div style="display: flex; justify-content: space-between; width: 100%;">
                                 <input id="edit-contact-emailaddress" autocomplete="off" placeholder="example@domain.com" style="width: 78%;">
@@ -956,20 +988,27 @@
                                     <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
                                 </div>
                             </div>
-                             <div id="create-new-contact-phonenumber-modal" style="position: absolute; width: 400px; height: 500px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
-                                <h4>Add Contact Phone Number</h4>
-                                <div style="display: flex; flex-direction: column;">
-                                    <label>Select a label</label>
-                                    <div>
-                                        <select id="create-new-contact-phonenumber-label-select" autocomplete="off" style="display: none;"></select>
-                                        <input id="create-new-contact-phonenumber-label-input" placeholder="Choose">
-                                    </div>
-                                    <label>Enter custom label</label>
-                                    <input id="create-new-contact-phonenumber-label-second-input">
-                                    <label>Enter Phone Number</label>
-                                    <input id="create-new-contact-phonenumber-input">
+                             <div id="create-new-contact-phonenumber-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                                 <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                    <img id="close-create-new-contact-phonenumber-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px;">
                                 </div>
-                                <button id="create-contact-phonenumber-button">Done</button>
+                                <div style="display: flex; justify-content: center; width: 100%;">
+                                    <h4 style="margin: 12px;">Add Contact Phone Number</h4>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: space-around; height: 72%; padding: 10px;">
+                                    <label style="font-weight: bold;">Select a label</label>
+                                    <div>
+                                        <select id="create-new-contact-phonenumber-label-select" autocomplete="off" style="display: none; width: 25%; border: 1px solid rgba(118, 118, 118);"></select>
+                                        <input id="create-new-contact-phonenumber-label-input" placeholder="Choose" style="width: 25%; border: 1px solid rgba(118, 118, 118); box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Enter custom label</label>
+                                    <input id="create-new-contact-phonenumber-label-second-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <label style="font-weight: bold;">Enter phone number</label>
+                                    <input id="create-new-contact-phonenumber-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 5px;">
+                                        <button id="create-contact-phonenumber-button">Done</button>
+                                    </div>
+                                </div>
                             </div>
                             <div style="display: flex; justify-content: space-between; width: 100%;">
                                 <input id="edit-contact-phonenumber" autocomplete="off" minlength="10" maxlength="13" placeholder="Enter at least 10 digits" style="width: 78%;">
@@ -996,20 +1035,27 @@
                                     <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
                                 </div>
                             </div>
-                              <div id="create-new-contact-address-modal" style="position: absolute; width: 400px; height: 500px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
-                                <h4>Add Contact Phone Number</h4>
-                                <div style="display: flex; flex-direction: column;">
-                                    <label>Select a label</label>
-                                    <div>
-                                        <select id="create-new-contact-address-label-select" autocomplete="off" style="display: none;"></select>
-                                        <input id="create-new-contact-address-label-input" placeholder="Choose">
-                                    </div>
-                                    <label>Enter custom label</label>
-                                    <input id="create-new-contact-address-label-second-input">
-                                    <label>Enter Phone Number</label>
-                                    <input id="create-new-contact-address-input">
+                              <div id="create-new-contact-address-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                                <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                    <img id="close-create-new-contact-address-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px;">
                                 </div>
-                                <button id="create-contact-address-button">Done</button>
+                                <div style="display: flex; justify-content: center; width: 100%;">
+                                    <h4 style="margin: 12px;">Add Contact Address</h4>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: space-around; height: 72%; padding: 10px;">
+                                    <label style="font-weight: bold;">Select a label</label>
+                                    <div>
+                                        <select id="create-new-contact-address-label-select" autocomplete="off" style="display: none; width: 25%; border: 1px solid rgba(118, 118, 118);"></select>
+                                        <input id="create-new-contact-address-label-input" placeholder="Choose" style="width: 25%; border: 1px solid rgba(118, 118, 118); box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Enter custom label</label>
+                                    <input id="create-new-contact-address-label-second-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <label style="font-weight: bold;">Enter address</label>
+                                    <input id="create-new-contact-address-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 5px;">
+                                        <button id="create-contact-address-button">Done</button>
+                                    </div>
+                                </div>
                             </div>
                             <div style="display: flex; justify-content: space-between; width: 100%;">
                                 <input id="edit-contact-address" autocomplete="off" maxlength="60" placeholder="Building / Street City, State, Postal Code" style="width: 78%;">
@@ -1026,14 +1072,14 @@
                     <label style="font-weight: bold;">Organization</label>
                     <div style="display: flex; justify-content: space-between; width: 100%;">
                         <input id="edit-contact-organization" autocomplete="off" placeholder="First Name" style="width: 80%;">
-                        <button>Edit</button>
+                        <button id="update-contact-organization-button">Edit</button>
                     </div>
                 </div>
                 <div id="edit-contact-last-name-container" style="display: flex; flex-direction: column; width: 35%;">
                     <label style="font-weight: bold;">Role</label>
                     <div style="display: flex; justify-content: space-between; width: 100%;">
-                        <input id="edit-contact-role" autocomplete="off" placeholder="Last Name" style="width: 80%;">
-                        <button>Edit</button>
+                        <input id="edit-contact-organization-role" autocomplete="off" placeholder="Last Name" style="width: 80%;">
+                        <button id="update-contact-organization-role-button">Edit</button>
                     </div>
                 </div>
             </div>
@@ -1052,20 +1098,27 @@
                                     <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
                                 </div>
                             </div>
-                               <div id="create-new-contact-website-modal" style="position: absolute; width: 400px; height: 500px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
-                                <h4>Add Contact Phone Website</h4>
-                                <div style="display: flex; flex-direction: column;">
-                                    <label>Select a label</label>
-                                    <div>
-                                        <select id="create-new-contact-website-label-select" autocomplete="off" style="display: none;"></select>
-                                        <input id="create-new-contact-website-label-input" placeholder="Choose">
-                                    </div>
-                                    <label>Enter custom label</label>
-                                    <input id="create-new-contact-website-label-second-input">
-                                    <label>Enter Website Address</label>
-                                    <input id="create-new-contact-website-input">
+                               <div id="create-new-contact-website-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                                <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                    <img id="close-create-new-contact-website-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px;">
                                 </div>
-                                <button id="create-contact-website-button">Done</button>
+                                <div style="display: flex; justify-content: center; width: 100%;">
+                                    <h4 style="margin: 12px;">Add Contact Website</h4>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: space-around; height: 72%; padding: 10px;">
+                                    <label style="font-weight: bold;">Select a label</label>
+                                    <div>
+                                        <select id="create-new-contact-website-label-select" autocomplete="off" style="display: none; width: 25%; border: 1px solid rgba(118, 118, 118);"></select>
+                                        <input id="create-new-contact-website-label-input" placeholder="Choose" style="width: 25%; border: 1px solid rgba(118, 118, 118); box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Enter custom label</label>
+                                    <input id="create-new-contact-website-label-second-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <label style="font-weight: bold;">Enter website address</label>
+                                    <input id="create-new-contact-website-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 5px;"> 
+                                        <button id="create-contact-website-button">Done</button>
+                                    </div>
+                                </div>
                             </div>
                             <div style="display: flex; justify-content: space-between; width: 100%;">
                                 <input id="edit-contact-website" autocomplete="off" placeholder="www.examplesite.com/username" style="width: 78%;">
@@ -1086,7 +1139,7 @@
         <div style="display: flex; justify-content: space-between; width: 96%;">
              <textarea id="edit-contact-notes" maxlength="195" style="width: 93.15%; height: 60px; font-family: sans-serif; resize: none;"></textarea>
              <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%;">
-                 <button>Edit</button>
+                 <button id="update-contact-notes-button">Edit</button>
              </div>
         </div>
     </div>
@@ -1503,15 +1556,16 @@
                 <h2 style="font-family: Arial;">Create a contact.</h2>
             </div>
         </div>
-        <div id="new-contact-add-photo-input-container" style="position: absolute; align-items: center; width: 470px; height: 27px; top: 20.35%; border: 1px solid black; background-color: grey; box-shadow: 1px 1px; display: none; margin-left: 3px; z-index: 2;">
+        <div id="new-contact-add-photo-input-container" style="position: absolute; align-items: center; width: 470px; height: 27px; top: 21%; border: 1px solid black; background-color: lightgrey; box-shadow: 1px 1px; display: none; margin-left: 3px; z-index: 2;">
             <div style="display: flex; justify-content: space-between; width: 100%;">
-                <form name="newContactAddPhotoForm" action="/contact_images" method="POST" enctype="multipart/form-data">
-                    <input id="new-contact-add-photo" name="newContactAddPhoto" type="file" style="margin-left: 4px;">
+                <form id="new-contact-add-photo-form" name="newContactAddPhotoForm" action="/contact_images" method="POST" enctype="multipart/form-data" style="width: 65%;">
+                    <input id="new-contact-add-photo" name="newContactAddPhoto" type="file" accept="image/*" style="margin-left: 4px;">
                 </form>
-                <div style="display: flex; margin-right: 4px;">
-                    <button id="new-contact-add-photo-insert-button">Insert</button>
-                    <button id="new-contact-remove-photo-button" style="height: 20px; margin-left: 5px; background-color: indianred; z-index: 1;">Remove</button>
-                    <img id="close-new-contact-add-photo-icon" src="./images/close-svgrepo-com.svg" style="width: 20px; background-color: red; margin-left: 3px;">
+                <div style="display: flex; justify-content: space-evenly; align-items: center; width: 35%;">
+                    <button id="new-contact-add-photo-insert-button" style="height: 20px; background-color: lightgoldenrodyellow;">Insert</button>
+                    <button id="new-contact-remove-photo-button" style="height: 20px; background-color: indianred; z-index: 1;">Remove</button>
+                    <!-- <img id="check-new-contact-image" src="./images/user-5-svgrepo-com.svg" style="display: none;"> -->
+                    <img id="close-new-contact-add-photo-icon" src="./images/close-svgrepo-com.svg" style="width: 20px; height: 18px; background-color: red; border: 1px solid black;">
                 </div>
             </div>
         </div>
@@ -1541,27 +1595,90 @@
             <div id="new-contact-information-row-five" style="display: flex; width: 100%;">
                 <div id="new-contact-address-container" style="width: 100%;">
                     <div style="display: flex; align-items: flex-end;">
-                        <div style="display: flex; flex-direction: column; width: 100%;">
+                        <div style="display: flex; flex-direction: column; width: 79.106%;">
                             <label style="font-weight: bold;">Email</label>
                             <input id="new-contact-email" autocomplete="off" placeholder="example@domain.com">
                         </div>
+                        <div id="new-contact-email-label-select-container" style="display: flex; flex-direction: column; width: 20.894%;">
+                            <label style="font-weight: bold;">Select a label</label>
+                            <select id="new-contact-select-emailaddress" style="height: 21px;"></select>
+                        </div>
+                    </div>
+                    <div id="create-new-contact-email-custom-label-modal" style="position: absolute; width: 400px; height: 250px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                        <div style="display: flex; justify-content: flex-end; width: 100%;">
+                            <img id="close-create-new-contact-email-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 15px;">
+                        </div>
+                        <h4>Enter an Email Label</h4>
+                        <div style="display: flex; flex-direction: column;">
+                        <!-- <label>Select a label</label> -->
+                        <!-- <div>
+                            <select id="create-new-contact-email-label-select" autocomplete="off" style="display: none;"></select>
+                            <input id="create-new-contact-email-label-input" placeholder="Choose">
+                        </div> -->
+                        <label>Enter custom label</label>
+                        <input id="create-new-contact-emailaddress-label-input">
+                        <!-- <label>Enter emailaddress</label>
+                        <input id="create-new-contact-email-input"> -->
+                    </div>
+                        <button id="create-new-contact-email-label-button">Done</button>
                     </div>
                 </div>
             </div>
             <div id="new-contact-information-row-six" style="display: flex; justify-content: space-between; width: 100%;">
-                <div id="new-contact-organization-container" style="display: flex; flex-direction: column; width: 100%;">
+                <div id="new-contact-organization-container" style="display: flex; flex-direction: column; width: 79.106%;">
                     <label style="font-weight: bold;">Phone</label>
                     <input id="new-contact-phonenumber" autocomplete="off" minlength="10" maxlength="13" placeholder="Enter at least 10 digits">
                 </div>
+                <div id="new-contact-phonenumber-label-select-container" style="display: flex; flex-direction: column; width: 20.894%;">
+                    <label style="font-weight: bold;">Select a label</label>
+                    <select id="new-contact-select-phonenumber" style="height: 21px;"></select>
+                </div>
             </div>  
+              <div id="create-new-contact-phonenumber-custom-label-modal" style="position: absolute; width: 400px; height: 500px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                <div style="display: flex; justify-content: flex-end; width: 100%;">
+                    <img id="close-create-new-contact-phonenumber-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 15px;">
+                </div>        
+                <h4>Enter an Phone Number Label</h4>
+                        <div style="display: flex; flex-direction: column;">
+                        <!-- <label>Select a label</label> -->
+                        <!-- <div>
+                            <select id="create-new-contact-email-label-select" autocomplete="off" style="display: none;"></select>
+                            <input id="create-new-contact-email-label-input" placeholder="Choose">
+                        </div> -->
+                        <label>Enter custom label</label>
+                        <input id="create-new-contact-phone-label-input">
+                        <!-- <label>Enter emailaddress</label>
+                        <input id="create-new-contact-email-input"> -->
+                    </div>
+                        <button id="create-new-contact-phonenumber-label-button">Done</button>
+                </div>
             <div id="new-contact-information-row-five" style="display: flex; width: 100%;">
                 <div id="new-contact-address-container" style="width: 100%;">
                     <div style="display: flex; align-items: flex-end;">
-                        <div style="display: flex; flex-direction: column; width: 100%;">
+                        <div style="display: flex; flex-direction: column; width: 79.106%;">
                             <label style="font-weight: bold;">Address</label>
                             <input id="new-contact-address" autocomplete="off" maxlength="60" placeholder="Building / Street City, State, Postal Code">
                         </div>
+                        <div id="new-contact-phonenumber-label-select-container" style="display: flex; flex-direction: column; width: 20.894%;">
+                            <label style="font-weight: bold;">Select a label</label>
+                            <select id="new-contact-select-address" style="height: 21px;"></select>
+                        </div>
                     </div>
+                      <div id="create-new-contact-address-custom-label-modal" style="position: absolute; width: 400px; height: 500px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                        <h4>Enter an Address Label</h4>
+                        <div style="display: flex; flex-direction: column;">
+                        <!-- <label>Select a label</label> -->
+                        <!-- <div>
+                            <select id="create-new-contact-email-label-select" autocomplete="off" style="display: none;"></select>
+                            <input id="create-new-contact-email-label-input" placeholder="Choose">
+                        </div> -->
+                        <label>Enter custom label</label>
+                        <input id="create-new-contact-physaddress-label-input">
+                        <!-- <label>Enter emailaddress</label>
+                        <input id="create-new-contact-email-input"> -->
+                    </div>
+                        <button id="create-new-contact-address-label-button">Done</button>
+                </div>
                 </div>
             </div>
             <div id="new-contact-information-row-one" style="display: flex; justify-content: space-between; width: 100%;">
@@ -1577,11 +1694,30 @@
             <div id="new-contact-information-row-five" style="display: flex; width: 100%;">
                 <div id="new-contact-address-container" style="width: 100%;">
                     <div style="display: flex; align-items: flex-end;">
-                        <div style="display: flex; flex-direction: column; width: 100%;">
+                        <div style="display: flex; flex-direction: column; width: 79.106%;">
                             <label style="font-weight: bold;">Social Media</label>
                             <input id="new-contact-social-media" autocomplete="off" placeholder="www.examplesite.com/username">
                         </div>
+                        <div id="new-contact-phonenumber-label-select-container" style="display: flex; flex-direction: column; width: 20.894%;">
+                            <label style="font-weight: bold;">Select a label</label>
+                            <select id="new-contact-select-website" style="height: 21px;"></select>
+                        </div>
                     </div>
+                         <div id="create-new-contact-website-custom-label-modal" style="position: absolute; width: 400px; height: 500px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                        <h4>Enter a Website Label</h4>
+                        <div style="display: flex; flex-direction: column;">
+                        <!-- <label>Select a label</label> -->
+                        <!-- <div>
+                            <select id="create-new-contact-email-label-select" autocomplete="off" style="display: none;"></select>
+                            <input id="create-new-contact-email-label-input" placeholder="Choose">
+                        </div> -->
+                        <label>Enter custom label</label>
+                        <input id="create-new-contact-site-label-input">
+                        <!-- <label>Enter emailaddress</label>
+                        <input id="create-new-contact-email-input"> -->
+                    </div>
+                        <button id="create-new-contact-website-label-button">Done</button>
+                </div>
                 </div>
             </div>
         </div>

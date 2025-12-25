@@ -3891,19 +3891,14 @@ const allUsers = await getAllUsers();
     // if (contactHeaderFullNameElementText.length > 12) {
     //     contactHeaderFullNameElement.innerHTML = contactHeaderFullNameShortElement;
     // }
-    
-    if (contact.emailaddress !== null && contact.emailaddress !== "") {
-        contactHeaderEmailElement.innerHTML = `${contact.emailaddress}`;
+
+    const contactEmailAddresses = await getAContactEmailAddress(user_id, contact_id)
+        console.log(contactEmailAddresses)
+    if (contactEmailAddresses.length > 0) {
+        contactHeaderEmailElement.innerHTML = contactEmailAddresses[0].emailaddress
     } else {
-        contactHeaderEmailElement.innerHTML = "text";
-        contactHeaderEmailElement.style.visibility = "hidden";
-    }
-    
-    if (contact.emailaddress !== null && contact.emailaddress !== "") {
-        contactHeaderEmailElement.innerHTML = `${contact.emailaddress}`;
-    } else {
-        contactHeaderEmailElement.innerHTML = "text";
-        contactHeaderEmailElement.style.visibility = "hidden";
+        contactHeaderEmailElement.innerHTML = "Text";
+        contactHeaderEmailElement.style.visibility = "hidden"
     }
 
     if (contact.organization !== null && contact.organization !== "" && contact.organization_role !== null && contact.organization_role !== "") {
@@ -3986,7 +3981,7 @@ const allUsers = await getAllUsers();
 
     const contactEmailSelectElement = document.querySelector("#select-view-contact-email");
 
-    const contactEmailAddresses = await getAContactEmailAddress(user_id, contact_id);
+    // const contactEmailAddresses = await getAContactEmailAddress(user_id, contact_id);
     console.log(contactEmailAddresses)
     const viewContactEmailSelectElement = document.querySelector("#select-view-contact-email");
     let viewContactEmailLabelOptionsData = []
@@ -4966,7 +4961,6 @@ const allUsers = await getAllUsers();
         const editContactAddPhotoInputElement = document.querySelector("#edit-contact-add-photo");
         console.log(editContactAddPhotoInputElement.files[0])
 
-
         if (editContactAddPhotoInputElement.files[0] !== undefined) {
             editContactAddPhotoButton.innerHTML = "Save Photo"
             handleEditContactUploadImageInput()
@@ -4983,7 +4977,7 @@ const allUsers = await getAllUsers();
     const editContactPhoneNumberElement = document.querySelector("#edit-contact-phonenumber");
     const editContactAddressElement = document.querySelector("#edit-contact-address");
     const editContactOrganizationElement = document.querySelector("#edit-contact-organization");
-    const editContactRoleElement = document.querySelector("#edit-contact-role");
+    const editContactRoleElement = document.querySelector("#edit-contact-organization-role");
     const editContactSocialMediaElement = document.querySelector("#edit-contact-website");
     const editContactNotesElement = document.querySelector("#edit-contact-notes");
     editContactNotesElement.style.fontFamily = "sans-serif";
@@ -5045,6 +5039,11 @@ const allUsers = await getAllUsers();
         addContactEmailModal.style.display = "block";
     });
 
+    const closeAddContactEmailModalButton = document.querySelector("#close-create-new-contact-email-modal");
+    closeAddContactEmailModalButton.addEventListener("click", function() {
+        addContactEmailModal.style.display = "none";
+    });
+
     const createNewContactEmailLabelSelect = document.querySelector("#create-new-contact-email-label-select");
      const emailLabelOpitonsData = [
         { text: "None", value: "None"},
@@ -5097,7 +5096,6 @@ const allUsers = await getAllUsers();
          createNewContactEmailLabelSelect.style.display = "none";
       });
 
-
     const createContactEmailButton = document.querySelector("#create-contact-email-button");
     createContactEmailButton.addEventListener("click", function(event) {
         postAddNewContactEmailAddress()
@@ -5147,6 +5145,11 @@ const allUsers = await getAllUsers();
         console.log("open create new email")
 
         addContactPhoneNumberModal.style.display = "block";
+    });
+
+    const closeAddContactPhoneNumberModalButton = document.querySelector("#close-create-new-contact-phonenumber-modal");
+    closeAddContactPhoneNumberModalButton.addEventListener("click", function() {
+        addContactPhoneNumberModal.style.display = "none";
     });
 
     const createNewContactPhoneNumberLabelSelect = document.querySelector("#create-new-contact-phonenumber-label-select");
@@ -5252,6 +5255,11 @@ const allUsers = await getAllUsers();
         addContactAddressModal.style.display = "block";
     });
 
+    const closeAddContactAddressModalButton = document.querySelector("#close-create-new-contact-address-modal");
+    closeAddContactAddressModalButton.addEventListener("click", function() {
+        addContactAddressModal.style.display = "none";
+    });
+
     const createNewContactAddressLabelSelect = document.querySelector("#create-new-contact-address-label-select");
      const addressLabelOpitonsData = [
         { text: "None", value: "None"},
@@ -5322,6 +5330,21 @@ const allUsers = await getAllUsers();
         // handleDeleteContactAddress()
     });
 
+    const updateContactOrganizationButton = document.querySelector("#update-contact-organization-button");
+    updateContactOrganizationButton.addEventListener("click", function() {
+        updateContactOrganization();
+    });
+
+    const updateContactOrganizationRoleButton = document.querySelector("#update-contact-organization-role-button");
+    updateContactOrganizationRoleButton.addEventListener("click", function() {
+        updateContactOrganizationRole()
+    });
+
+    const updateContactNotesButton = document.querySelector("#update-contact-notes-button");
+    updateContactNotesButton.addEventListener("click", function() {
+        updateContactNotes()
+    });
+
     ////
 
     const contactWebsites = await getAContactWebsite(user_id, contact_id);
@@ -5356,6 +5379,11 @@ const allUsers = await getAllUsers();
         console.log("open create new website")
 
         addContactWebsiteModal.style.display = "block";
+    });
+
+    const closeAddContactWebsiteModalButton = document.querySelector("#close-create-new-contact-website-modal");
+    closeAddContactWebsiteModalButton.addEventListener("click", function() {
+        addContactWebsiteModal.style.display = "none";
     });
 
     const createNewContactWebsiteLabelSelect = document.querySelector("#create-new-contact-website-label-select");
@@ -6692,13 +6720,99 @@ async function handleEditContactBirthdayInput() {
 };
 
 async function handleEditContactOrganizationInput() {
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const url = window.location.href.toString()
+    const urlBeforeQuery = url.split('?')[0];
+    const contact_id = urlBeforeQuery.split('contact_')[1]
+    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+    const contact = await getUserContact(user_id, contact_id);
+
+    const editContactOrganizationElement = document.querySelector("#edit-contact-organization");
+
+    const editContactOrganizationObj = {
+        firstname: contact.firstname,
+        lastname: contact.lastname,
+        gender: contact.gender,
+        birthday: contact.birthday,
+        organization: editContactOrganizationElement.value,
+        role: contact.organization_role,
+        favorite: contact.favorite,
+        notes: contact.notes
+    };
+
+    return editContactOrganizationObj;   
     
 }
 async function handleEditContactOrganizationRoleInput() {
-    
-}
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const url = window.location.href.toString()
+    const urlBeforeQuery = url.split('?')[0];
+    const contact_id = urlBeforeQuery.split('contact_')[1]
+    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+    const contact = await getUserContact(user_id, contact_id);
+
+    const editContactOrganizationRoleElement = document.querySelector("#edit-contact-organization-role");
+
+    const editContactOrganizationRoleObj = {
+        firstname: contact.firstname,
+        lastname: contact.lastname,
+        gender: contact.gender,
+        birthday: contact.birthday,
+        organization: contact.organization,
+        role: editContactOrganizationRoleElement.value,
+        favorite: contact.favorite,
+        notes: contact.notes
+    };
+
+    return editContactOrganizationRoleObj;
+};
+
 async function handleEditContactNotesInput() {
-    
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const url = window.location.href.toString()
+    const urlBeforeQuery = url.split('?')[0];
+    const contact_id = urlBeforeQuery.split('contact_')[1]
+    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+    const contact = await getUserContact(user_id, contact_id);
+
+    const editContactNotesElement = document.querySelector("#edit-contact-notes");
+
+    const editContactNotesRoleObj = {
+        firstname: contact.firstname,
+        lastname: contact.lastname,
+        gender: contact.gender,
+        birthday: contact.birthday,
+        organization: contact.organization,
+        role: contact.value,
+        favorite: contact.favorite,
+        notes: editContactNotesElement.value
+    };
+
+    return editContactNotesRoleObj;  
 }
 
 async function handleMobileEditContactInput() {
@@ -10201,8 +10315,8 @@ const allUsers = await getAllUsers();
 
     const newContactImage = document.querySelector("#new-contact-image");
     const newContactRemovePhotoButton = document.querySelector("#new-contact-remove-photo-button");
+    const newContactAddPhotoInputElement = document.querySelector("#new-contact-add-photo")
     newContactRemovePhotoButton.addEventListener("click", function() {
-        const newContactAddPhotoInputElement = document.querySelector("#new-contact-add-photo")
         newContactAddPhotoInputElement.value = ""
         newContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg")
     });
@@ -10216,15 +10330,16 @@ const allUsers = await getAllUsers();
     const closeNewContactAddPhotoIcon = document.querySelector("#close-new-contact-add-photo-icon");
     closeNewContactAddPhotoIcon.addEventListener("click", function() {
         newContactAddPhotoInputContainerElement.style.display = "none";
+        newContactAddPhotoInputElement.value = ""
     })
     const newContactAddPhotoSaveButton = document.querySelector("#new-contact-add-photo-insert-button");
     newContactAddPhotoSaveButton.addEventListener("click", function() {
         // newContactAddPhotoInputContainerElement.style.display = "none";
-        // handleNewContactImage();
-        handleUploadNewContactImageInput();
-    }, false)
+        handleNewContactImage();
+        // handleUploadNewContactImageInput();
+    }, false);
 
-    const newContactGenderElement = document.querySelector("#new-contact-gender")
+     const newContactGenderElement = document.querySelector("#new-contact-gender")
     // newContactGenderElement.value = user.gender;
     const selectGenderElement = document.querySelector("#new-contact-select-gender");
     const genderOpitonsData = [
@@ -10263,7 +10378,121 @@ const allUsers = await getAllUsers();
         selectGenderElement.style.display = "none";
       });
 
-    const newContactPhoneNumberElement = document.querySelector("#new-contact-phonenumber");
+    const selectEmailLabelElement = document.querySelector("#new-contact-select-emailaddress");
+    const emailLabelOptions = [
+        { text: "Main", value: "Main"},
+        { text: "Home", value: "Home"},
+        { text: "Work", value: "Work"},
+        { text: "Other", value: "Other"},
+        { text: "Custom", value: "Custom"},
+    ];
+
+    for (let i = 0; i < emailLabelOptions.length; i++) {
+        const option = document.createElement("option");
+        option.text = emailLabelOptions[i].text;
+        option.value = emailLabelOptions[i].value;
+        selectEmailLabelElement.appendChild(option)
+    };
+
+    const createCustomContactEmailLabelModal = document.querySelector("#create-new-contact-email-custom-label-modal")
+    selectEmailLabelElement.addEventListener("change", function(event) {
+        if (event.target.value === "Custom") {
+            console.log("Open custom modal")
+            createCustomContactEmailLabelModal.style.display = "block"
+        };
+
+        if (selectEmailLabelElement.options.length > 5 && event.target.value === "Custom") {
+            selectEmailLabelElement.options[4].remove()
+        }
+    });
+
+    const closeCustomContactEmailLabelModalIcon = document.querySelector("#close-create-new-contact-email-label-modal");
+    closeCustomContactEmailLabelModalIcon.addEventListener("click", function() {
+        createCustomContactEmailLabelModal.style.display = "none";
+          selectEmailLabelElement.options.selectedIndex = 0;
+    })
+
+    const createNewContactEmailLabelButton = document.querySelector("#create-new-contact-email-label-button");
+    createNewContactEmailLabelButton.addEventListener("click", function() {
+        const customEmailLabelInputElement = document.querySelector("#create-new-contact-emailaddress-label-input");
+        const customEmailLabelOption = document.createElement("option");
+        customEmailLabelOption.text = customEmailLabelInputElement.value;
+        customEmailLabelOption.value = customEmailLabelInputElement.value;
+        const firstOption = selectEmailLabelElement.options[0];
+        selectEmailLabelElement.insertBefore(customEmailLabelOption, firstOption)
+        selectEmailLabelElement.options.selectedIndex = 0;
+        createCustomContactEmailLabelModal.style.display = "none";
+    });
+
+    selectEmailLabelElement.addEventListener("click", function() {
+        const selectEmailLabelOptions = selectEmailLabelElement.options;
+        // console.log(selectEmailLabelOptions)
+        const optionToMove = selectEmailLabelElement.options[0];
+        const referenceOption = selectEmailLabelElement.options[5];
+
+        if (selectEmailLabelOptions.length > 5 && selectEmailLabelElement.options[0].text !== "Main") {
+            selectEmailLabelElement.insertBefore(optionToMove, referenceOption)
+        }
+    });
+
+    const selectPhoneNumberLabelElement = document.querySelector("#new-contact-select-phonenumber");
+    const phoneNumberLabelOptions = [
+        { text: "Main", value: "Main"},
+        { text: "Home", value: "Home"},
+        { text: "Work", value: "Work"},
+        { text: "Other", value: "Other"},
+        { text: "Custom", value: "Custom"},
+    ];
+
+    for (let i = 0; i < phoneNumberLabelOptions.length; i++) {
+        const option = document.createElement("option");
+        option.text = phoneNumberLabelOptions[i].text;
+        option.value = phoneNumberLabelOptions[i].value;
+        selectPhoneNumberLabelElement.appendChild(option)
+    };
+
+    const createCustomContactPhoneNumberLabelModal = document.querySelector("#create-new-contact-phonenumber-custom-label-modal")
+    selectPhoneNumberLabelElement.addEventListener("change", function(event) {
+        if (event.target.value === "Custom") {
+            console.log("Open custom modal")
+            createCustomContactPhoneNumberLabelModal.style.display = "block"
+        };
+
+        if (selectPhoneNumberLabelElement.options.length > 5 && event.target.value === "Custom") {
+            selectPhoneNumberLabelElement.options[4].remove()
+        }
+    });
+
+    const closeCustomContactPhoneNumberLabelModalIcon = document.querySelector("#close-create-new-contact-phonenumber-label-modal");
+    closeCustomContactPhoneNumberLabelModalIcon.addEventListener("click", function() {
+        createCustomContactPhoneNumberLabelModal.style.display = "none";
+          selectPhoneNumberLabelElement.options.selectedIndex = 0;
+    })
+
+    const createNewContactPhoneNumberLabelButton = document.querySelector("#create-new-contact-phonenumber-label-button");
+    createNewContactPhoneNumberLabelButton.addEventListener("click", function() {
+        const customPhoneNumberLabelInputElement = document.querySelector("#create-new-contact-phone-label-input");
+        const customPhoneNumberLabelOption = document.createElement("option");
+        customPhoneNumberLabelOption.text = customPhoneNumberLabelInputElement.value;
+        customPhoneNumberLabelOption.value = customPhoneNumberLabelInputElement.value;
+        const firstOption = selectPhoneNumberLabelElement.options[0];
+        selectPhoneNumberLabelElement.insertBefore(customPhoneNumberLabelOption, firstOption)
+        selectPhoneNumberLabelElement.options.selectedIndex = 0;
+        createCustomContactPhoneNumberLabelModal.style.display = "none";
+    });
+
+    selectPhoneNumberLabelElement.addEventListener("click", function() {
+        const selectPhoneNumberLabelOptions = selectPhoneNumberLabelElement.options;
+        // console.log(selectPhoneNumberLabelOptions)
+        const optionToMove = selectPhoneNumberLabelElement.options[0];
+        const referenceOption = selectPhoneNumberLabelElement.options[5];
+
+        if (selectPhoneNumberLabelOptions.length > 5 && selectPhoneNumberLabelElement.options[0].text !== "Main") {
+            selectPhoneNumberLabelElement.insertBefore(optionToMove, referenceOption)
+        }
+    });
+
+     const newContactPhoneNumberElement = document.querySelector("#new-contact-phonenumber");
     // const phonenumber = newContactPhoneNumberElement.value
     // console.log(phonenumber)
     newContactPhoneNumberElement.addEventListener("keydown", disableNonNumericKeys)
@@ -10284,6 +10513,86 @@ const allUsers = await getAllUsers();
     }, false);
     newContactPhoneNumberElement.addEventListener("input", function() {
         resetPhoneNumberFormatOnFocus(newContactPhoneNumberElement)
+    });
+
+    const selectAddressLabelElement = document.querySelector("#new-contact-select-address");
+    const addressLabelOptions = [
+        { text: "Main", value: "Main"},
+        { text: "Home", value: "Home"},
+        { text: "Work", value: "Work"},
+        { text: "Other", value: "Other"},
+        { text: "Custom", value: "Custom"},
+    ];
+
+    for (let i = 0; i < addressLabelOptions.length; i++) {
+        const option = document.createElement("option");
+        option.text = addressLabelOptions[i].text;
+        option.value = addressLabelOptions[i].value;
+        selectAddressLabelElement.appendChild(option)
+    };
+
+    const createCustomContactAddressLabelModal = document.querySelector("#create-new-contact-address-custom-label-modal")
+    selectAddressLabelElement.addEventListener("change", function(event) {
+        if (event.target.value === "Custom") {
+            console.log("Open custom modal")
+            createCustomContactAddressLabelModal.style.display = "block"
+        };
+
+        if (selectAddressLabelElement.options[0].text !== "Main") {
+            selectAddressLabelElement.options[0].remove()
+        }
+    });
+
+    const createNewContactAddressLabelButton = document.querySelector("#create-new-contact-address-label-button");
+    createNewContactAddressLabelButton.addEventListener("click", function() {
+        const customAddressLabelInputElement = document.querySelector("#create-new-contact-physaddress-label-input");
+        const customAddressLabelOption = document.createElement("option");
+        customAddressLabelOption.text = customAddressLabelInputElement.value;
+        customAddressLabelOption.value = customAddressLabelInputElement.value;
+        const firstOption = selectAddressLabelElement.options[0];
+        selectAddressLabelElement.insertBefore(customAddressLabelOption, firstOption)
+        selectAddressLabelElement.options.selectedIndex = 0;
+        createCustomContactAddressLabelModal.style.display = "none";
+    });
+
+    const selectWebsiteLabelElement = document.querySelector("#new-contact-select-website");
+    const websiteLabelOptions = [
+        { text: "Main", value: "Main"},
+        { text: "Home", value: "Home"},
+        { text: "Work", value: "Work"},
+        { text: "Other", value: "Other"},
+        { text: "Custom", value: "Custom"},
+    ];
+
+    for (let i = 0; i < websiteLabelOptions.length; i++) {
+        const option = document.createElement("option");
+        option.text = websiteLabelOptions[i].text;
+        option.value = websiteLabelOptions[i].value;
+        selectWebsiteLabelElement.appendChild(option)
+    };
+
+    const createCustomContactWebsiteLabelModal = document.querySelector("#create-new-contact-website-custom-label-modal")
+    selectWebsiteLabelElement.addEventListener("change", function(event) {
+        if (event.target.value === "Custom") {
+            console.log("Open custom modal")
+            createCustomContactWebsiteLabelModal.style.display = "block"
+        };
+
+        if (selectWebsiteLabelElement.options[0].text !== "Main") {
+            selectWebsiteLabelElement.options[0].remove()
+        }
+    });
+
+    const createNewContactWebsiteLabelButton = document.querySelector("#create-new-contact-website-label-button");
+    createNewContactWebsiteLabelButton.addEventListener("click", function() {
+        const customWebsiteLabelInputElement = document.querySelector("#create-new-contact-site-label-input");
+        const customWebsiteLabelOption = document.createElement("option");
+        customWebsiteLabelOption.text = customWebsiteLabelInputElement.value;
+        customWebsiteLabelOption.value = customWebsiteLabelInputElement.value;
+        const firstOption = selectWebsiteLabelElement.options[0];
+        selectWebsiteLabelElement.insertBefore(customWebsiteLabelOption, firstOption)
+        selectWebsiteLabelElement.options.selectedIndex = 0;
+        createCustomContactWebsiteLabelModal.style.display = "none";
     });
 
     const createNewContactButton = document.querySelector("#create-new-contact-button")
@@ -10498,10 +10807,9 @@ const allUsers = await getAllUsers();
     document.body.style.overflow = "hidden"
 }
 
-async function handleUploadNewContactImageInput() {
+async function handleNewContactImage() {
     // let imageFile;
     // let image;
-    // const newUserImageElement = document.querySelector("#edit-user-image");
 
     const newContactImageElement = document.querySelector("#new-contact-image");
     let newContactImageFile;
@@ -10517,21 +10825,27 @@ async function handleUploadNewContactImageInput() {
             base64string = reader.result.split(',')[1]
             newContactImage = reader.result;
             newContactImageElement.setAttribute("src", reader.result);
+            newContactImageElement.setAttribute("name", newContactAddPhotoInputElement.files[0].name)
             newContactImageElement.style.borderRadius = "50%"
         };
 
-        if (newContactImageFile !== undefined) {
+        // if (newContactImageFile !== undefined) {
             reader.readAsDataURL(newContactImageFile)
-        } else {
-            newContactImageElement.setAttribute("src", './images/user-2-svgrepo-com.svg')
-        }
+        // } else {
+        //     newContactImageElement.setAttribute("src", './images/user-2-svgrepo-com.svg')
+        // }
 
     // const editUserAddPhotoFormElement = document.querySelector("#edit-user-add-photo-form");
     // const editUserAddPhotoInputElement = document.querySelector("#edit-user-add-photo");
     // console.log(editUserAddPhotoFormElement)
-    let imageFile = newContactAddPhotoInputElement.files[0];
+    // let imageFile = newContactAddPhotoInputElement.files[0];
 
-    async function createIconImageFile() {
+    newContactAddPhotoInputElement.value = "";
+}
+
+async function handleUploadNewContactImageInput() {
+
+    async function createImageFile() {
     const newContactImageElement = document.querySelector("#new-contact-image")
     const newContactImageUrl = newContactImageElement.getAttribute("src")
     let newContactImageFile;
@@ -10549,11 +10863,28 @@ async function handleUploadNewContactImageInput() {
         })
     }
 
+    async function base64ToFile(base64DataUrl, filename) {
+  // 1. Fetch the data URL and convert to a Blob
+  const response = await fetch(base64DataUrl);
+  const blob = await response.blob();
+
+  // 2. Create a File object from the Blob
+  // The 'type' is automatically inferred by the browser from the data URL's MIME type
+  const file = new File([blob], filename, { type: blob.type });
+
+  return file;
+}
+
+let imageFile;
+
+
     if (imageFile === undefined) {
-        imageFile = await createIconImageFile()
+       imageFile = await createImageFile()
+    } else {
+       imageFile = await base64ToFile(newContactImageElement.getAttribute("src"), newContactImageElement.getAttribute("name"))
     }
         
-    console.log(imageFile)
+    // newContactAddPhotoInputElement.value = ""
 
     return imageFile
 }
@@ -10615,17 +10946,20 @@ const allUsers = await getAllUsers();
     const userContacts = await getUserContacts(userId);
     console.log(userContacts.length)
     
-
     const newContactFirstNameElement = document.querySelector("#new-contact-firstname");
     const newContactLastNameElement = document.querySelector("#new-contact-lastname");
     const newContactGenderElement = document.querySelector("#new-contact-gender");
     const newContactBirthdayElement = document.querySelector("#new-contact-birthday")
     const newContactEmailAddressElement = document.querySelector("#new-contact-email");
+    const newContactSelectEmailAddressElement = document.querySelector("#new-contact-select-emailaddress");
     const newContactPhoneNumberElement = document.querySelector("#new-contact-phonenumber");
+    const newContactSelectPhoneNumberElement = document.querySelector("#new-contact-select-phonenumber")
     const newContactAddressElement = document.querySelector("#new-contact-address");
+    const newContactSelectAddressElement = document.querySelector("#new-contact-select-address")
     const newContactOrganizationElement = document.querySelector("#new-contact-organization");
     const newContactRoleElement = document.querySelector("#new-contact-role")
     const newContactSocialMediaElement = document.querySelector("#new-contact-social-media");
+    const newContactSelectWebsiteElement = document.querySelector("#new-contact-select-website")
     const newContactNotesElement = document.querySelector("#new-contact-notes")
     const newContactImageElement = document.querySelector("#new-contact-image");
 
@@ -10654,17 +10988,17 @@ const allUsers = await getAllUsers();
         gender: newContactGenderElement.value,
         birthday: newContactBirthdayElement.value,
         emailaddress: newContactEmailAddressElement.value,
-        emailaddresslabel: "Main",
+        emailaddresslabel: newContactSelectEmailAddressElement.value,
         emailId: 1,
         phonenumber: newContactPhoneNumberElement.value,
-        phonenumberlabel: "Main",
+        phonenumberlabel: newContactSelectPhoneNumberElement.value,
         phonenumberId: 1,
         organization: newContactOrganizationElement.value,
         role: newContactRoleElement.value,
-        addresslabel: "Main",
+        addresslabel: newContactSelectAddressElement.value,
         addressId: 1,
         address: newContactAddressElement.value,
-        websitelabel: "Personal",
+        websitelabel: newContactSelectWebsiteElement.value,
         websiteId: 1,
         website: newContactSocialMediaElement.value,
         notes: newContactNotesElement.value,
@@ -11510,10 +11844,10 @@ async function postNewContact() {
     const notes = newContactObject.notes;
     const contact_image = newContactObject.contactImage;
 
-    // if (firstname === null || firstname.toString().trim().length === 0) {
-    //     alert("First Name is a required input field. Please enter a first name.");
-    //     return
-    // }
+    if (firstname === null || firstname.toString().trim().length === 0) {
+        alert("First Name is a required input field. Please enter a first name.");
+        return
+    }
 
     // if (emailaddress === null || emailaddress.toString().trim().length === 0) {
     //     alert("Email is a required input field. Please enter an email.");
@@ -11845,18 +12179,18 @@ async function postAddNewContactEmailAddress() {
     const contactEmailAddresses = await getAContactEmailAddress(user_id, contact_id);
     // contactEmailAddresses.forEach(contactEmailObj => {
     
-    for (let i = 0; i < contactEmailAddresses.length; i++) {
+    // for (let i = 0; i < contactEmailAddresses.length; i++) {
 
-        if (contactEmailAddresses[i].emailaddresslabel === newContactEmailObj.emailaddresslabel) {
-            alert("Cannot create a duplicate email address label");
-            return
-        }
+    //     if (contactEmailAddresses[i].emailaddresslabel === newContactEmailObj.emailaddresslabel) {
+    //         alert("Cannot create a duplicate email address label");
+    //         return
+    //     }
     
-        if (contactEmailAddresses[i].emailaddress === newContactEmailObj.emailaddress) {
-            alert("Cannot create a duplicate email address");
-            return
-        } 
-    }
+    //     if (contactEmailAddresses[i].emailaddress === newContactEmailObj.emailaddress) {
+    //         alert("Cannot create a duplicate email address");
+    //         return
+    //     } 
+    // }
 
     console.log(email_id)
 
@@ -11870,7 +12204,10 @@ async function postAddNewContactEmailAddress() {
         console.log(response)
     } catch (err) {
         console.error(err)
-    }
+    };
+
+    alert("Added new email address for contact.")
+    window.location.reload()
 };
 
 async function postAddNewContactPhoneNumber() {
@@ -11908,7 +12245,10 @@ async function postAddNewContactPhoneNumber() {
         console.log(response)
     } catch (err) {
         console.error(err)
-    }
+    };
+
+    alert("Added new phone number for contact.");
+    window.location.reload();
 };
 
 async function updateContactPhoneNumber() {
@@ -12000,7 +12340,10 @@ async function postAddNewContactAddress() {
         console.log(response)
     } catch (err) {
         console.error(err)
-    }
+    };
+
+    alert("Added new address for contact.");
+    window.location.reload();
 };
 
 async function updateContactAddress() {
@@ -12108,7 +12451,11 @@ async function postAddNewContactWebsite() {
         console.log(response)
     } catch (err) {
         console.error(err)
-    }
+    };
+
+    alert("Added new website for contact.")
+    window.location.reload()
+
 };
 
 async function updateContactWebsite() {
@@ -12474,6 +12821,162 @@ const allUsers = await getAllUsers();
     const favorite = editContactBirthdayObj.favorite;
     const notes = editContactBirthdayObj.notes;
     // const contact_image = editContactBirthdayObj.contactImage;
+
+    const body = { firstname, lastname, birthday, gender, organization, organization_role, favorite, notes };
+    try {
+        const response = await fetch(`/contacts/${user_id}/${contact_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    // if (contact.firstname === editContactObject.firstname && contact.lastname === editContactObject.lastname && contact.emailaddress === editContactObject.emailaddress && contact.phonenumber === editContactObject.phonenumber) {
+    //     window.location.href = url
+    // } 
+
+    alert("Contact updated.")
+    window.location.reload()
+};
+
+async function updateContactOrganization() {
+const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const url = window.location.href.toString()
+    const urlBeforeQuery = url.split('?')[0];
+    const contact_id = urlBeforeQuery.split('contact_')[1]
+    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+    const editContactOrganizationObj = await handleEditContactOrganizationInput();
+    // console.log(user_id)
+    // console.log(contact_id)
+
+    const firstname = editContactOrganizationObj.firstname;
+    const lastname = editContactOrganizationObj.lastname;
+    // const emailaddress = editContactOrganizationObj.emailaddress;
+    // const phonenumber = editContactOrganizationObj.phonenumber;
+    const birthday = editContactOrganizationObj.birthday;
+    // const homeaddress = editContactOrganizationObj.address;
+    const gender = editContactOrganizationObj.gender;
+    const organization = editContactOrganizationObj.organization;
+    const organization_role = editContactOrganizationObj.role;
+    // const website = editContactOrganizationObj.website;
+    const favorite = editContactOrganizationObj.favorite;
+    const notes = editContactOrganizationObj.notes;
+    // const contact_image = editContactOrganizationObj.contactImage;
+
+    const body = { firstname, lastname, birthday, gender, organization, organization_role, favorite, notes };
+    try {
+        const response = await fetch(`/contacts/${user_id}/${contact_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    // if (contact.firstname === editContactObject.firstname && contact.lastname === editContactObject.lastname && contact.emailaddress === editContactObject.emailaddress && contact.phonenumber === editContactObject.phonenumber) {
+    //     window.location.href = url
+    // } 
+
+    alert("Contact updated.")
+    window.location.reload()
+};
+
+async function updateContactOrganizationRole() {
+const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const url = window.location.href.toString()
+    const urlBeforeQuery = url.split('?')[0];
+    const contact_id = urlBeforeQuery.split('contact_')[1]
+    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+    const editContactOrganizationRoleObj = await handleEditContactOrganizationRoleInput();
+    // console.log(user_id)
+    // console.log(contact_id)
+
+    const firstname = editContactOrganizationRoleObj.firstname;
+    const lastname = editContactOrganizationRoleObj.lastname;
+    // const emailaddress = editContactOrganizationRoleObj.emailaddress;
+    // const phonenumber = editContactOrganizationRoleObj.phonenumber;
+    const birthday = editContactOrganizationRoleObj.birthday;
+    // const homeaddress = editContactOrganizationRoleObj.address;
+    const gender = editContactOrganizationRoleObj.gender;
+    const organization = editContactOrganizationRoleObj.organization;
+    const organization_role = editContactOrganizationRoleObj.role;
+    // const website = editContactOrganizationRoleObj.website;
+    const favorite = editContactOrganizationRoleObj.favorite;
+    const notes = editContactOrganizationRoleObj.notes;
+    // const contact_image = editContactOrganizationRoleObj.contactImage;
+
+    const body = { firstname, lastname, birthday, gender, organization, organization_role, favorite, notes };
+    try {
+        const response = await fetch(`/contacts/${user_id}/${contact_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    // if (contact.firstname === editContactObject.firstname && contact.lastname === editContactObject.lastname && contact.emailaddress === editContactObject.emailaddress && contact.phonenumber === editContactObject.phonenumber) {
+    //     window.location.href = url
+    // } 
+
+    alert("Contact updated.")
+    window.location.reload()
+};
+
+async function updateContactNotes() {
+const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const url = window.location.href.toString()
+    const urlBeforeQuery = url.split('?')[0];
+    const contact_id = urlBeforeQuery.split('contact_')[1]
+    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+    const editContacNotesObj = await handleEditContactNotesInput();
+    // console.log(user_id)
+    // console.log(contact_id)
+
+    const firstname = editContacNotesObj.firstname;
+    const lastname = editContacNotesObj.lastname;
+    // const emailaddress = editContacNotesObj.emailaddress;
+    // const phonenumber = editContacNotesObj.phonenumber;
+    const birthday = editContacNotesObj.birthday;
+    // const homeaddress = editContacNotesObj.address;
+    const gender = editContacNotesObj.gender;
+    const organization = editContacNotesObj.organization;
+    const organization_role = editContacNotesObj.role;
+    // const website = editContacNotesObj.website;
+    const favorite = editContacNotesObj.favorite;
+    const notes = editContacNotesObj.notes;
+    // const contact_image = editContacNotesObj.contactImage;
 
     const body = { firstname, lastname, birthday, gender, organization, organization_role, favorite, notes };
     try {
@@ -13646,7 +14149,7 @@ domReady(function() {
     setTimeout(async function () {
         await showPages()
         document.body.style.display = "block"
-    }, 100)
+    }, 0)
 })
 
 window.addEventListener("pageshow", function() {
