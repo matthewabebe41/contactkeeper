@@ -12206,7 +12206,7 @@ async function postAddNewContactEmailAddress() {
         console.error(err)
     };
 
-    alert("Added new email address for contact.")
+    alert("Added new emailaddress for contact.")
     window.location.reload()
 };
 
