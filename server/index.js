@@ -341,11 +341,11 @@ app.post("/contact_images", upload.single('newContactAddPhoto'), async (req, res
         }
 });
 
-//get a contact emailaddress
+//get a contact's emailaddresses
 app.get("/contactEmailAddresses/:user_id/:contact_id", async (req, res) => {
     try {
-        const { user_id, contact_id  } = req.params;
-        const contactEmailAddress = await pool.query("SELECT * FROM contactEmailAddresses WHERE userid = $1 AND contactid = $2", [user_id, contact_id]);
+        const { user_id, contact_id } = req.params;
+        const contactEmailAddress = await pool.query("SELECT * FROM contactEmailAddresses WHERE userid = $1 AND contactid = $2 ORDER BY emailid", [user_id, contact_id]);
         res.json(contactEmailAddress.rows);
     } catch (err) {
         console.error(err.message);
@@ -364,11 +364,11 @@ app.post("/contactEmailAddresses", async (req, res) => {
 });
 
 //edit a contact emailaddress
-app.put("/contactEmailAddresses/:userid/:contactid", async (req, res) => {
+app.put("/contactEmailAddresses/:userid/:contactid/:emailid", async (req, res) => {
     try {
-       const { userid, contactid } = req.params;
+       const { userid, contactid, emailid } = req.params;
        const {emailAddressLabel, emailaddress} = req.body;
-       const editContactEmailAddress = await pool.query("UPDATE contactEmailAddresses SET emailaddress = $1 WHERE userid = $2 AND contactid = $3 AND emailAddressLabel = $4", [emailaddress, userid, contactid, emailAddressLabel])
+       const editContactEmailAddress = await pool.query("UPDATE contactEmailAddresses SET emailaddress = $1 WHERE userid = $2 AND contactid = $3 AND emailid = $4 AND emailAddressLabel = $5", [emailaddress, userid, contactid, emailid, emailAddressLabel])
        res.json(editContactEmailAddress.rows[0]);
     } catch (error) {
         console.error(error.message)
@@ -387,11 +387,11 @@ app.delete("/contactEmailAddresses/:userid/:contactid/:emailid", async (req, res
     }
 });
 
-//get a contact phonenumber
+//get a contact's phonenumbers
 app.get("/contactPhoneNumbers/:user_id/:contact_id", async (req, res) => {
     try {
         const { user_id, contact_id  } = req.params;
-        const contactPhoneNumber = await pool.query("SELECT * FROM contactPhoneNumbers WHERE userid = $1 AND contactid = $2", [user_id, contact_id]);
+        const contactPhoneNumber = await pool.query("SELECT * FROM contactPhoneNumbers WHERE userid = $1 AND contactid = $2 ORDER BY phonenumberid", [user_id, contact_id]);
         res.json(contactPhoneNumber.rows);
     } catch (err) {
         console.error(err.message);
@@ -410,11 +410,11 @@ app.post("/contactPhoneNumbers", async (req, res) => {
 });
 
 //edit a contact phonenumber
-app.put("/contactPhoneNumbers/:userid/:contactid", async (req, res) => {
+app.put("/contactPhoneNumbers/:userid/:contactid/:phonenumberid", async (req, res) => {
     try {
-       const { userid, contactid } = req.params;
+       const { userid, contactid, phonenumberid } = req.params;
        const {phoneNumberLabel, phonenumber} = req.body;
-       const editContactPhoneNumber = await pool.query("UPDATE contactPhoneNumbers SET phonenumber = $1 WHERE userid = $2 AND contactid = $3 AND phonenumberlabel = $4", [phonenumber, userid, contactid, phoneNumberLabel])
+       const editContactPhoneNumber = await pool.query("UPDATE contactPhoneNumbers SET phonenumber = $1 WHERE userid = $2 AND contactid = $3 AND phonenumberid = $4 AND phonenumberlabel = $5", [phonenumber, userid, contactid, phonenumberid, phoneNumberLabel])
        res.json(editContactPhoneNumber.rows[0]);
     } catch (error) {
         console.error(error.message)
@@ -433,7 +433,7 @@ app.delete("/contactPhoneNumbers/:userid/:contactid/:phonenumberid", async (req,
     }
 });
 
-//get a contact address
+//get a contact's addresses
 app.get("/contactAddresses/:user_id/:contact_id", async (req, res) => {
     try {
         const { user_id, contact_id  } = req.params;

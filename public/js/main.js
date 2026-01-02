@@ -5504,11 +5504,12 @@ const allUsers = await getAllUsers();
     if (editContactEmailLabelSelectedIndex !== -1) {
     let selectedEditContactEmailLabel = editContactEmailSelect.options[editContactEmailLabelSelectedIndex].text
     console.log(editContactEmailSelect.options[editContactEmailLabelSelectedIndex].text)
+    const firstSelectedIndexId = Number(editContactEmailSelect.options[editContactEmailLabelSelectedIndex].getAttribute("id"))
     const firstSelectedIndex = editContactEmailSelect.options[editContactEmailLabelSelectedIndex].text
     // const firstSelectedIndexId = editContactEmailSelect.options[editContactEmailLabelSelectedIndex].getAttribute("id")
     // console.log(firstSelectedIndexId)
     contactEmailAddresses.forEach(contactEmailAddressObj => {
-            if (firstSelectedIndex === contactEmailAddressObj.emailaddresslabel) {
+            if (firstSelectedIndexId === contactEmailAddressObj.emailid && firstSelectedIndex === contactEmailAddressObj.emailaddresslabel) {
                 editContactEmailAddressElement.value = contactEmailAddressObj.emailaddress;
             }
         })
@@ -5540,9 +5541,10 @@ const allUsers = await getAllUsers();
     if (editContactPhoneNumberLabelSelectedIndex !== -1) {
     let selectedEditContactPhoneNumberLabel = editContactPhoneNumberSelect.options[editContactPhoneNumberLabelSelectedIndex].text
     console.log(editContactPhoneNumberSelect.options[editContactPhoneNumberLabelSelectedIndex].text)
+    const firstSelectedIndexId = Number(editContactPhoneNumberSelect.options[editContactPhoneNumberLabelSelectedIndex].getAttribute("id"))
     const firstSelectedPhoneNumberIndex = editContactPhoneNumberSelect.options[editContactPhoneNumberLabelSelectedIndex].text
     contactPhoneNumbers.forEach(contactPhoneNumberAddressObj => {
-            if (firstSelectedPhoneNumberIndex === contactPhoneNumberAddressObj.phonenumberlabel) {
+            if (firstSelectedIndexId === contactPhoneNumberAddressObj.phonenumberid && firstSelectedPhoneNumberIndex === contactPhoneNumberAddressObj.phonenumberlabel) {
                 editContactPhoneNumberElement.value = contactPhoneNumberAddressObj.phonenumber;
             }
         })
@@ -5560,28 +5562,28 @@ const allUsers = await getAllUsers();
             if (selectedId === contactPhoneNumberObj.phonenumberid && selectedText === contactPhoneNumberObj.phonenumberlabel) {
                 editContactPhoneNumberElement.value = contactPhoneNumberObj.phonenumber
                 formatPhoneNumberForData(editContactPhoneNumberElement)
-            }
-        })
-        
+            };
+        });     
     });
 
     const editContactAddressSelect = document.querySelector("#select-edit-contact-address");
     const editContactAddressLabelSelectedIndex = editContactAddressSelect.selectedIndex;
     if (editContactAddressLabelSelectedIndex !== -1) {
     let selectedEditContactAddressLabel = editContactAddressSelect.options[editContactAddressLabelSelectedIndex].text
-    console.log(editContactAddressSelect.options[editContactAddressLabelSelectedIndex].text)
+    console.log(editContactAddressSelect.options[editContactAddressLabelSelectedIndex].text);
+    const firstSelectedIndexId = Number(editContactAddressSelect.options[editContactAddressLabelSelectedIndex].getAttribute("id"))
     const firstSelectedIndex = editContactAddressSelect.options[editContactAddressLabelSelectedIndex].text
     contactAddresses.forEach(contactAddressObj => {
-            if (firstSelectedIndex === contactAddressObj.addresslabel) {
+            if (firstSelectedIndexId === contactAddressObj.addressid && firstSelectedIndex === contactAddressObj.addresslabel) {
                 editContactAddressElement.value = contactAddressObj.address;
-            }
-        })
+            };
+        });
     } else {
         const option = document.createElement("option");
         option.text = "None available"
         option.value = "None available"
         editContactAddressSelect.appendChild(option)
-    }
+    };
     editContactAddressSelect.addEventListener("change", function() {
         const selectedId = Number(this.options[this.selectedIndex].getAttribute("id"));
         const selectedText = this.options[this.selectedIndex].text;
@@ -6030,9 +6032,11 @@ async function handleUpdateContactEmailInput() {
     const updateContactEmailLabelSelect = document.querySelector("#select-edit-contact-email");
     const updateContactEmailLabelSelectInputSelectedIndex = updateContactEmailLabelSelect.selectedIndex;
     let emailAddressLabel = '';
+    let emailId;
 
     if (updateContactEmailLabelSelectInputSelectedIndex !== -1) {
         emailAddressLabel = updateContactEmailLabelSelect.options[updateContactEmailLabelSelectInputSelectedIndex].text;
+        emailId = updateContactEmailLabelSelect.options[updateContactEmailLabelSelectInputSelectedIndex].getAttribute("id")
     };
 
     const editContactEmailAddressElement = document.querySelector("#edit-contact-emailaddress");
@@ -6042,7 +6046,7 @@ async function handleUpdateContactEmailInput() {
      const editContactEmailObj = {
         userId: user_id,
         contactId: contact_id,
-        // emailId: maxId + 1,
+        emailid: emailId,
         emailaddresslabel: emailAddressLabel,
         emailaddress: editContactEmailAddressValue
     };
@@ -6175,9 +6179,11 @@ async function handleUpdateContactPhoneNumberInput() {
     const updateContactPhoneNumberLabelSelect = document.querySelector("#select-edit-contact-phonenumber");
     const updateContactPhoneNumberLabelSelectInputSelectedIndex = updateContactPhoneNumberLabelSelect.selectedIndex;
     let phoneNumberLabel = '';
+    let phoneNumberId;
 
     if (updateContactPhoneNumberLabelSelectInputSelectedIndex !== -1) {
         phoneNumberLabel = updateContactPhoneNumberLabelSelect.options[updateContactPhoneNumberLabelSelectInputSelectedIndex].text;
+        phoneNumberId = updateContactPhoneNumberLabelSelect.options[updateContactPhoneNumberLabelSelectInputSelectedIndex].getAttribute("id");
     };
 
     const editContactPhoneNumberElement = document.querySelector("#edit-contact-phonenumber");
@@ -6186,6 +6192,7 @@ async function handleUpdateContactPhoneNumberInput() {
      const editContactPhoneNumberObj = {
         userId: user_id,
         contactId: contact_id,
+        phonenumberid: phoneNumberId,
         phonenumberlabel: phoneNumberLabel,
         phonenumber: editContactPhoneNumberValue
     };
@@ -12159,12 +12166,13 @@ async function updateContactEmailAddress() {
 
     const userid = editContactEmailObj.userId;
     const contactid = editContactEmailObj.contactId;
+    const emailid = editContactEmailObj.emailid;
     const emailAddressLabel = editContactEmailObj.emailaddresslabel;
     const emailaddress = editContactEmailObj.emailaddress;
 
-    const body = { userid, contactid, emailAddressLabel, emailaddress };
+    const body = { userid, contactid, emailid, emailAddressLabel, emailaddress };
     try {
-        const response = await fetch(`/contactEmailAddresses/${userid}/${contactid}`, {
+        const response = await fetch(`/contactEmailAddresses/${userid}/${contactid}/${emailid}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
@@ -12266,6 +12274,7 @@ async function updateContactPhoneNumber() {
 
     const userid = editContactPhoneNumberObj.userId;
     const contactid = editContactPhoneNumberObj.contactId;
+    const phonenumberid = editContactPhoneNumberObj.phonenumberid;
     const phoneNumberLabel = editContactPhoneNumberObj.phonenumberlabel;
     const phonenumber = editContactPhoneNumberObj.phonenumber;
 
@@ -12274,9 +12283,9 @@ async function updateContactPhoneNumber() {
         return
     }
 
-    const body = { userid, contactid, phoneNumberLabel, phonenumber };
+    const body = { userid, contactid, phonenumberid, phoneNumberLabel, phonenumber };
     try {
-        const response = await fetch(`/contactPhoneNumbers/${userid}/${contactid}`, {
+        const response = await fetch(`/contactPhoneNumbers/${userid}/${contactid}/${phonenumberid}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
