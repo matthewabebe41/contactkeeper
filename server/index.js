@@ -376,11 +376,11 @@ app.put("/contactEmailAddresses/:userid/:contactid", async (req, res) => {
 });
 
 //delete a contact emailaddress
-app.delete("/contactEmailAddresses/:userid/:contactid", async (req, res) => {
+app.delete("/contactEmailAddresses/:userid/:contactid/:emailid", async (req, res) => {
     try {
-       const { userid, contactid } = req.params;
+       const { userid, contactid, emailid } = req.params;
        const {emailAddressLabel, emailaddress} = req.body;
-       const deleteContactEmailAddress = await pool.query("DELETE FROM contactEmailAddresses WHERE userid = $1 AND contactid = $2 AND emailaddresslabel = $3 AND emailaddress = $4", [userid, contactid, emailAddressLabel, emailaddress])
+       const deleteContactEmailAddress = await pool.query("DELETE FROM contactEmailAddresses WHERE userid = $1 AND contactid = $2 AND emailid = $3 AND emailaddresslabel = $4 AND emailaddress = $5", [userid, contactid, emailid, emailAddressLabel, emailaddress])
        res.json(deleteContactEmailAddress.rows[0]);
     } catch (error) {
         console.error(error.message)
@@ -422,11 +422,11 @@ app.put("/contactPhoneNumbers/:userid/:contactid", async (req, res) => {
 });
 
 //delete a contact phonenumber
-app.delete("/contactPhoneNumbers/:userid/:contactid", async (req, res) => {
+app.delete("/contactPhoneNumbers/:userid/:contactid/:phonenumberid", async (req, res) => {
     try {
-       const { userid, contactid } = req.params;
+       const { userid, contactid, phonenumberid } = req.params;
        const {phoneNumberLabel, phonenumber} = req.body;
-       const deleteContactPhoneNumber = await pool.query("DELETE FROM contactPhoneNumbers WHERE userid = $1 AND contactid = $2 AND phonenumberlabel = $3 AND phonenumber = $4", [userid, contactid, phoneNumberLabel, phonenumber])
+       const deleteContactPhoneNumber = await pool.query("DELETE FROM contactPhoneNumbers WHERE userid = $1 AND contactid = $2 AND phonenumberid = $3 AND phonenumberlabel = $4 AND phonenumber = $5", [userid, contactid, phonenumberid, phoneNumberLabel, phonenumber])
        res.json(deleteContactPhoneNumber.rows[0]);
     } catch (error) {
         console.error(error.message)
@@ -468,11 +468,11 @@ app.put("/contactAddresses/:userid/:contactid", async (req, res) => {
 });
 
 //delete a contact address
-app.delete("/contactAddresses/:userid/:contactid", async (req, res) => {
+app.delete("/contactAddresses/:userid/:contactid/:addressid", async (req, res) => {
     try {
-       const { userid, contactid } = req.params;
+       const { userid, contactid, addressid } = req.params;
        const {addressLabel, address} = req.body;
-       const deleteContactAddress = await pool.query("DELETE FROM contactAddresses WHERE userid = $1 AND contactid = $2 AND addresslabel = $3 AND address = $4", [userid, contactid, addressLabel, address])
+       const deleteContactAddress = await pool.query("DELETE FROM contactAddresses WHERE userid = $1 AND contactid = $2 AND addressid = $3 AND addresslabel = $4 AND address = $5", [userid, contactid, addressid, addressLabel, address])
        res.json(deleteContactAddress.rows[0]);
     } catch (error) {
         console.error(error.message)

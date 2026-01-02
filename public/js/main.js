@@ -5009,7 +5009,8 @@ const allUsers = await getAllUsers();
     contactEmailAddresses.forEach(contactEmailAddressObj => {
         const emailLabelOptionsDataObj = {
             text: contactEmailAddressObj.emailaddresslabel,
-            value: contactEmailAddressObj.emailaddresslabel
+            value: contactEmailAddressObj.emailaddresslabel,
+            id: contactEmailAddressObj.emailid
         }
         editContactEmailLabelOptionsData.push(emailLabelOptionsDataObj)
     });
@@ -5020,6 +5021,7 @@ const allUsers = await getAllUsers();
         // editContactEmailLabelOptionsData[0].style.borderBottom = "1px solid gray"
         option.text = editContactEmailLabelOptionsData[i].text;
         option.value = editContactEmailLabelOptionsData[i].value;
+        option.setAttribute("id", editContactEmailLabelOptionsData[i].id)
 
         if (option.text === contactEmailAddresses.emailaddresslabel) {
             option.setAttribute("selected", true)
@@ -5120,7 +5122,8 @@ const allUsers = await getAllUsers();
     contactPhoneNumbers.forEach(contactPhoneNumberObj => {
         const emailLabelOptionsDataObj = {
             text: contactPhoneNumberObj.phonenumberlabel,
-            value: contactPhoneNumberObj.phonenumberlabel
+            value: contactPhoneNumberObj.phonenumberlabel,
+            id: contactPhoneNumberObj.phonenumberid
         }
         editContactPhoneNumberLabelOptionsData.push(emailLabelOptionsDataObj)
     });
@@ -5131,6 +5134,7 @@ const allUsers = await getAllUsers();
         // editContactEmailLabelOptionsData[0].style.borderBottom = "1px solid gray"
         option.text = editContactPhoneNumberLabelOptionsData[i].text;
         option.value = editContactPhoneNumberLabelOptionsData[i].value;
+        option.setAttribute("id", editContactPhoneNumberLabelOptionsData[i].id)
 
         if (option.text === contactPhoneNumbers.phonenumberlabel) {
             option.setAttribute("selected", true)
@@ -5228,7 +5232,8 @@ const allUsers = await getAllUsers();
     contactAddresses.forEach(contactAddressObj => {
         const addressLabelOptionsDataObj = {
             text: contactAddressObj.addresslabel,
-            value: contactAddressObj.addresslabel
+            value: contactAddressObj.addresslabel,
+            id: contactAddressObj.addressid
         }
         editContactAddressesLabelOptionsData.push(addressLabelOptionsDataObj)
     });
@@ -5239,6 +5244,7 @@ const allUsers = await getAllUsers();
         // editContactEmailLabelOptionsData[0].style.borderBottom = "1px solid gray"
         option.text = editContactAddressesLabelOptionsData[i].text;
         option.value = editContactAddressesLabelOptionsData[i].value;
+        option.setAttribute("id", editContactAddressesLabelOptionsData[i].id)
 
         if (option.text === contactAddresses.addresslabel) {
             option.setAttribute("selected", true)
@@ -5354,7 +5360,8 @@ const allUsers = await getAllUsers();
     contactWebsites.forEach(contactWebsiteObj => {
         const websiteLabelOptionsDataObj = {
             text: contactWebsiteObj.websitelabel,
-            value: contactWebsiteObj.websitelabel
+            value: contactWebsiteObj.websitelabel,
+            id: contactWebsiteObj.websiteid
         }
         editContactWebsitesLabelOptionsData.push(websiteLabelOptionsDataObj)
     });
@@ -5365,8 +5372,9 @@ const allUsers = await getAllUsers();
         // editContactEmailLabelOptionsData[0].style.borderBottom = "1px solid gray"
         option.text = editContactWebsitesLabelOptionsData[i].text;
         option.value = editContactWebsitesLabelOptionsData[i].value;
+        option.setAttribute("id", editContactWebsitesLabelOptionsData[i].id)
 
-        if (option.text === contactWebsites.websitelabel) {
+        if (option.getAttribute("id") === 1) {
             option.setAttribute("selected", true)
         };
 
@@ -5497,6 +5505,8 @@ const allUsers = await getAllUsers();
     let selectedEditContactEmailLabel = editContactEmailSelect.options[editContactEmailLabelSelectedIndex].text
     console.log(editContactEmailSelect.options[editContactEmailLabelSelectedIndex].text)
     const firstSelectedIndex = editContactEmailSelect.options[editContactEmailLabelSelectedIndex].text
+    // const firstSelectedIndexId = editContactEmailSelect.options[editContactEmailLabelSelectedIndex].getAttribute("id")
+    // console.log(firstSelectedIndexId)
     contactEmailAddresses.forEach(contactEmailAddressObj => {
             if (firstSelectedIndex === contactEmailAddressObj.emailaddresslabel) {
                 editContactEmailAddressElement.value = contactEmailAddressObj.emailaddress;
@@ -5509,13 +5519,16 @@ const allUsers = await getAllUsers();
         editContactEmailSelect.appendChild(option)
     }
     editContactEmailSelect.addEventListener("change", function() {
+        const selectedId = Number(this.options[this.selectedIndex].getAttribute("id"));
         const selectedText = this.options[this.selectedIndex].text;
+        // console.log(selectedId)
         console.log('Selected text:', selectedText);
         // if (editContactEmailLabelSelectedIndex !== -1) {
         //     console.log(editContactEmailLabelSelectedIndex)
         // }
         contactEmailAddresses.forEach(contactEmailAddressObj => {
-            if (selectedText === contactEmailAddressObj.emailaddresslabel) {
+            // console.log(contactEmailAddressObj.emailid)
+            if (selectedId === contactEmailAddressObj.emailid && selectedText === contactEmailAddressObj.emailaddresslabel) {
                 editContactEmailAddressElement.value = contactEmailAddressObj.emailaddress
             }
         });
@@ -5540,10 +5553,11 @@ const allUsers = await getAllUsers();
         editContactPhoneNumberSelect.appendChild(option)
     }
     editContactPhoneNumberSelect.addEventListener("change", function() {
+        const selectedId = Number(this.options[this.selectedIndex].getAttribute("id"));
         const selectedText = this.options[this.selectedIndex].text;
         // console.log('Selected text:', selectedText);
         contactPhoneNumbers.forEach(contactPhoneNumberObj => {
-            if (selectedText === contactPhoneNumberObj.phonenumberlabel) {
+            if (selectedId === contactPhoneNumberObj.phonenumberid && selectedText === contactPhoneNumberObj.phonenumberlabel) {
                 editContactPhoneNumberElement.value = contactPhoneNumberObj.phonenumber
                 formatPhoneNumberForData(editContactPhoneNumberElement)
             }
@@ -5569,13 +5583,14 @@ const allUsers = await getAllUsers();
         editContactAddressSelect.appendChild(option)
     }
     editContactAddressSelect.addEventListener("change", function() {
+        const selectedId = Number(this.options[this.selectedIndex].getAttribute("id"));
         const selectedText = this.options[this.selectedIndex].text;
         console.log('Selected text:', selectedText);
         // if (editContactEmailLabelSelectedIndex !== -1) {
         //     console.log(editContactEmailLabelSelectedIndex)
         // }
         contactAddresses.forEach(contactAddressObj => {
-            if (selectedText === contactAddressObj.addresslabel) {
+            if (selectedId === contactAddressObj.addressid && selectedText === contactAddressObj.addresslabel) {
                 editContactAddressElement.value = contactAddressObj.address
             }
         });
@@ -5586,9 +5601,11 @@ const allUsers = await getAllUsers();
     if (editContactWebsiteLabelSelectedIndex !== -1) {
     let selectedEditContactWebsiteLabel = editContactWebsiteSelect.options[editContactWebsiteLabelSelectedIndex].text
     console.log(editContactWebsiteSelect.options[editContactWebsiteLabelSelectedIndex].text)
+    const firstSelectedIndexId = Number(editContactWebsiteSelect.options[editContactWebsiteLabelSelectedIndex].getAttribute("id"))
     const firstSelectedIndex = editContactWebsiteSelect.options[editContactWebsiteLabelSelectedIndex].text
     contactWebsites.forEach(contactWebsiteObj => {
-            if (firstSelectedIndex === contactWebsiteObj.websitelabel) {
+        // console.log(contactWebsiteObj.websiteid)
+            if (firstSelectedIndexId === contactWebsiteObj.websiteid && firstSelectedIndex === contactWebsiteObj.websitelabel) {
                 editContactSocialMediaElement.value = contactWebsiteObj.website;
             }
         })
@@ -5599,13 +5616,15 @@ const allUsers = await getAllUsers();
         editContactWebsiteSelect.appendChild(option)
     }
     editContactWebsiteSelect.addEventListener("change", function() {
+        const selectedId = Number(this.options[this.selectedIndex].getAttribute("id"));
         const selectedText = this.options[this.selectedIndex].text;
         console.log('Selected text:', selectedText);
+        console.log(selectedId)
         // if (editContactEmailLabelSelectedIndex !== -1) {
         //     console.log(editContactEmailLabelSelectedIndex)
         // }
         contactWebsites.forEach(contactWebsiteObj => {
-            if (selectedText === contactWebsiteObj.websitelabel) {
+            if (selectedId === contactWebsiteObj.websiteid && selectedText === contactWebsiteObj.websitelabel) {
                 editContactSocialMediaElement.value = contactWebsiteObj.website
             }
         });
@@ -6051,9 +6070,11 @@ async function handleDeleteContactEmail() {
     const updateContactEmailLabelSelect = document.querySelector("#select-edit-contact-email");
     const updateContactEmailLabelSelectInputSelectedIndex = updateContactEmailLabelSelect.selectedIndex;
     let emailAddressLabel = '';
+    let emailAddressId;
 
     if (updateContactEmailLabelSelectInputSelectedIndex !== -1) {
         emailAddressLabel = updateContactEmailLabelSelect.options[updateContactEmailLabelSelectInputSelectedIndex].text;
+        emailAddressId = updateContactEmailLabelSelect.options[updateContactEmailLabelSelectInputSelectedIndex].getAttribute("id")
     };
 
     const editContactEmailAddressElement = document.querySelector("#edit-contact-emailaddress");
@@ -6062,6 +6083,7 @@ async function handleDeleteContactEmail() {
       const deleteContactEmailObj = {
         userId: user_id,
         contactId: contact_id,
+        emailAddressId: emailAddressId,
         emailaddresslabel: emailAddressLabel,
         emailaddress: editContactEmailAddressValue
     };
@@ -6191,9 +6213,11 @@ async function handleDeleteContactPhoneNumber() {
     const updateContactPhoneNumberLabelSelect = document.querySelector("#select-edit-contact-phonenumber");
     const updateContactPhoneNumberLabelSelectInputSelectedIndex = updateContactPhoneNumberLabelSelect.selectedIndex;
     let phoneNumberLabel = '';
+    let phoneNumberId;
 
     if (updateContactPhoneNumberLabelSelectInputSelectedIndex !== -1) {
         phoneNumberLabel = updateContactPhoneNumberLabelSelect.options[updateContactPhoneNumberLabelSelectInputSelectedIndex].text;
+        phoneNumberId = updateContactPhoneNumberLabelSelect.options[updateContactPhoneNumberLabelSelectInputSelectedIndex].getAttribute("id")
     };
 
     const editContactPhoneNumberElement = document.querySelector("#edit-contact-phonenumber");
@@ -6202,6 +6226,7 @@ async function handleDeleteContactPhoneNumber() {
       const deleteContactPhoneNumberObj = {
         userId: user_id,
         contactId: contact_id,
+        phoneNumberId: phoneNumberId,
         phonenumberlabel: phoneNumberLabel,
         phonenumber: editContactPhoneNumberValue
     };
@@ -6245,7 +6270,7 @@ async function handleAddNewContactAddressInput(event) {
 
     let contactAddressIdsArr = []
     for (let i = 0; i < contactAddresses.length; i++) {
-        contactAddressIdsArr.push(contactAddresses[i].emailid)
+        contactAddressIdsArr.push(contactAddresses[i].addressid)
     };
 
     let maxId = -Infinity;
@@ -6326,9 +6351,11 @@ async function handleDeleteContactAddress() {
     const updateContactAddressLabelSelect = document.querySelector("#select-edit-contact-address");
     const updateContactAddressLabelSelectInputSelectedIndex = updateContactAddressLabelSelect.selectedIndex;
     let addressLabel = '';
+    let addressId;
 
     if (updateContactAddressLabelSelectInputSelectedIndex !== -1) {
         addressLabel = updateContactAddressLabelSelect.options[updateContactAddressLabelSelectInputSelectedIndex].text;
+        addressId = updateContactAddressLabelSelect.options[updateContactAddressLabelSelectInputSelectedIndex].getAttribute("id");
     };
 
     const editContactAddressElement = document.querySelector("#edit-contact-address");
@@ -6337,6 +6364,7 @@ async function handleDeleteContactAddress() {
       const deleteContactAddressObj = {
         userId: user_id,
         contactId: contact_id,
+        addressId: addressId,
         addresslabel: addressLabel,
         address: editContactAddressValue
     };
@@ -6380,7 +6408,7 @@ async function handleAddNewContactWebsiteInput(event) {
 
     let contactWebsitesIdsArr = []
     for (let i = 0; i < contactWebsites.length; i++) {
-        contactWebsitesIdsArr.push(contactWebsites[i].websiteId)
+        contactWebsitesIdsArr.push(contactWebsites[i].websiteid)
     };
 
     let maxId = -Infinity;
@@ -6461,6 +6489,7 @@ async function handleDeleteContactWebsite() {
     const updateContactWebsiteLabelSelect = document.querySelector("#select-edit-contact-website");
     const updateContactWebsiteLabelSelectInputSelectedIndex = updateContactWebsiteLabelSelect.selectedIndex;
     let websiteLabel = '';
+    // let websiteId;
 
     if (updateContactWebsiteLabelSelectInputSelectedIndex !== -1) {
         websiteLabel = updateContactWebsiteLabelSelect.options[updateContactWebsiteLabelSelectInputSelectedIndex].text;
@@ -12151,12 +12180,13 @@ async function deleteContactEmailAddress() {
 
     const userid = deleteContactEmailObj.userId;
     const contactid = deleteContactEmailObj.contactId;
+    const emailId = deleteContactEmailObj.emailAddressId;
     const emailAddressLabel = deleteContactEmailObj.emailaddresslabel;
     const emailaddress = deleteContactEmailObj.emailaddress;
 
-    const body = { userid, contactid, emailAddressLabel, emailaddress };
+    const body = { userid, contactid, emailId, emailAddressLabel, emailaddress };
     try {
-        const response = await fetch(`/contactEmailAddresses/${userid}/${contactid}`, {
+        const response = await fetch(`/contactEmailAddresses/${userid}/${contactid}/${emailId}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
@@ -12176,23 +12206,12 @@ async function postAddNewContactEmailAddress() {
     const emailAddressLabel = newContactEmailObj.emailaddresslabel;
     const emailaddress = newContactEmailObj.emailaddress;
 
-    const contactEmailAddresses = await getAContactEmailAddress(user_id, contact_id);
-    // contactEmailAddresses.forEach(contactEmailObj => {
-    
-    // for (let i = 0; i < contactEmailAddresses.length; i++) {
+    const contactEmailAddresses = await getAContactEmailAddress(user_id, contact_id)
 
-    //     if (contactEmailAddresses[i].emailaddresslabel === newContactEmailObj.emailaddresslabel) {
-    //         alert("Cannot create a duplicate email address label");
-    //         return
-    //     }
-    
-    //     if (contactEmailAddresses[i].emailaddress === newContactEmailObj.emailaddress) {
-    //         alert("Cannot create a duplicate email address");
-    //         return
-    //     } 
-    // }
-
-    console.log(email_id)
+    if (contactEmailAddresses.length === 6) {
+        alert("Contact's cannot have more than six emails listed.");
+        return
+    }
 
     const body = { user_id, contact_id, email_id, emailAddressLabel, emailaddress };
     try {
@@ -12220,19 +12239,10 @@ async function postAddNewContactPhoneNumber() {
     const phonenumber = newContactPhoneNumberObj.phonenumber;
 
     const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
-    // contactEmailAddresses.forEach(contactEmailObj => {
-    
-    for (let i = 0; i < contactPhoneNumbers.length; i++) {
 
-        if (contactPhoneNumbers[i].phonenumber === newContactPhoneNumberObj.phonenumber) {
-            alert("Cannot create a duplicate email address label");
-            return
-        }
-    
-        if (contactPhoneNumbers[i].phonenumber === newContactPhoneNumberObj.phonenumber) {
-            alert("Cannot create a duplicate email address");
-            return
-        } 
+    if (contactPhoneNumbers.length === 6) {
+        alert("Contacts cannot have more than six phone numbers listed.");
+        return
     }
 
     const body = { user_id, contact_id, phonenumber_id, phoneNumberLabel, phonenumber };
@@ -12287,12 +12297,13 @@ async function deleteContactPhoneNumber() {
 
     const userid = deleteContactPhoneNumberObj.userId;
     const contactid = deleteContactPhoneNumberObj.contactId;
+    const phonenumberid = deleteContactPhoneNumberObj.phoneNumberId;
     const phoneNumberLabel = deleteContactPhoneNumberObj.phonenumberlabel;
     const phonenumber = deleteContactPhoneNumberObj.phonenumber;
 
-    const body = { userid, contactid, phoneNumberLabel, phonenumber };
+    const body = { userid, contactid, phonenumberid, phoneNumberLabel, phonenumber };
     try {
-        const response = await fetch(`/contactPhoneNumbers/${userid}/${contactid}`, {
+        const response = await fetch(`/contactPhoneNumbers/${userid}/${contactid}/${phonenumberid}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
@@ -12313,22 +12324,11 @@ async function postAddNewContactAddress() {
     const address = newContactAddressObj.address;
 
     const contactAddresses = await getAContactAddress(user_id, contact_id);
-    // contactEmailAddresses.forEach(contactEmailObj => {
-    
-    for (let i = 0; i < contactAddresses.length; i++) {
 
-        if (contactAddresses[i].addresslabel === newContactAddressObj.addresslabel) {
-            alert("Cannot create a duplicate address label");
-            return
-        }
-    
-        if (contactAddresses[i].address === newContactAddressObj.address) {
-            alert("Cannot create a duplicate address");
-            return
-        } 
+    if (contactAddresses.length === 6) {
+        alert("Contact cannot have more than six addresses listed");
+        return
     }
-
-    console.log(address_id)
 
     const body = { user_id, contact_id, address_id, addressLabel, address };
     try {
@@ -12372,12 +12372,13 @@ async function deleteContactAddress() {
 
     const userid = deleteContactAddressObj.userId;
     const contactid = deleteContactAddressObj.contactId;
+    const addressid = deleteContactAddressObj.addressId;
     const addressLabel = deleteContactAddressObj.addresslabel;
     const address = deleteContactAddressObj.address;
 
-    const body = { userid, contactid, addressLabel, address };
+    const body = { userid, contactid, addressid, addressLabel, address };
     try {
-        const response = await fetch(`/contactAddresses/${userid}/${contactid}`, {
+        const response = await fetch(`/contactAddresses/${userid}/${contactid}/${addressid}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
@@ -12424,22 +12425,11 @@ async function postAddNewContactWebsite() {
     const website = newContactWebsiteObj.website;
 
     const contactWebsites = await getAContactWebsite(user_id, contact_id);
-    // contactEmailAddresses.forEach(contactEmailObj => {
-    
-    for (let i = 0; i < contactWebsites.length; i++) {
 
-        if (contactWebsites[i].websitelabel === newContactWebsiteObj.websitelabel) {
-            alert("Cannot create a duplicate website label");
-            return
-        }
-    
-        if (contactWebsites[i].website === newContactWebsiteObj.website) {
-            alert("Cannot create a duplicate website address");
-            return
-        } 
+    if (contactWebsites.length === 6) {
+        alert("Contact cannot have more than six websites listed.");
+        return
     }
-
-    console.log(website_id)
 
     const body = { user_id, contact_id, website_id, websiteLabel, website };
     try {
