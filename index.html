@@ -934,12 +934,39 @@
                                 <div style="display: flex; align-items: flex-end; width: 70px;">
                                     <label style="font-weight: bold;">Email</label>
                                 </div>
-                                <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                                <div style="display: flex; width: 35%; margin-bottom: 2px; margin-left: 12px;">
                                     <select id="select-edit-contact-email" style="width: 100px; height: 19px;"></select>
                                     <!-- <button id="create-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: #00d92f;">New</button>
                                     <button id="update-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: lightblue;">Edit</button>
                                     <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
+                                    <img id="edit-email-label-icon" src="./images/edit-svgrepo-com.svg" style="width: 20px;">
                                 </div>
+                            <div id="edit-contact-email-label-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                                <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                    <img id="close-edit-contact-email-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px;">
+                                </div>
+                                <div style="display: flex; justify-content: center; width: 100%;">
+                                    <h4 style="margin: 12px;">Edit Email Label</h4>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: space-around; height: 72%; padding: 10px;">
+                                    <div style="display: flex; flex-direction: column;">
+                                        <label style="font-weight: bold;">Current Value</label>
+                                        <input id="edit-contact-email-label-current-value" style="width: 25%; box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Select a label</label>
+                                    <div>
+                                        <select id="edit-contact-email-label-select" autocomplete="off" style="display: none; width: 25%; border: 1px solid rgba(118, 118, 118);"></select>
+                                        <input id="edit-contact-email-label-input" placeholder="Choose" style="width: 25%; border: 1px solid rgba(118, 118, 118); box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Enter custom label</label>
+                                    <input id="edit-contact-email-label-second-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <!-- <label style="font-weight: bold;">Enter email address</label> -->
+                                    <!-- <input id="create-new-contact-email-input" style="border: 1px solid rgba(118, 118, 118);"> -->
+                                    <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 5px;">
+                                        <button id="edit-contact-email-label-button">Done</button>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
                             <div id="create-new-contact-email-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
                                 <div style="display: flex; width: 100%; justify-content: flex-end;">
@@ -981,12 +1008,39 @@
                                 <div style="display: flex; align-items: flex-end; width: 70px;">
                                     <label style="font-weight: bold;">Phone</label>
                                 </div>
-                                <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                                <div style="display: flex; width: 35%; margin-bottom: 2px; margin-left: 12px;">
                                     <select id="select-edit-contact-phonenumber" style="width: 100px; height: 19px;"></select>
                                     <!-- <button id="create-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: #00d92f;">New</button>
                                     <button id="update-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: lightblue;">Edit</button>
                                     <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
+                                    <img id="edit-phonenumber-label-icon" src="./images/edit-svgrepo-com.svg" style="width: 20px;">
                                 </div>
+                               <div id="edit-contact-phonenumber-label-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                                <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                    <img id="close-edit-contact-phonenumber-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px;">
+                                </div>
+                                <div style="display: flex; justify-content: center; width: 100%;">
+                                    <h4 style="margin: 12px;">Edit phonenumber Label</h4>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: space-around; height: 72%; padding: 10px;">
+                                    <div style="display: flex; flex-direction: column;">
+                                        <label style="font-weight: bold;">Current Value</label>
+                                        <input id="edit-contact-phonenumber-label-current-value" style="width: 25%; box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Select a label</label>
+                                    <div>
+                                        <select id="edit-contact-phonenumber-label-select" autocomplete="off" style="display: none; width: 25%; border: 1px solid rgba(118, 118, 118);"></select>
+                                        <input id="edit-contact-phonenumber-label-input" placeholder="Choose" style="width: 25%; border: 1px solid rgba(118, 118, 118); box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Enter custom label</label>
+                                    <input id="edit-contact-phonenumber-label-second-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <!-- <label style="font-weight: bold;">Enter phonenumber address</label> -->
+                                    <!-- <input id="create-new-contact-phonenumber-input" style="border: 1px solid rgba(118, 118, 118);"> -->
+                                    <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 5px;">
+                                        <button id="edit-contact-phonenumber-label-button">Done</button>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
                              <div id="create-new-contact-phonenumber-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
                                  <div style="display: flex; width: 100%; justify-content: flex-end;">
@@ -1028,12 +1082,65 @@
                                 <div style="display: flex; align-items: flex-end; width: 70px;">
                                     <label style="font-weight: bold;">Address</label>
                                 </div>
-                                <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                                <div style="display: flex; width: 35%; margin-bottom: 2px; margin-left: 12px;">
                                     <select id="select-edit-contact-address" style="width: 100px; height: 19px;"></select>
                                     <!-- <button id="create-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: #00d92f;">New</button>
                                     <button id="update-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: lightblue;">Edit</button>
                                     <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
+                                    <img id="edit-address-label-icon" src="./images/edit-svgrepo-com.svg" style="width: 20px;">
                                 </div>
+                                <div id="edit-contact-website-label-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                                <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                    <img id="close-edit-contact-website-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px;">
+                                </div>
+                                <div style="display: flex; justify-content: center; width: 100%;">
+                                    <h4 style="margin: 12px;">Edit Webiste Label</h4>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: space-around; height: 72%; padding: 10px;">
+                                    <div style="display: flex; flex-direction: column;">
+                                        <label style="font-weight: bold;">Current Value</label>
+                                        <input id="edit-contact-website-label-current-value" style="width: 25%; box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Select a label</label>
+                                    <div>
+                                        <select id="edit-contact-website-label-select" autocomplete="off" style="display: none; width: 25%; border: 1px solid rgba(118, 118, 118);"></select>
+                                        <input id="edit-contact-website-label-input" placeholder="Choose" style="width: 25%; border: 1px solid rgba(118, 118, 118); box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Enter custom label</label>
+                                    <input id="edit-contact-website-label-second-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <!-- <label style="font-weight: bold;">Enter website address</label> -->
+                                    <!-- <input id="create-new-contact-website-input" style="border: 1px solid rgba(118, 118, 118);"> -->
+                                    <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 5px;">
+                                        <button id="edit-contact-website-label-button">Done</button>
+                                    </div>
+                                </div>
+                            </div>
+                                <div id="edit-contact-address-label-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                                <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                    <img id="close-edit-contact-address-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px;">
+                                </div>
+                                <div style="display: flex; justify-content: center; width: 100%;">
+                                    <h4 style="margin: 12px;">Edit Address Label</h4>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: space-around; height: 72%; padding: 10px;">
+                                    <div style="display: flex; flex-direction: column;">
+                                        <label style="font-weight: bold;">Current Value</label>
+                                        <input id="edit-contact-address-label-current-value" style="width: 25%; box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Select a label</label>
+                                    <div>
+                                        <select id="edit-contact-address-label-select" autocomplete="off" style="display: none; width: 25%; border: 1px solid rgba(118, 118, 118);"></select>
+                                        <input id="edit-contact-address-label-input" placeholder="Choose" style="width: 25%; border: 1px solid rgba(118, 118, 118); box-sizing: border-box;">
+                                    </div>
+                                    <label style="font-weight: bold;">Enter custom label</label>
+                                    <input id="edit-contact-address-label-second-input" style="border: 1px solid rgba(118, 118, 118);">
+                                    <!-- <label style="font-weight: bold;">Enter address address</label> -->
+                                    <!-- <input id="create-new-contact-address-input" style="border: 1px solid rgba(118, 118, 118);"> -->
+                                    <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 5px;">
+                                        <button id="edit-contact-address-label-button">Done</button>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
                               <div id="create-new-contact-address-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
                                 <div style="display: flex; width: 100%; justify-content: flex-end;">
@@ -1091,11 +1198,12 @@
                                 <div style="display: flex; align-items: flex-end; width: 70px;">
                                     <label style="font-weight: bold;">Website</label>
                                 </div>
-                                 <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                                 <div style="display: flex; width: 35%; margin-bottom: 2px; margin-left: 12px;">
                                     <select id="select-edit-contact-website" style="width: 100px; height: 19px;"></select>
                                     <!-- <button id="create-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: #00d92f;">New</button>
                                     <button id="update-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: lightblue;">Edit</button>
                                     <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
+                                    <img id="edit-website-label-icon" src="./images/edit-svgrepo-com.svg" style="width: 20px;">
                                 </div>
                             </div>
                                <div id="create-new-contact-website-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey;  top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">

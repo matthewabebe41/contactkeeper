@@ -363,12 +363,12 @@ app.post("/contactEmailAddresses", async (req, res) => {
     }
 });
 
-//edit a contact emailaddress
+//edit a contact email address
 app.put("/contactEmailAddresses/:userid/:contactid/:emailid", async (req, res) => {
     try {
        const { userid, contactid, emailid } = req.params;
        const {emailAddressLabel, emailaddress} = req.body;
-       const editContactEmailAddress = await pool.query("UPDATE contactEmailAddresses SET emailaddress = $1 WHERE userid = $2 AND contactid = $3 AND emailid = $4 AND emailAddressLabel = $5", [emailaddress, userid, contactid, emailid, emailAddressLabel])
+       const editContactEmailAddress = await pool.query("UPDATE contactEmailAddresses SET emailaddress = $1, emailaddresslabel = $2 WHERE userid = $3 AND contactid = $4 AND emailid = $5", [emailaddress, emailAddressLabel, userid, contactid, emailid])
        res.json(editContactEmailAddress.rows[0]);
     } catch (error) {
         console.error(error.message)
@@ -414,7 +414,19 @@ app.put("/contactPhoneNumbers/:userid/:contactid/:phonenumberid", async (req, re
     try {
        const { userid, contactid, phonenumberid } = req.params;
        const {phoneNumberLabel, phonenumber} = req.body;
-       const editContactPhoneNumber = await pool.query("UPDATE contactPhoneNumbers SET phonenumber = $1 WHERE userid = $2 AND contactid = $3 AND phonenumberid = $4 AND phonenumberlabel = $5", [phonenumber, userid, contactid, phonenumberid, phoneNumberLabel])
+       const editContactPhoneNumber = await pool.query("UPDATE contactPhoneNumbers SET phonenumber = $1, phonenumberlabel = $2 WHERE userid = $3 AND contactid = $4 AND phonenumberid = $5", [phonenumber, phoneNumberLabel, userid, contactid, phonenumberid])
+       res.json(editContactPhoneNumber.rows[0]);
+    } catch (error) {
+        console.error(error.message)
+    }
+});
+
+//edit a contact phonenumber label
+app.put("/contactPhoneNumbers/:userid/:contactid/:phonenumberid", async (req, res) => {
+    try {
+       const { userid, contactid, phonenumberid } = req.params;
+       const {phoneNumberLabel, phonenumber} = req.body;
+       const editContactPhoneNumber = await pool.query("UPDATE contactPhoneNumbers SET phonenumberlabel = $1 WHERE userid = $2 AND contactid = $3 AND phonenumberid = $4 AND phonenumber = $5", [phoneNumberLabel, userid, contactid, phonenumberid, phonenumber])
        res.json(editContactPhoneNumber.rows[0]);
     } catch (error) {
         console.error(error.message)
@@ -437,7 +449,7 @@ app.delete("/contactPhoneNumbers/:userid/:contactid/:phonenumberid", async (req,
 app.get("/contactAddresses/:user_id/:contact_id", async (req, res) => {
     try {
         const { user_id, contact_id  } = req.params;
-        const contactAddress = await pool.query("SELECT * FROM contactAddresses WHERE userid = $1 AND contactid = $2", [user_id, contact_id]);
+        const contactAddress = await pool.query("SELECT * FROM contactAddresses WHERE userid = $1 AND contactid = $2 ORDER BY addressid", [user_id, contact_id]);
         res.json(contactAddress.rows);
     } catch (err) {
         console.error(err.message);
@@ -456,11 +468,11 @@ app.post("/contactAddresses", async (req, res) => {
 });
 
 //edit a contact address
-app.put("/contactAddresses/:userid/:contactid", async (req, res) => {
+app.put("/contactAddresses/:userid/:contactid/:addressid", async (req, res) => {
     try {
-       const { userid, contactid } = req.params;
+       const { userid, contactid, addressid } = req.params;
        const {addressLabel, address} = req.body;
-       const editContactAddress = await pool.query("UPDATE contactAddresses SET address = $1 WHERE userid = $2 AND contactid = $3 AND addressLabel = $4", [address, userid, contactid, addressLabel])
+       const editContactAddress = await pool.query("UPDATE contactAddresses SET address = $1, addresslabel = $2 WHERE userid = $3 AND contactid = $4 AND addressid = $5", [address, addressLabel, userid, contactid, addressid])
        res.json(editContactAddress.rows[0]);
     } catch (error) {
         console.error(error.message)
@@ -479,11 +491,11 @@ app.delete("/contactAddresses/:userid/:contactid/:addressid", async (req, res) =
     }
 });
 
-//get a contact website
+//get a contact's websites
 app.get("/contactWebsites/:user_id/:contact_id", async (req, res) => {
     try {
         const { user_id, contact_id  } = req.params;
-        const contactWebsite = await pool.query("SELECT * FROM contactWebsites WHERE userid = $1 AND contactid = $2", [user_id, contact_id]);
+        const contactWebsite = await pool.query("SELECT * FROM contactWebsites WHERE userid = $1 AND contactid = $2 ORDER BY websiteid", [user_id, contact_id]);
         res.json(contactWebsite.rows);
     } catch (err) {
         console.error(err.message);
@@ -501,12 +513,12 @@ app.post("/contactWebsites", async (req, res) => {
     }
 });
 
-//edit a contact website
-app.put("/contactWebsites/:userid/:contactid", async (req, res) => {
+//edit a contact's website
+app.put("/contactWebsites/:userid/:contactid/:websiteid", async (req, res) => {
     try {
-       const { userid, contactid } = req.params;
+       const { userid, contactid, websiteid } = req.params;
        const {websiteLabel, website} = req.body;
-       const editContactWebsite = await pool.query("UPDATE contactWebsites SET website = $1 WHERE userid = $2 AND contactid = $3 AND websitelabel = $4", [website, userid, contactid, websiteLabel])
+       const editContactWebsite = await pool.query("UPDATE contactWebsites SET website = $1, websitelabel = $2 WHERE userid = $3 AND contactid = $4 AND websiteid = $5", [website, websiteLabel, userid, contactid, websiteid])
        res.json(editContactWebsite.rows[0]);
     } catch (error) {
         console.error(error.message)
@@ -514,11 +526,11 @@ app.put("/contactWebsites/:userid/:contactid", async (req, res) => {
 });
 
 //delete a contact website
-app.delete("/contactWebsites/:userid/:contactid", async (req, res) => {
+app.delete("/contactWebsites/:userid/:contactid/:websiteid", async (req, res) => {
     try {
-       const { userid, contactid } = req.params;
+       const { userid, contactid, websiteid } = req.params;
        const {websiteLabel, website} = req.body;
-       const deleteContactWebsite = await pool.query("DELETE FROM contactWebsites WHERE userid = $1 AND contactid = $2 AND websitelabel = $3 AND website = $4", [userid, contactid, websiteLabel, website])
+       const deleteContactWebsite = await pool.query("DELETE FROM contactWebsites WHERE userid = $1 AND contactid = $2 AND websitelabel = $3 AND website = $4 AND websiteid = $5", [userid, contactid, websiteLabel, website, websiteid])
        res.json(deleteContactWebsite.rows[0]);
     } catch (error) {
         console.error(error.message)
