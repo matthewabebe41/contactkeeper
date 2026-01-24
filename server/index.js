@@ -305,10 +305,11 @@ app.get("/contact_images/:user_id/:contact_id", async (req, res) => {
         const { user_id, contact_id } = req.params;
         const result = await pool.query('SELECT * FROM contact_images WHERE user_id = $1 AND contact_id = $2', [user_id, contact_id]);
     if (result.rows.length > 0) {
+                const imageName = result.rows[0].name
                 const imageData = result.rows[0].data; // bytea data as Buffer
                 const contentType = result.rows[0].mime_type; // e.g., 'image/jpeg'
                 const base64Image = imageData.toString('base64');
-                res.json({ image: base64Image, contentType: contentType });
+                res.json({name: imageName, image: base64Image, contentType: contentType });
             } else {
                 res.status(404).send('Image not found');
             }

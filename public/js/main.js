@@ -4840,6 +4840,7 @@ const allUsers = await getAllUsers();
 
     
     const editContactImage = document.querySelector("#edit-contact-image");
+    const editContactAddPhotoInputElement = document.querySelector("#edit-contact-add-photo")
     const contactImage = await getAContactImage(user_id, contact_id)
     const imageString = `data:${contactImage.contentType};base64,${contactImage.image}`
     editContactImage.setAttribute("src", imageString);
@@ -4849,77 +4850,87 @@ const allUsers = await getAllUsers();
 
     const editContactRemovePhotoButton = document.querySelector("#edit-contact-remove-photo-button");
     editContactRemovePhotoButton.addEventListener("click", function() {
-        const editContactAddPhotoInputElement = document.querySelector("#edit-contact-add-photo")
+        // const editContactAddPhotoInputElement = document.querySelector("#edit-contact-add-photo")
           
-        let editContactImageSrcStr = editContactImage.getAttribute("src").toString();
-        let startIndex = editContactImageSrcStr.indexOf('d');
-        let endIndex = editContactImageSrcStr.indexOf(',');
+        // let editContactImageSrcStr = editContactImage.getAttribute("src").toString();
+        // let startIndex = editContactImageSrcStr.indexOf('d');
+        // let endIndex = editContactImageSrcStr.indexOf(',');
 
-        if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-            let part1 = editContactImageSrcStr.slice(0, startIndex);
-            let part2 = editContactImageSrcStr.slice(endIndex + 1);
-            editContactImageSrcStr = part1 + part2;
-        };
+        // if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+        //     let part1 = editContactImageSrcStr.slice(0, startIndex);
+        //     let part2 = editContactImageSrcStr.slice(endIndex + 1);
+        //     editContactImageSrcStr = part1 + part2;
+        // };
 
-        const decodedEditContactImage = atob(editContactImageSrcStr);
+        // const decodedEditContactImage = atob(editContactImageSrcStr);
 
-        const checkEditContactImageElement = document.querySelector("#check-edit-contact-image");
-        const checkEditContactImageUrl = checkEditContactImageElement.getAttribute("src");
+        // const checkEditContactImageElement = document.querySelector("#check-edit-contact-image");
+        // const checkEditContactImageUrl = checkEditContactImageElement.getAttribute("src");
 
-        fetch(checkEditContactImageUrl)
-        .then(response => response.blob()) // Get the image as a Blob
-        .then(blob => {
-            // Now 'blob' contains the image data as a Blob object
-            // You can then create a File object from the blob if necessary:
-            const filename = checkEditContactImageUrl.substring(checkEditContactImageUrl.lastIndexOf('/') + 1); // Extract filename from URL
-            const imageFile = new File([blob], filename, { type: blob.type });
+        // fetch(checkEditContactImageUrl)
+        // .then(response => response.blob()) // Get the image as a Blob
+        // .then(blob => {
+        //     // Now 'blob' contains the image data as a Blob object
+        //     // You can then create a File object from the blob if necessary:
+        //     const filename = checkEditContactImageUrl.substring(checkEditContactImageUrl.lastIndexOf('/') + 1); // Extract filename from URL
+        //     const imageFile = new File([blob], filename, { type: blob.type });
 
-            // console.log(imageFile); // This is your image file object
+        //     // console.log(imageFile); // This is your image file object
 
-            let reader = new FileReader()
+        //     let reader = new FileReader()
 
-            reader.onload = function () {
-                base64string = reader.result.split(',')[1]
-                // imageFile = reader.result;
-                // console.log(base64string)
-                // newUserImageInputElement.setAttribute("src", base64string);
-                // newUserImageElement.style.borderRadius = "50%"
+        //     reader.onload = function () {
+        //         base64string = reader.result.split(',')[1]
+        //         // imageFile = reader.result;
+        //         // console.log(base64string)
+        //         // newUserImageInputElement.setAttribute("src", base64string);
+        //         // newUserImageElement.style.borderRadius = "50%"
 
-                const decodedDefaultContactImage = atob(base64string)
+        //         const decodedDefaultContactImage = atob(base64string)
 
-                // console.log(decodedEditUserImage)
+        //         // console.log(decodedEditUserImage)
 
-                if (decodedDefaultContactImage !== decodedEditContactImage) {
-                      editContactAddPhotoButton.innerHTML = "Save Photo"
-                }
+        //         if (decodedDefaultContactImage !== decodedEditContactImage) {
+        //               editContactAddPhotoButton.innerHTML = "Save Photo"
+        //         }
 
-            };
+        //     };
 
-            if (imageFile !== undefined) {
-                reader.readAsDataURL(imageFile)
-            }; 
-        })
-        .catch(error => console.error('Error fetching image:', error));
+        //     if (imageFile !== undefined) {
+        //         reader.readAsDataURL(imageFile)
+        //     }; 
+        // })
+        // .catch(error => console.error('Error fetching image:', error));
 
-        // console.log(imageString)
+        // // console.log(imageString)
 
-        if (editContactImage.getAttribute("src") !== imageString && editContactAddPhotoInputElement.value !== "") {
-            editContactAddPhotoInputElement.value = "";
-            editContactImage.setAttribute("src", imageString)
-        } else if (editContactImage.getAttribute("src") === imageString && editContactAddPhotoInputElement.value === "") {
-            editContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg")
-        } else if (editContactImage.getAttribute("src") !== imageString && editContactAddPhotoInputElement.value === "") {
-            editContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg")
-        } else if (editContactImage.getAttribute("src") === imageString && editContactAddPhotoInputElement.value !== "") {
-            editContactAddPhotoInputElement.value = "";
-            editContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg")
-        } else if (editContactImage.getAttribute("src") !== imageString && editContactAddPhotoInputElement.value !== "") {
-            editContactAddPhotoInputElement.value = "";
-            editContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg")
-        } else if (editContactImage.getAttribute("src") !== "./images/user-2-svgrepo-com.svg" && editContactAddPhotoInputElement.value === "") {
-            editContactImage.setAttribute("src", imageString);
-            editContactAddPhotoButton.innerHTML = "Change Photo"
-        }  
+        // if (editContactImage.getAttribute("src") !== imageString && editContactAddPhotoInputElement.value !== "") {
+        //     editContactAddPhotoInputElement.value = "";
+        //     editContactImage.setAttribute("src", imageString)
+        // } else if (editContactImage.getAttribute("src") === imageString && editContactAddPhotoInputElement.value === "") {
+        //     editContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg")
+        // } else if (editContactImage.getAttribute("src") !== imageString && editContactAddPhotoInputElement.value === "") {
+        //     editContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg")
+        // } else if (editContactImage.getAttribute("src") === imageString && editContactAddPhotoInputElement.value !== "") {
+        //     editContactAddPhotoInputElement.value = "";
+        //     editContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg")
+        // } else if (editContactImage.getAttribute("src") !== imageString && editContactAddPhotoInputElement.value !== "") {
+        //     editContactAddPhotoInputElement.value = "";
+        //     editContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg")
+        // } else if (editContactImage.getAttribute("src") !== "./images/user-2-svgrepo-com.svg" && editContactAddPhotoInputElement.value === "") {
+        //     editContactImage.setAttribute("src", imageString);
+        //     editContactAddPhotoButton.innerHTML = "Change Photo"
+        // }  
+        console.log(contactImage.name);
+        const contactImageName = contactImage.name;
+        editContactAddPhotoInputElement.value = "";
+        if (contactImageName !== "user-2-svgrepo-com.svg" || imageString !== editContactImage.getAttribute("src")) {
+            editContactAddPhotoButton.innerHTML = "Save Photo"
+            editContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg");
+        }
+        if (contactImageName === "user-2-svgrepo-com.svg") {
+            editContactAddPhotoButton.innerHTML = "Change Photo";
+        }
     });
 
     if (contactImage !== null && contactImage !== undefined) {
@@ -4958,10 +4969,12 @@ const allUsers = await getAllUsers();
         // editContactAddPhotoInputContainerElement.style.display = "none";
         const editContactAddPhotoInputElement = document.querySelector("#edit-contact-add-photo");
         console.log(editContactAddPhotoInputElement.files[0])
+        const editContactImageElementCurrentImage = editContactImage.getAttribute("src")
 
-        if (editContactAddPhotoInputElement.files[0] !== undefined) {
+        if (editContactImage.getAttribute("src") === "./images/user-2-svgrepo-com.svg" || editContactAddPhotoInputElement.files[0] !== undefined) {
             editContactAddPhotoButton.innerHTML = "Save Photo"
-            handleEditContactUploadImageInput()
+            // handleEditContactUploadImageInput()
+            handleEditContactImage()
         } else {
             alert("Please choose an image before inserting.")
         }
@@ -5043,6 +5056,7 @@ const allUsers = await getAllUsers();
         editContactGenderElement.value = contactGender;
         editContactBirthdayElement.value = contactBirthday;
         editContactEmailAddressElement.value = selectedEmail;
+        editContactPhoneNumberElement.value = "";
         editContactPhoneNumberElement.value = selectedPhoneNumber;
         editContactAddressElement.value = selectedAddress;
         editContactOrganizationElement.value = contactOrganization;
@@ -5051,6 +5065,734 @@ const allUsers = await getAllUsers();
         editContactNotesElement.value = contactNotes;
     });
 
+    editContactLastNameElement.addEventListener("focus", async function() {
+        const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
+        const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
+        const contactAddresses = await getAContactAddress(user_id, contact_id);
+        const contactWebsites = await getAContactWebsite(user_id, contact_id);
+
+        const contactFirstName = contact.firstname;
+        const contactLastName = contact.lastname;
+        const contactGender = contact.gender;
+        const contactBirthday = contact.birthday;
+        const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
+        const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
+        const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
+        const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
+        let selectedEmail;
+        for (let i = 0; i < contactEmailAddress.length; i++) {
+            if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
+                selectedEmail = contactEmailAddress[i].emailaddress;
+            }
+        };
+        const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
+        const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
+        const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
+        const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
+        let selectedPhoneNumber;
+        for (let i = 0; i < contactPhoneNumbers.length; i++) {
+            if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
+                selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
+            }
+        };
+        const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
+        const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
+        const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
+        const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
+        let selectedAddress;
+        for (let i = 0; i < contactAddresses.length; i++) {
+            if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
+                selectedAddress = contactAddresses[i].address;
+            }
+        }
+        const contactOrganization = contact.organization;
+        const contactOrganizationRole = contact.organization_role;
+        const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
+        const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
+        const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
+        const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
+        let selectedWebsite;
+        for (let i = 0; i < contactWebsites.length; i++) {
+            // console.log(contactWebsites[i].websiteid)
+            // console.log(contactWebsitesSelectedIndexId)
+            if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
+                selectedWebsite = contactWebsites[i].website
+            }
+        }
+        const contactNotes = contact.notes;
+        const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
+        editContactSelectGenderElement.style.display = "none";
+        editContactGenderElement.style.display = "block";
+
+        editContactFirstNameElement.value = contactFirstName;
+        editContactGenderElement.value = contactGender;
+        editContactBirthdayElement.value = contactBirthday;
+        editContactEmailAddressElement.value = selectedEmail;
+        editContactPhoneNumberElement.value = "";
+        editContactPhoneNumberElement.value = selectedPhoneNumber;
+        editContactAddressElement.value = selectedAddress;
+        editContactOrganizationElement.value = contactOrganization;
+        editContactRoleElement.value = contactOrganizationRole;
+        editContactSocialMediaElement.value = selectedWebsite;
+        editContactNotesElement.value = contactNotes;
+    });
+
+    editContactGenderElement.addEventListener("focus", async function() {
+        const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
+        const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
+        const contactAddresses = await getAContactAddress(user_id, contact_id);
+        const contactWebsites = await getAContactWebsite(user_id, contact_id);
+
+        const contactFirstName = contact.firstname;
+        const contactLastName = contact.lastname;
+        const contactGender = contact.gender;
+        const contactBirthday = contact.birthday;
+        const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
+        const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
+        const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
+        const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
+        let selectedEmail;
+        for (let i = 0; i < contactEmailAddress.length; i++) {
+            if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
+                selectedEmail = contactEmailAddress[i].emailaddress;
+            }
+        };
+        const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
+        const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
+        const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
+        const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
+        let selectedPhoneNumber;
+        for (let i = 0; i < contactPhoneNumbers.length; i++) {
+            if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
+                selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
+            }
+        };
+        const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
+        const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
+        const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
+        const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
+        let selectedAddress;
+        for (let i = 0; i < contactAddresses.length; i++) {
+            if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
+                selectedAddress = contactAddresses[i].address;
+            }
+        }
+        const contactOrganization = contact.organization;
+        const contactOrganizationRole = contact.organization_role;
+        const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
+        const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
+        const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
+        const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
+        let selectedWebsite;
+        for (let i = 0; i < contactWebsites.length; i++) {
+            // console.log(contactWebsites[i].websiteid)
+            // console.log(contactWebsitesSelectedIndexId)
+            if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
+                selectedWebsite = contactWebsites[i].website
+            }
+        }
+        const contactNotes = contact.notes;
+        const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
+        const editContactSelectGenderElementOptions = editContactSelectGenderElement.options;
+        const editContactSelectGenderElementOptionsHTMLArr = Array.from(editContactSelectGenderElementOptions);
+        console.log(editContactSelectGenderElementOptionsHTMLArr)
+        // let editContactSelectGenderElementCurrentContactValue;
+        for (let i = 0; i < editContactSelectGenderElementOptionsHTMLArr.length; i++) {
+            if (editContactSelectGenderElementOptionsHTMLArr[i].text === contactGender) {
+                // editContactSelectGenderElementCurrentContactValue = editContactSelectGenderElementOptionsHTMLArr[i].text;
+                editContactSelectGenderElementOptionsHTMLArr[i].selected = true;
+            }
+        }
+        // editContactSelectGenderElement.style.display = "none";
+        // editContactGenderElement.style.display = "block";
+
+        editContactFirstNameElement.value = contactFirstName;
+        editContactLastNameElement.value = contactLastName;
+        editContactBirthdayElement.value = contactBirthday;
+        editContactEmailAddressElement.value = selectedEmail;
+        editContactPhoneNumberElement.value = "";
+        editContactPhoneNumberElement.value = selectedPhoneNumber;
+        editContactAddressElement.value = selectedAddress;
+        editContactOrganizationElement.value = contactOrganization;
+        editContactRoleElement.value = contactOrganizationRole;
+        editContactSocialMediaElement.value = selectedWebsite;
+        editContactNotesElement.value = contactNotes;
+    });
+
+    editContactBirthdayElement.addEventListener("focus", async function() {
+        const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
+        const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
+        const contactAddresses = await getAContactAddress(user_id, contact_id);
+        const contactWebsites = await getAContactWebsite(user_id, contact_id);
+
+        const contactFirstName = contact.firstname;
+        const contactLastName = contact.lastname;
+        const contactGender = contact.gender;
+        const contactBirthday = contact.birthday;
+        const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
+        const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
+        const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
+        const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
+        let selectedEmail;
+        for (let i = 0; i < contactEmailAddress.length; i++) {
+            if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
+                selectedEmail = contactEmailAddress[i].emailaddress;
+            }
+        };
+        const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
+        const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
+        const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
+        const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
+        let selectedPhoneNumber;
+        for (let i = 0; i < contactPhoneNumbers.length; i++) {
+            if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
+                selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
+            }
+        };
+        const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
+        const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
+        const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
+        const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
+        let selectedAddress;
+        for (let i = 0; i < contactAddresses.length; i++) {
+            if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
+                selectedAddress = contactAddresses[i].address;
+            }
+        }
+        const contactOrganization = contact.organization;
+        const contactOrganizationRole = contact.organization_role;
+        const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
+        const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
+        const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
+        const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
+        let selectedWebsite;
+        for (let i = 0; i < contactWebsites.length; i++) {
+            // console.log(contactWebsites[i].websiteid)
+            // console.log(contactWebsitesSelectedIndexId)
+            if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
+                selectedWebsite = contactWebsites[i].website
+            }
+        }
+        const contactNotes = contact.notes;
+        const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
+        editContactSelectGenderElement.style.display = "none";
+        editContactGenderElement.style.display = "block";
+
+        editContactFirstNameElement.value = contactFirstName;
+        editContactLastNameElement.value = contactLastName;
+        editContactGenderElement.value = contactGender;
+        editContactEmailAddressElement.value = selectedEmail;
+        editContactPhoneNumberElement.value = "";
+        editContactPhoneNumberElement.value = selectedPhoneNumber;
+        editContactAddressElement.value = selectedAddress;
+        editContactOrganizationElement.value = contactOrganization;
+        editContactRoleElement.value = contactOrganizationRole;
+        editContactSocialMediaElement.value = selectedWebsite;
+        editContactNotesElement.value = contactNotes;
+    });
+
+    editContactEmailAddressElement.addEventListener("focus", async function() {
+        const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
+        const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
+        const contactAddresses = await getAContactAddress(user_id, contact_id);
+        const contactWebsites = await getAContactWebsite(user_id, contact_id);
+
+        const contactFirstName = contact.firstname;
+        const contactLastName = contact.lastname;
+        const contactGender = contact.gender;
+        const contactBirthday = contact.birthday;
+        const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
+        const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
+        const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
+        const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
+        let selectedEmail;
+        for (let i = 0; i < contactEmailAddress.length; i++) {
+            if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
+                selectedEmail = contactEmailAddress[i].emailaddress;
+            }
+        };
+        const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
+        const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
+        const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
+        const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
+        let selectedPhoneNumber;
+        for (let i = 0; i < contactPhoneNumbers.length; i++) {
+            if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
+                selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
+            }
+        };
+        const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
+        const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
+        const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
+        const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
+        let selectedAddress;
+        for (let i = 0; i < contactAddresses.length; i++) {
+            if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
+                selectedAddress = contactAddresses[i].address;
+            }
+        }
+        const contactOrganization = contact.organization;
+        const contactOrganizationRole = contact.organization_role;
+        const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
+        const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
+        const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
+        const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
+        let selectedWebsite;
+        for (let i = 0; i < contactWebsites.length; i++) {
+            // console.log(contactWebsites[i].websiteid)
+            // console.log(contactWebsitesSelectedIndexId)
+            if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
+                selectedWebsite = contactWebsites[i].website
+            }
+        }
+        const contactNotes = contact.notes;
+        const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
+        editContactSelectGenderElement.style.display = "none";
+        editContactGenderElement.style.display = "block";
+
+        editContactFirstNameElement.value = contactFirstName;
+        editContactLastNameElement.value = contactLastName;
+        editContactGenderElement.value = contactGender;
+        editContactBirthdayElement.value = contactBirthday;
+        editContactPhoneNumberElement.value = "";
+        editContactPhoneNumberElement.value = selectedPhoneNumber;
+        editContactAddressElement.value = selectedAddress;
+        editContactOrganizationElement.value = contactOrganization;
+        editContactRoleElement.value = contactOrganizationRole;
+        editContactSocialMediaElement.value = selectedWebsite;
+        editContactNotesElement.value = contactNotes;
+    });
+
+    editContactPhoneNumberElement.addEventListener("focus", async function() {
+        const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
+        const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
+        const contactAddresses = await getAContactAddress(user_id, contact_id);
+        const contactWebsites = await getAContactWebsite(user_id, contact_id);
+
+        const contactFirstName = contact.firstname;
+        const contactLastName = contact.lastname;
+        const contactGender = contact.gender;
+        const contactBirthday = contact.birthday;
+        const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
+        const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
+        const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
+        const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
+        let selectedEmail;
+        for (let i = 0; i < contactEmailAddress.length; i++) {
+            if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
+                selectedEmail = contactEmailAddress[i].emailaddress;
+            }
+        };
+        const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
+        const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
+        const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
+        const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
+        let selectedPhoneNumber;
+        for (let i = 0; i < contactPhoneNumbers.length; i++) {
+            if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
+                selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
+            }
+        };
+        const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
+        const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
+        const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
+        const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
+        let selectedAddress;
+        for (let i = 0; i < contactAddresses.length; i++) {
+            if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
+                selectedAddress = contactAddresses[i].address;
+            }
+        }
+        const contactOrganization = contact.organization;
+        const contactOrganizationRole = contact.organization_role;
+        const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
+        const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
+        const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
+        const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
+        let selectedWebsite;
+        for (let i = 0; i < contactWebsites.length; i++) {
+            // console.log(contactWebsites[i].websiteid)
+            // console.log(contactWebsitesSelectedIndexId)
+            if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
+                selectedWebsite = contactWebsites[i].website
+            }
+        }
+        const contactNotes = contact.notes;
+        const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
+        editContactSelectGenderElement.style.display = "none";
+        editContactGenderElement.style.display = "block";
+
+        editContactFirstNameElement.value = contactFirstName;
+        editContactLastNameElement.value = contactLastName;
+        editContactGenderElement.value = contactGender;
+        editContactBirthdayElement.value = contactBirthday;
+        editContactEmailAddressElement.value = selectedEmail;
+        editContactAddressElement.value = selectedAddress;
+        editContactOrganizationElement.value = contactOrganization;
+        editContactRoleElement.value = contactOrganizationRole;
+        editContactSocialMediaElement.value = selectedWebsite;
+        editContactNotesElement.value = contactNotes;
+    });
+
+    editContactAddressElement.addEventListener("focus", async function() {
+        const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
+        const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
+        const contactAddresses = await getAContactAddress(user_id, contact_id);
+        const contactWebsites = await getAContactWebsite(user_id, contact_id);
+
+        const contactFirstName = contact.firstname;
+        const contactLastName = contact.lastname;
+        const contactGender = contact.gender;
+        const contactBirthday = contact.birthday;
+        const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
+        const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
+        const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
+        const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
+        let selectedEmail;
+        for (let i = 0; i < contactEmailAddress.length; i++) {
+            if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
+                selectedEmail = contactEmailAddress[i].emailaddress;
+            }
+        };
+        const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
+        const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
+        const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
+        const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
+        let selectedPhoneNumber;
+        for (let i = 0; i < contactPhoneNumbers.length; i++) {
+            if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
+                selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
+            }
+        };
+        const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
+        const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
+        const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
+        const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
+        let selectedAddress;
+        for (let i = 0; i < contactAddresses.length; i++) {
+            if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
+                selectedAddress = contactAddresses[i].address;
+            }
+        }
+        const contactOrganization = contact.organization;
+        const contactOrganizationRole = contact.organization_role;
+        const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
+        const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
+        const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
+        const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
+        let selectedWebsite;
+        for (let i = 0; i < contactWebsites.length; i++) {
+            // console.log(contactWebsites[i].websiteid)
+            // console.log(contactWebsitesSelectedIndexId)
+            if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
+                selectedWebsite = contactWebsites[i].website
+            }
+        }
+        const contactNotes = contact.notes;
+        const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
+        editContactSelectGenderElement.style.display = "none";
+        editContactGenderElement.style.display = "block";
+
+        editContactFirstNameElement.value = contactFirstName;
+        editContactLastNameElement.value = contactLastName;
+        editContactGenderElement.value = contactGender;
+        editContactBirthdayElement.value = contactBirthday;
+        editContactEmailAddressElement.value = selectedEmail;
+        editContactPhoneNumberElement.value = "";
+        editContactPhoneNumberElement.value = selectedPhoneNumber;
+        editContactOrganizationElement.value = contactOrganization;
+        editContactRoleElement.value = contactOrganizationRole;
+        editContactSocialMediaElement.value = selectedWebsite;
+        editContactNotesElement.value = contactNotes;
+    });
+
+    editContactOrganizationElement.addEventListener("focus", async function() {
+        const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
+        const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
+        const contactAddresses = await getAContactAddress(user_id, contact_id);
+        const contactWebsites = await getAContactWebsite(user_id, contact_id);
+
+        const contactFirstName = contact.firstname;
+        const contactLastName = contact.lastname;
+        const contactGender = contact.gender;
+        const contactBirthday = contact.birthday;
+        const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
+        const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
+        const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
+        const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
+        let selectedEmail;
+        for (let i = 0; i < contactEmailAddress.length; i++) {
+            if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
+                selectedEmail = contactEmailAddress[i].emailaddress;
+            }
+        };
+        const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
+        const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
+        const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
+        const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
+        let selectedPhoneNumber;
+        for (let i = 0; i < contactPhoneNumbers.length; i++) {
+            if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
+                selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
+            }
+        };
+        const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
+        const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
+        const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
+        const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
+        let selectedAddress;
+        for (let i = 0; i < contactAddresses.length; i++) {
+            if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
+                selectedAddress = contactAddresses[i].address;
+            }
+        }
+        const contactOrganization = contact.organization;
+        const contactOrganizationRole = contact.organization_role;
+        const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
+        const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
+        const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
+        const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
+        let selectedWebsite;
+        for (let i = 0; i < contactWebsites.length; i++) {
+            // console.log(contactWebsites[i].websiteid)
+            // console.log(contactWebsitesSelectedIndexId)
+            if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
+                selectedWebsite = contactWebsites[i].website
+            }
+        }
+        const contactNotes = contact.notes;
+        const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
+        editContactSelectGenderElement.style.display = "none";
+        editContactGenderElement.style.display = "block";
+
+        editContactFirstNameElement.value = contactFirstName;
+        editContactLastNameElement.value = contactLastName;
+        editContactGenderElement.value = contactGender;
+        editContactBirthdayElement.value = contactBirthday;
+        editContactEmailAddressElement.value = selectedEmail;
+        editContactPhoneNumberElement.value = "";
+        editContactPhoneNumberElement.value = selectedPhoneNumber;
+        editContactAddressElement.value = selectedAddress;
+        editContactRoleElement.value = contactOrganizationRole;
+        editContactSocialMediaElement.value = selectedWebsite;
+        editContactNotesElement.value = contactNotes;
+    });
+
+    editContactRoleElement.addEventListener("focus", async function() {
+        const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
+        const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
+        const contactAddresses = await getAContactAddress(user_id, contact_id);
+        const contactWebsites = await getAContactWebsite(user_id, contact_id);
+
+        const contactFirstName = contact.firstname;
+        const contactLastName = contact.lastname;
+        const contactGender = contact.gender;
+        const contactBirthday = contact.birthday;
+        const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
+        const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
+        const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
+        const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
+        let selectedEmail;
+        for (let i = 0; i < contactEmailAddress.length; i++) {
+            if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
+                selectedEmail = contactEmailAddress[i].emailaddress;
+            }
+        };
+        const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
+        const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
+        const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
+        const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
+        let selectedPhoneNumber;
+        for (let i = 0; i < contactPhoneNumbers.length; i++) {
+            if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
+                selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
+            }
+        };
+        const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
+        const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
+        const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
+        const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
+        let selectedAddress;
+        for (let i = 0; i < contactAddresses.length; i++) {
+            if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
+                selectedAddress = contactAddresses[i].address;
+            }
+        }
+        const contactOrganization = contact.organization;
+        const contactOrganizationRole = contact.organization_role;
+        const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
+        const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
+        const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
+        const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
+        let selectedWebsite;
+        for (let i = 0; i < contactWebsites.length; i++) {
+            // console.log(contactWebsites[i].websiteid)
+            // console.log(contactWebsitesSelectedIndexId)
+            if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
+                selectedWebsite = contactWebsites[i].website
+            }
+        }
+        const contactNotes = contact.notes;
+        const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
+        editContactSelectGenderElement.style.display = "none";
+        editContactGenderElement.style.display = "block";
+
+        editContactFirstNameElement.value = contactFirstName;
+        editContactLastNameElement.value = contactLastName;
+        editContactGenderElement.value = contactGender;
+        editContactBirthdayElement.value = contactBirthday;
+        editContactEmailAddressElement.value = selectedEmail;
+        editContactPhoneNumberElement.value = "";
+        editContactPhoneNumberElement.value = selectedPhoneNumber;
+        editContactAddressElement.value = selectedAddress;
+        editContactOrganizationElement.value = contactOrganization;
+        editContactSocialMediaElement.value = selectedWebsite;
+        editContactNotesElement.value = contactNotes;
+    });
+
+    editContactSocialMediaElement.addEventListener("focus", async function() {
+        const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
+        const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
+        const contactAddresses = await getAContactAddress(user_id, contact_id);
+        const contactWebsites = await getAContactWebsite(user_id, contact_id);
+
+        const contactFirstName = contact.firstname;
+        const contactLastName = contact.lastname;
+        const contactGender = contact.gender;
+        const contactBirthday = contact.birthday;
+        const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
+        const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
+        const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
+        const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
+        let selectedEmail;
+        for (let i = 0; i < contactEmailAddress.length; i++) {
+            if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
+                selectedEmail = contactEmailAddress[i].emailaddress;
+            }
+        };
+        const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
+        const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
+        const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
+        const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
+        let selectedPhoneNumber;
+        for (let i = 0; i < contactPhoneNumbers.length; i++) {
+            if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
+                selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
+            }
+        };
+        const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
+        const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
+        const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
+        const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
+        let selectedAddress;
+        for (let i = 0; i < contactAddresses.length; i++) {
+            if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
+                selectedAddress = contactAddresses[i].address;
+            }
+        }
+        const contactOrganization = contact.organization;
+        const contactOrganizationRole = contact.organization_role;
+        const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
+        const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
+        const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
+        const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
+        let selectedWebsite;
+        for (let i = 0; i < contactWebsites.length; i++) {
+            // console.log(contactWebsites[i].websiteid)
+            // console.log(contactWebsitesSelectedIndexId)
+            if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
+                selectedWebsite = contactWebsites[i].website
+            }
+        }
+        const contactNotes = contact.notes;
+        const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
+        editContactSelectGenderElement.style.display = "none";
+        editContactGenderElement.style.display = "block";
+
+        editContactFirstNameElement.value = contactFirstName;
+        editContactLastNameElement.value = contactLastName;
+        editContactGenderElement.value = contactGender;
+        editContactBirthdayElement.value = contactBirthday;
+        editContactEmailAddressElement.value = selectedEmail;
+        editContactPhoneNumberElement.value = "";
+        editContactPhoneNumberElement.value = selectedPhoneNumber;
+        editContactAddressElement.value = selectedAddress;
+        editContactOrganizationElement.value = contactOrganization;
+        editContactRoleElement.value = contactOrganizationRole;
+        editContactNotesElement.value = contactNotes;
+    });
+
+    editContactNotesElement.addEventListener("focus", async function() {
+        const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
+        const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
+        const contactAddresses = await getAContactAddress(user_id, contact_id);
+        const contactWebsites = await getAContactWebsite(user_id, contact_id);
+
+        const contactFirstName = contact.firstname;
+        const contactLastName = contact.lastname;
+        const contactGender = contact.gender;
+        const contactBirthday = contact.birthday;
+        const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
+        const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
+        const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
+        const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
+        let selectedEmail;
+        for (let i = 0; i < contactEmailAddress.length; i++) {
+            if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
+                selectedEmail = contactEmailAddress[i].emailaddress;
+            }
+        };
+        const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
+        const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
+        const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
+        const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
+        let selectedPhoneNumber;
+        for (let i = 0; i < contactPhoneNumbers.length; i++) {
+            if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
+                selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
+            }
+        };
+        const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
+        const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
+        const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
+        const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
+        let selectedAddress;
+        for (let i = 0; i < contactAddresses.length; i++) {
+            if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
+                selectedAddress = contactAddresses[i].address;
+            }
+        }
+        const contactOrganization = contact.organization;
+        const contactOrganizationRole = contact.organization_role;
+        const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
+        const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
+        const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
+        const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
+        let selectedWebsite;
+        for (let i = 0; i < contactWebsites.length; i++) {
+            // console.log(contactWebsites[i].websiteid)
+            // console.log(contactWebsitesSelectedIndexId)
+            if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
+                selectedWebsite = contactWebsites[i].website
+            }
+        }
+        const contactNotes = contact.notes;
+        const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
+        editContactSelectGenderElement.style.display = "none";
+        editContactGenderElement.style.display = "block";
+
+        editContactFirstNameElement.value = contactFirstName;
+        editContactLastNameElement.value = contactLastName;
+        editContactGenderElement.value = contactGender;
+        editContactBirthdayElement.value = contactBirthday;
+        editContactEmailAddressElement.value = selectedEmail;
+        editContactPhoneNumberElement.value = "";
+        editContactPhoneNumberElement.value = selectedPhoneNumber;
+        editContactAddressElement.value = selectedAddress;
+        editContactOrganizationElement.value = contactOrganization;
+        editContactRoleElement.value = contactOrganizationRole;
+        editContactSocialMediaElement.value = selectedWebsite;
+    });
 
     const updateContactFirstnameButton = document.querySelector("#update-contact-firstname-button");
     updateContactFirstnameButton.addEventListener("click", function() {
@@ -6148,10 +6890,9 @@ const allUsers = await getAllUsers();
     }, false);
 };
 
-async function handleEditContactUploadImageInput() {
+async function handleEditContactImage() {
     // let imageFile;
     // let image;
-    // const newUserImageElement = document.querySelector("#edit-user-image");
 
     const editContactImageElement = document.querySelector("#edit-contact-image");
     let editContactImageFile;
@@ -6167,21 +6908,29 @@ async function handleEditContactUploadImageInput() {
             base64string = reader.result.split(',')[1]
             editContactImage = reader.result;
             editContactImageElement.setAttribute("src", reader.result);
+            if (editContactAddPhotoInputElement.files[0] !== undefined) {
+                editContactImageElement.setAttribute("name", editContactAddPhotoInputElement.files[0].name)
+            };
             editContactImageElement.style.borderRadius = "50%"
         };
 
-        if (editContactImageFile !== undefined) {
+        // if (newContactImageFile !== undefined) {
             reader.readAsDataURL(editContactImageFile)
-        } else {
-            editContactImageElement.setAttribute("src", './images/user-2-svgrepo-com.svg')
-        }
+        // } else {
+        //     newContactImageElement.setAttribute("src", './images/user-2-svgrepo-com.svg')
+        // }
 
     // const editUserAddPhotoFormElement = document.querySelector("#edit-user-add-photo-form");
     // const editUserAddPhotoInputElement = document.querySelector("#edit-user-add-photo");
     // console.log(editUserAddPhotoFormElement)
-    let imageFile = editContactAddPhotoInputElement.files[0];
+    // let imageFile = newContactAddPhotoInputElement.files[0];
 
-    async function createIconImageFile() {
+    editContactAddPhotoInputElement.value = "";
+}
+
+async function handleEditContactUploadImageInput() {
+
+    async function createImageFile() {
     const editContactImageElement = document.querySelector("#edit-contact-image")
     const editContactImageUrl = editContactImageElement.getAttribute("src")
     let editContactImageFile;
@@ -6199,16 +6948,93 @@ async function handleEditContactUploadImageInput() {
         })
     }
 
+    async function base64ToFile(base64DataUrl, filename) {
+  // 1. Fetch the data URL and convert to a Blob
+  const response = await fetch(base64DataUrl);
+  const blob = await response.blob();
+
+  // 2. Create a File object from the Blob
+  // The 'type' is automatically inferred by the browser from the data URL's MIME type
+  const file = new File([blob], filename, { type: blob.type });
+
+  return file;
+}
+
+let imageFile;
+
+
     if (imageFile === undefined) {
-        imageFile = await createIconImageFile()
+       imageFile = await createImageFile()
+    } else {
+       imageFile = await base64ToFile(editContactImageElement.getAttribute("src"), editContactImageElement.getAttribute("name"))
     }
         
-    console.log(imageFile)
-
-    // editUserAddPhotoInputElement.value = ""
+    // newContactAddPhotoInputElement.value = ""
 
     return imageFile
 };
+
+// async function handleEditContactUploadImageInput() {
+//     // let imageFile;
+//     // let image;
+//     // const newUserImageElement = document.querySelector("#edit-user-image");
+
+//     const editContactImageElement = document.querySelector("#edit-contact-image");
+//     let editContactImageFile;
+//     let editContactImage;
+//     const editContactAddPhotoInputElement = document.querySelector("#edit-contact-add-photo")
+
+//         editContactImageFile = editContactAddPhotoInputElement.files[0];
+//         let reader = new FileReader()
+
+//         console.log(editContactImageFile)
+
+//         reader.onload = function () {
+//             base64string = reader.result.split(',')[1]
+//             editContactImage = reader.result;
+//             editContactImageElement.setAttribute("src", reader.result);
+//             editContactImageElement.style.borderRadius = "50%"
+//         };
+
+//         if (editContactImageFile !== undefined) {
+//             reader.readAsDataURL(editContactImageFile)
+//         } else {
+//             editContactImageElement.setAttribute("src", './images/user-2-svgrepo-com.svg')
+//         }
+
+//     // const editUserAddPhotoFormElement = document.querySelector("#edit-user-add-photo-form");
+//     // const editUserAddPhotoInputElement = document.querySelector("#edit-user-add-photo");
+//     // console.log(editUserAddPhotoFormElement)
+//     let imageFile = editContactAddPhotoInputElement.files[0];
+
+//     async function createIconImageFile() {
+//     const editContactImageElement = document.querySelector("#edit-contact-image")
+//     const editContactImageUrl = editContactImageElement.getAttribute("src")
+//     let editContactImageFile;
+//         return fetch(editContactImageUrl)
+//             .then(response => response.blob()) // Get the image as a Blob
+//             .then(async (blob) => {
+//             // Now 'blob' contains the image data as a Blob object
+//             // You can then create a File object from the blob if necessary:
+//             const filename = editContactImageUrl.substring(editContactImageUrl.lastIndexOf('/') + 1); // Extract filename from URL
+//             editContactImageFile = new File([blob], filename, { type: blob.type });
+
+//             console.log(editContactImageFile); // This is your image file object
+
+//             return editContactImageFile
+//         })
+//     }
+
+//     if (imageFile === undefined) {
+//         imageFile = await createIconImageFile()
+//     }
+        
+//     console.log(imageFile)
+
+//     // editUserAddPhotoInputElement.value = ""
+
+//     return imageFile
+// };
 
 async function renderMobileEditContactContent() {
 const allUsers = await getAllUsers();
@@ -6461,9 +7287,12 @@ async function handleEditContactEmailLabelInput() {
         emailaddress: emailaddress
     };
 
-    console.log(newContactEmailLabelObj)
+    if (newContactEmailLabelObj.emailaddresslabel === '') {
+        alert("Please enter a label before updating.");
+        return;
+    };
 
-    return newContactEmailLabelObj
+    return newContactEmailLabelObj;
 }
 
 async function handleAddNewContactEmailInput(event) {
@@ -11070,8 +11899,8 @@ const allUsers = await getAllUsers();
     const newContactRemovePhotoButton = document.querySelector("#new-contact-remove-photo-button");
     const newContactAddPhotoInputElement = document.querySelector("#new-contact-add-photo")
     newContactRemovePhotoButton.addEventListener("click", function() {
-        newContactAddPhotoInputElement.value = ""
-        newContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg")
+        newContactAddPhotoInputElement.value = "";
+        newContactImage.setAttribute("src", "./images/user-2-svgrepo-com.svg");
     });
 
     const newContactAddPhotoButton = document.querySelector("#new-contact-add-photo-button");
@@ -11578,7 +12407,9 @@ async function handleNewContactImage() {
             base64string = reader.result.split(',')[1]
             newContactImage = reader.result;
             newContactImageElement.setAttribute("src", reader.result);
-            newContactImageElement.setAttribute("name", newContactAddPhotoInputElement.files[0].name)
+            if (newContactAddPhotoInputElement.files[0] !== undefined) {
+                newContactImageElement.setAttribute("name", newContactAddPhotoInputElement.files[0].name)
+            }
             newContactImageElement.style.borderRadius = "50%"
         };
 
@@ -11594,7 +12425,7 @@ async function handleNewContactImage() {
     // let imageFile = newContactAddPhotoInputElement.files[0];
 
     newContactAddPhotoInputElement.value = "";
-}
+};
 
 async function handleUploadNewContactImageInput() {
 
@@ -11640,7 +12471,7 @@ let imageFile;
     // newContactAddPhotoInputElement.value = ""
 
     return imageFile
-}
+};
 
 // async function handleNewContactImage() {
 //     const newContactImageElement = document.querySelector("#new-contact-image");
@@ -12797,6 +13628,7 @@ async function putContactImage() {
          const editContactAddPhotoInputElement = document.querySelector("#edit-contact-add-photo");
          editContactAddPhotoInputElement.value = "";
 
+         alert("Updated contact image.")
          window.location.reload();
 };
 
@@ -12897,7 +13729,10 @@ async function updateContactEmailAddress() {
         console.log(response)
     } catch (err) {
         console.error(err)
-    }
+    };
+
+    alert("Updated contact email address");
+    window.location.reload();
 };
 
 async function updateContactEmailAddressLabel() {
@@ -12924,6 +13759,7 @@ async function updateContactEmailAddressLabel() {
     };
 
     alert("Updated contact's email label.")
+    window.location.reload()
 };
 
 async function deleteContactEmailAddress() {
@@ -12945,7 +13781,10 @@ async function deleteContactEmailAddress() {
         console.log(response)
     } catch (err) {
         console.error(err)
-    }
+    };
+
+    alert("Removed contact email address.");
+    window.location.reload();
 };
 
 async function postAddNewContactEmailAddress() {
@@ -13035,7 +13874,8 @@ async function updateContactPhoneNumberLabel() {
         console.error(err)
     };
 
-    alert("Updated contact's phone number label.")
+    alert("Updated contact's phone number label.");
+    window.location.reload()
 };
 
 
@@ -13090,7 +13930,10 @@ async function deleteContactPhoneNumber() {
         console.log(response)
     } catch (err) {
         console.error(err)
-    }
+    };
+
+    alert("Removed contact phone number.");
+    window.location.reload();
 };
 
 async function postAddNewContactAddress() {
@@ -13145,6 +13988,9 @@ async function updateContactAddress() {
     } catch (err) {
         console.error(err)
     }
+
+    alert("Updated contact address.");
+    window.location.reload();
 };
 
 async function updateContactAddressLabel() {
@@ -13170,7 +14016,8 @@ async function updateContactAddressLabel() {
         console.error(err)
     };
 
-    alert("Updated contact's address label.")
+    alert("Updated contact's address label.");
+    window.location.reload();
 };
 
 
@@ -13193,7 +14040,10 @@ async function deleteContactAddress() {
         console.log(response)
     } catch (err) {
         console.error(err)
-    }
+    };
+
+    alert("Removed contact address.");
+    window.location.reload();
 };
 
 async function postNewContactWebsite() {
@@ -13278,7 +14128,8 @@ async function updateContactWebsiteLabel() {
         console.error(err)
     };
 
-    alert("Updated contact's website label.")
+    alert("Updated contact's website label.");
+    window.location.reload();
 };
 
 async function updateContactWebsite() {
@@ -13302,7 +14153,10 @@ async function updateContactWebsite() {
         console.log(response)
     } catch (err) {
         console.error(err)
-    }
+    };
+
+    alert("Updated contact website.");
+    window.location.reload();
 };
 
 async function deleteContactWebsite() {
@@ -13324,7 +14178,10 @@ async function deleteContactWebsite() {
         console.log(response)
     } catch (err) {
         console.error(err)
-    }
+    };
+
+    alert("Removed contact website.");
+    window.location.reload();
 };
 
 async function getUserContact(user_id, contact_id) {
@@ -13485,7 +14342,7 @@ const allUsers = await getAllUsers();
     console.log(newURL);
     // Expected output: "https://example.com/page?name=John+Doe&age=30&city=New+York"
 
-    alert("Contact updated.")
+    alert("Contact first name updated.")
     window.location.href = newURL
 };
 
@@ -13561,7 +14418,7 @@ const allUsers = await getAllUsers();
     console.log(newURL);
     // Expected output: "https://example.com/page?name=John+Doe&age=30&city=New+York"
 
-    alert("Contact updated.")
+    alert("Contact last name updated.")
     window.location.href = newURL
 };
 
@@ -13613,7 +14470,7 @@ const allUsers = await getAllUsers();
     //     window.location.href = url
     // } 
 
-    alert("Contact updated.")
+    alert("Contact gender updated.")
     window.location.reload()
 };
 
@@ -13665,7 +14522,7 @@ const allUsers = await getAllUsers();
     //     window.location.href = url
     // } 
 
-    alert("Contact updated.")
+    alert("Contact birthday updated.")
     window.location.reload()
 };
 
@@ -13717,7 +14574,7 @@ const allUsers = await getAllUsers();
     //     window.location.href = url
     // } 
 
-    alert("Contact updated.")
+    alert("Contact organization updated.")
     window.location.reload()
 };
 
@@ -13769,7 +14626,7 @@ const allUsers = await getAllUsers();
     //     window.location.href = url
     // } 
 
-    alert("Contact updated.")
+    alert("Contact role updated.")
     window.location.reload()
 };
 
@@ -13821,7 +14678,7 @@ const allUsers = await getAllUsers();
     //     window.location.href = url
     // } 
 
-    alert("Contact updated.")
+    alert("Contact notes updated.")
     window.location.reload()
 };
 
@@ -13899,50 +14756,50 @@ const allUsers = await getAllUsers();
     window.location.href = newURL
 }
 
-async function updateContactImage() {
-const allUsers = await getAllUsers();
-    const sessionId = sessionStorage.getItem("user");
-    let matchingUser;
-    for (let i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].session_id === sessionId) {
-            matchingUser = allUsers[i]
-        }
-    }
-    const user_id = matchingUser.user_id;
-    const url = window.location.href.toString()
-    const urlBeforeQuery = url.split('?')[0];
-    const contact_id = urlBeforeQuery.split('contact_')[1]
-    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
-    const editContactImageObject = await handleEditContactImage()
+// async function updateContactImage() {
+// const allUsers = await getAllUsers();
+//     const sessionId = sessionStorage.getItem("user");
+//     let matchingUser;
+//     for (let i = 0; i < allUsers.length; i++) {
+//         if (allUsers[i].session_id === sessionId) {
+//             matchingUser = allUsers[i]
+//         }
+//     }
+//     const user_id = matchingUser.user_id;
+//     const url = window.location.href.toString()
+//     const urlBeforeQuery = url.split('?')[0];
+//     const contact_id = urlBeforeQuery.split('contact_')[1]
+//     // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+//     const editContactImageObject = await handleEditContactImage()
 
-    const firstname = editContactImageObject.firstname;
-    const lastname = editContactImageObject.lastname;
-    const emailaddress = editContactImageObject.emailaddress;
-    const phonenumber = editContactImageObject.phonenumber;
-    const birthday = editContactImageObject.birthday;
-    const homeaddress = editContactImageObject.address;
-    const gender = editContactImageObject.gender;
-    const organization = editContactImageObject.organization;
-    const organization_role = editContactImageObject.role;
-    const social_media = editContactImageObject.socialMedia;
-    const notes = editContactImageObject.notes
-    const favorite = editContactImageObject.favorite;
-    const contact_image = editContactImageObject.contactImage;
+//     const firstname = editContactImageObject.firstname;
+//     const lastname = editContactImageObject.lastname;
+//     const emailaddress = editContactImageObject.emailaddress;
+//     const phonenumber = editContactImageObject.phonenumber;
+//     const birthday = editContactImageObject.birthday;
+//     const homeaddress = editContactImageObject.address;
+//     const gender = editContactImageObject.gender;
+//     const organization = editContactImageObject.organization;
+//     const organization_role = editContactImageObject.role;
+//     const social_media = editContactImageObject.socialMedia;
+//     const notes = editContactImageObject.notes
+//     const favorite = editContactImageObject.favorite;
+//     const contact_image = editContactImageObject.contactImage;
 
-    const body = { firstname, lastname, emailaddress, phonenumber, birthday, gender, birthday, homeaddress, organization, organization_role, social_media, notes, favorite, contact_image };
-    try {
-        const response = await fetch(`/contacts/${user_id}/${contact_id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-        });
-        console.log(response)
-    } catch (error) {
-        console.error(error)
-    };
+//     const body = { firstname, lastname, emailaddress, phonenumber, birthday, gender, birthday, homeaddress, organization, organization_role, social_media, notes, favorite, contact_image };
+//     try {
+//         const response = await fetch(`/contacts/${user_id}/${contact_id}`, {
+//             method: "PUT",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify(body)
+//         });
+//         console.log(response)
+//     } catch (error) {
+//         console.error(error)
+//     };
 
-//    window.location.reload()
-};
+// //    window.location.reload()
+// };
 
 async function mobileUpdateContactImage() {
 const allUsers = await getAllUsers();

@@ -941,17 +941,17 @@
                                     <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
                                     <img id="edit-email-label-icon" src="./images/edit-svgrepo-com.svg" style="width: 20px;">
                                 </div>
-                            <div id="edit-contact-email-label-modal" style="position: absolute; width: 400px; height: 275px; background-color: lightgrey; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; display: none;">
+                            <div id="edit-contact-email-label-modal" style="position: absolute; width: 400px; height: 285px; background-color: lightgrey; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid black; border-radius: 8px; box-shadow: 0 0 50px rgba(0, 0, 0, 0.5); z-index: 1; display: none;">
                                 <div style="display: flex; width: 100%; justify-content: flex-end;">
-                                    <img id="close-edit-contact-email-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px;">
+                                    <img id="close-edit-contact-email-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px; background-color: red; margin-right: 3px; margin-top: 3px; border-radius: 4px;">
                                 </div>
                                 <div style="display: flex; justify-content: center; width: 100%;">
-                                    <h4 style="margin: 12px;">Edit Email Label</h4>
+                                    <h4 style="text-decoration: underline; text-underline-position: under; text-decoration-thickness: 1.5px; margin: 12px;">Edit Email Label</h4>
                                 </div>
                                 <div style="display: flex; flex-direction: column; justify-content: space-around; height: 72%; padding: 10px;">
+                                    <label style="font-weight: bold;">Current Value</label>
                                     <div style="display: flex; flex-direction: column;">
-                                        <label style="font-weight: bold;">Current Value</label>
-                                        <input id="edit-contact-email-label-current-value" style="width: 25%; box-sizing: border-box;">
+                                        <input id="edit-contact-email-label-current-value" readonly style="width: 25%; box-sizing: border-box; border: 1px solid rgb(118, 118, 118); outline: none;">
                                     </div>
                                     <label style="font-weight: bold;">Select a label</label>
                                     <div>
