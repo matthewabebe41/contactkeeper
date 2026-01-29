@@ -342,6 +342,17 @@ app.post("/contact_images", upload.single('newContactAddPhoto'), async (req, res
         }
 });
 
+//delete a contact's images
+app.delete("/contact_images/:user_id/:contact_id", async (req, res) => {
+    try {
+        const { user_id, contact_id } = req.params;
+        const deleteContactImage = await pool.query("DELETE FROM contact_images WHERE user_id = $1 AND contact_id = $2", [user_id, contact_id])
+        res.json(deleteContactImage.rows[0])
+    } catch (err) {
+            console.log(err.message)
+    }
+});
+
 //get a contact's emailaddresses
 app.get("/contactEmailAddresses/:user_id/:contact_id", async (req, res) => {
     try {
@@ -371,6 +382,18 @@ app.put("/contactEmailAddresses/:userid/:contactid/:emailid", async (req, res) =
        const {emailAddressLabel, emailaddress} = req.body;
        const editContactEmailAddress = await pool.query("UPDATE contactEmailAddresses SET emailaddress = $1, emailaddresslabel = $2 WHERE userid = $3 AND contactid = $4 AND emailid = $5", [emailaddress, emailAddressLabel, userid, contactid, emailid])
        res.json(editContactEmailAddress.rows[0]);
+    } catch (error) {
+        console.error(error.message)
+    }
+});
+
+//delete a contact emailaddresses
+app.delete("/contactEmailAddresses/:userid/:contactid", async (req, res) => {
+    try {
+       const { userid, contactid } = req.params;
+    //    const {emailAddressLabel, emailaddress} = req.body;
+       const deleteContactEmailAddress = await pool.query("DELETE FROM contactEmailAddresses WHERE userid = $1 AND contactid = $2", [userid, contactid])
+       res.json(deleteContactEmailAddress.rows[0]);
     } catch (error) {
         console.error(error.message)
     }
@@ -434,6 +457,18 @@ app.put("/contactPhoneNumbers/:userid/:contactid/:phonenumberid", async (req, re
     }
 });
 
+//delete a contact's phonenumbers
+app.delete("/contactPhoneNumbers/:userid/:contactid", async (req, res) => {
+    try {
+       const { userid, contactid } = req.params;
+    //    const {phoneNumberLabel, phonenumber} = req.body;
+       const deleteContactPhoneNumber = await pool.query("DELETE FROM contactPhoneNumbers WHERE userid = $1 AND contactid = $2", [userid, contactid])
+       res.json(deleteContactPhoneNumber.rows[0]);
+    } catch (error) {
+        console.error(error.message)
+    }
+});
+
 //delete a contact phonenumber
 app.delete("/contactPhoneNumbers/:userid/:contactid/:phonenumberid", async (req, res) => {
     try {
@@ -492,6 +527,18 @@ app.delete("/contactAddresses/:userid/:contactid/:addressid", async (req, res) =
     }
 });
 
+//delete a contact's addresses
+app.delete("/contactAddresses/:userid/:contactid", async (req, res) => {
+    try {
+       const { userid, contactid } = req.params;
+    //    const {addressLabel, address} = req.body;
+       const deleteContactAddress = await pool.query("DELETE FROM contactAddresses WHERE userid = $1 AND contactid = $2", [userid, contactid])
+       res.json(deleteContactAddress.rows[0]);
+    } catch (error) {
+        console.error(error.message)
+    }
+});
+
 //get a contact's websites
 app.get("/contactWebsites/:user_id/:contact_id", async (req, res) => {
     try {
@@ -532,6 +579,18 @@ app.delete("/contactWebsites/:userid/:contactid/:websiteid", async (req, res) =>
        const { userid, contactid, websiteid } = req.params;
        const {websiteLabel, website} = req.body;
        const deleteContactWebsite = await pool.query("DELETE FROM contactWebsites WHERE userid = $1 AND contactid = $2 AND websitelabel = $3 AND website = $4 AND websiteid = $5", [userid, contactid, websiteLabel, website, websiteid])
+       res.json(deleteContactWebsite.rows[0]);
+    } catch (error) {
+        console.error(error.message)
+    }
+});
+
+//delete a contact's websites
+app.delete("/contactWebsites/:userid/:contactid", async (req, res) => {
+    try {
+       const { userid, contactid } = req.params;
+    //    const {websiteLabel, website} = req.body;
+       const deleteContactWebsite = await pool.query("DELETE FROM contactWebsites WHERE userid = $1 AND contactid = $2", [userid, contactid])
        res.json(deleteContactWebsite.rows[0]);
     } catch (error) {
         console.error(error.message)

@@ -6865,8 +6865,8 @@ const allUsers = await getAllUsers();
     //     selectGenderElement.style.display = "none";
     //   })
 
-    const editContactButton = document.querySelector("#edit-contact-button");
-    editContactButton.addEventListener("click", updateContact, false);
+    // const editContactButton = document.querySelector("#edit-contact-button");
+    // editContactButton.addEventListener("click", updateContact, false);
 
     const allUserContactGroupings = await getUserContactGroupings(user_id);
     let removeContactGroupingsArr = []
@@ -6885,6 +6885,11 @@ const allUsers = await getAllUsers();
     console.log('contact_id', contact_id)
     const deleteContactButton = document.querySelector("#delete-contact-button");
     deleteContactButton.addEventListener("click", function() {
+        deleteContactEmailAddresses();
+        deleteContactPhoneNumbers();
+        deleteContactAddresses();
+        deleteContactWebsites();
+        deleteContactImages();
         deleteContact()
         removeContactDeleteContactGroupings(removeContactGroupingsArr)
     }, false);
@@ -13588,6 +13593,33 @@ async function postNewContactImage() {
         //  window.location.reload()
 };
 
+async function deleteContactImages() {
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const url = window.location.href.toString()
+    const urlBeforeQuery = url.split('?')[0];
+    // const contact_id = urlBeforeQuery.charAt(urlBeforeQuery.length - 1);
+    const contact_id = urlBeforeQuery.split('contact_')[1]
+    const contact = await getUserContact(user_id, contact_id);
+    
+    try {
+        const response = await fetch(`/contact_images/${user_id}/${contact_id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+};
+
 async function putContactImage() {
     const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
@@ -13760,6 +13792,31 @@ async function updateContactEmailAddressLabel() {
 
     alert("Updated contact's email label.")
     window.location.reload()
+};
+
+async function deleteContactEmailAddresses() {
+    const deleteContactEmailObj = await handleDeleteContactEmail();
+
+    const userid = deleteContactEmailObj.userId;
+    const contactid = deleteContactEmailObj.contactId;
+    const emailId = deleteContactEmailObj.emailAddressId;
+    const emailAddressLabel = deleteContactEmailObj.emailaddresslabel;
+    const emailaddress = deleteContactEmailObj.emailaddress;
+
+    const body = { userid, contactid };
+    try {
+        const response = await fetch(`/contactEmailAddresses/${userid}/${contactid}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (err) {
+        console.error(err)
+    };
+
+    // alert("Removed contact email address.");
+    // window.location.reload();
 };
 
 async function deleteContactEmailAddress() {
@@ -13936,6 +13993,33 @@ async function deleteContactPhoneNumber() {
     window.location.reload();
 };
 
+async function deleteContactPhoneNumbers() {
+    const deleteContactPhoneNumberObj = await handleDeleteContactPhoneNumber();
+
+    console.log(deleteContactPhoneNumberObj)
+
+    const userid = deleteContactPhoneNumberObj.userId;
+    const contactid = deleteContactPhoneNumberObj.contactId;
+    const phonenumberid = deleteContactPhoneNumberObj.phoneNumberId;
+    const phoneNumberLabel = deleteContactPhoneNumberObj.phonenumberlabel;
+    const phonenumber = deleteContactPhoneNumberObj.phonenumber;
+
+    const body = { userid, contactid };
+    try {
+        const response = await fetch(`/contactPhoneNumbers/${userid}/${contactid}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (err) {
+        console.error(err)
+    };
+
+    // alert("Removed contact phone number.");
+    // window.location.reload();
+};
+
 async function postAddNewContactAddress() {
     const newContactAddressObj = await handleAddNewContactAddressInput();
 
@@ -14044,6 +14128,31 @@ async function deleteContactAddress() {
 
     alert("Removed contact address.");
     window.location.reload();
+};
+
+async function deleteContactAddresses() {
+    const deleteContactAddressObj = await handleDeleteContactAddress();
+
+    const userid = deleteContactAddressObj.userId;
+    const contactid = deleteContactAddressObj.contactId;
+    const addressid = deleteContactAddressObj.addressId;
+    const addressLabel = deleteContactAddressObj.addresslabel;
+    const address = deleteContactAddressObj.address;
+
+    const body = { userid, contactid };
+    try {
+        const response = await fetch(`/contactAddresses/${userid}/${contactid}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (err) {
+        console.error(err)
+    };
+
+    // alert("Removed contact address.");
+    // window.location.reload();
 };
 
 async function postNewContactWebsite() {
@@ -14182,6 +14291,31 @@ async function deleteContactWebsite() {
 
     alert("Removed contact website.");
     window.location.reload();
+};
+
+async function deleteContactWebsites() {
+    const deleteContactWebsiteObj = await handleDeleteContactWebsite();
+
+    const userid = deleteContactWebsiteObj.userId;
+    const contactid = deleteContactWebsiteObj.contactId;
+    const websiteid = deleteContactWebsiteObj.websiteId;
+    const websiteLabel = deleteContactWebsiteObj.websitelabel;
+    const website = deleteContactWebsiteObj.website;
+
+    const body = { userid, contactid };
+    try {
+        const response = await fetch(`/contactWebsites/${userid}/${contactid}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (err) {
+        console.error(err)
+    };
+
+    // alert("Removed contact website.");
+    // window.location.reload();
 };
 
 async function getUserContact(user_id, contact_id) {
