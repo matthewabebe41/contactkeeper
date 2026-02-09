@@ -300,6 +300,28 @@ app.post("/contacts", async (req, res) => {
     }
 });
 
+//get all user contact images
+app.get("/contact_images/:user_id", async (req, res) => {
+    try {
+        const { user_id } = req.params;
+        const result = await pool.query('SELECT * FROM contact_images WHERE user_id = $1', [user_id]);
+    if (result.rows.length > 0) {
+                const imageName = result.rows[0].name
+                const imageData = result.rows[0].data; // bytea data as Buffer
+                const contentType = result.rows[0].mime_type; // e.g., 'image/jpeg'
+                const base64Image = imageData.toString('base64');
+                res.json({name: imageName, image: base64Image, contentType: contentType });
+            } else {
+                res.status(404).send('Image not found');
+            }
+        } catch (error) {
+            console.error('Error fetching image:', error);
+            res.status(500).send('Server error');
+        }
+});
+
+
+//get a contact's image
 app.get("/contact_images/:user_id/:contact_id", async (req, res) => {
     try {
         const { user_id, contact_id } = req.params;

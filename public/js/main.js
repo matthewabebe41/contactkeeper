@@ -22,7 +22,8 @@ async function renderLoginContent() {
                 found = true;
                 matchingUser = allUsers[i]
                 sessionStorage.setItem("user", matchingUser.session_id)
-            }
+            };
+
         }
 
         // if (allUsers.emailaddress === loginUserObject.emailAddress) {
@@ -915,7 +916,7 @@ const allUsers = await getAllUsers();
         }
     }
 
-    console.log(matchingUser)
+    // console.log(matchingUser)
     const userId = matchingUser.user_id;
     const user = await getUser(userId);
 
@@ -1007,6 +1008,21 @@ const allUsers = await getAllUsers();
     }
     const userId = matchingUser.user_id;
     const userContacts = await getUserContacts(userId);
+    for (let i = 0; i < userContacts.length; i++) {
+        const contactId = userContacts[i].contact_id
+        const contactImage = await getAContactImage(userId, contactId);
+        const contactEmailAddresses = await getAContactEmailAddresses(userId, contactId)
+        const contactEmailObj = contactEmailAddresses[0];
+        let contactEmail;
+        if (contactEmailObj !== undefined) {
+            contactEmail = contactEmailObj.emailaddress;
+        }
+        // console.log(contactEmail)
+        const contactImageStr = `data:${contactImage.contentType};base64,${contactImage.image}`
+        userContacts[i]["email"] = contactEmail;
+        userContacts[i]["imageString"] = contactImageStr;
+    }
+    // console.log(userContacts)
 
     requestAnimationFrame(() => {
         const contactsListContainer = document.querySelector("#sidebar-contacts-list-container");
@@ -1033,37 +1049,12 @@ const allUsers = await getAllUsers();
     const contactsListElement = document.querySelector("#sidebar-contacts-list");
 
       userContacts.sort(function(a, b) {
-        if (a.firstname < b.firstname) {
-            return -1;
-        }
-        if (a.firstname < b.firstname) {
-            return 1;
-        }
-
-        var aFirstChar = a.firstname.charAt(0);
-        var bFirstChar = b.firstname.charAt(0);
-        if (aFirstChar > bFirstChar) {
-          return 1;
-        } else if (aFirstChar < bFirstChar) {
-          return -1;
-        } else {
-          var aLastChar = a.lastname.charAt(0);
-          var bLastChar = b.lastname.charAt(0);
-          if (aLastChar === "") {
-            aLastChar = "z"
-          }
-          if (bLastChar === "") {
-            bLastChar = "z"
-          }
-          if (aLastChar > bLastChar) {
-            return 1;
-          } else if (aLastChar < bLastChar) {
-            return -1;
-          } else {
-            return 0;
-          }    
-        }
+        const nameA = `${a.firstname} ${a.lastname}`
+        const nameB = `${b.firstname} ${b.lastname}`;
+        return nameA.localeCompare(nameB)
       });
+
+    //   console.log(userContacts)
 
     userContacts.forEach(async (contact) => {
         const contactListItem = document.createElement("div");
@@ -1145,7 +1136,7 @@ const allUsers = await getAllUsers();
         }
 
         const contactNameElementWidth = contactNameElement.clientWidth;
-        console.log(contactNameElementWidth)
+        // console.log(contactNameElementWidth)
 
 
         // const contactEmailAddressText = contact.emailaddress;
@@ -1198,7 +1189,7 @@ const allUsers = await getAllUsers();
     });
 
     const contactListItems = Array.from(contactsListElement.children);
-    console.log(contactsListElement.children)
+    // console.log(contactsListElement.children)
 
     // const contactsListElementHTMLArr = contactsListElement.children;
     // const contactListItems = [];
@@ -1219,7 +1210,7 @@ const allUsers = await getAllUsers();
     // console.log(contactsListElementHTMLArr.length)
 
     contactListItems.forEach(async (element) => {
-        console.log(element.firstChild.firstChild)
+        // console.log(element.firstChild.firstChild)
         const contactImageElement = element.firstChild.firstChild;
         const contactId = element.getAttribute('id')
         // const contact_id = contact.contact_id;
@@ -1229,7 +1220,7 @@ const allUsers = await getAllUsers();
         contactImageElement.style.borderRadius = "50%";
         const contactEmailElement = element.firstChild.children[1].children[1]
         const contactEmailAddresses = await getAContactEmailAddresses(userId, contactId)
-        console.log(contactEmailAddresses)
+        // console.log(contactEmailAddresses)
         if (contactEmailAddresses.length > 0) {
             contactEmailElement.innerHTML = contactEmailAddresses[0].emailaddress
         } else {
@@ -1287,10 +1278,47 @@ const allUsers = await getAllUsers();
             }
         });
     });
-  
-const searchContactsElement = document.querySelector("#search-contacts-input");
-searchContactsElement.addEventListener("input", contactsAutocompleteSearch)
+
+    // const sideBarContactsListContainer = document.querySelector("#sidebar-contacts-list-container")
+    // const searchContactsAutocompleteList = document.createElement("ul");
+    // searchContactsAutocompleteList.style.display = "none";
+    // searchContactsAutocompleteList.setAttribute("id", "autocomplete-contacts-list")
+    // searchContactsAutocompleteList.style.margin = "0px";
+    // searchContactsAutocompleteList.style.padding = "10px 10px 0px 12px"
+    // sideBarContactsListContainer.appendChild(searchContactsAutocompleteList)
+
+function removeDuplicatesFromDOM(selector) {
+    const elements = document.querySelectorAll(selector);
+    const seenContent = new Set();
+    
+    // Iterate in reverse if the DOM structure might change while looping (safer)
+    for (let i = elements.length - 1; i >= 0; i--) {
+        const currentElement = elements[i];
+        // Use textContent or another unique attribute (like a data-id) for comparison
+        const content = currentElement.getAttribute("index"); 
+
+        if (seenContent.has(content)) {
+            // Duplicate found, remove from the DOM
+            currentElement.parentNode.removeChild(currentElement);
+        } else {
+            // Not seen, add to the Set
+            seenContent.add(content);
+        }
+    }
+}
+
+// Call the function for your specific selector
+
+const searchContactsElement = document.querySelector("#search-contacts-input")
+searchContactsElement.addEventListener("input", contactsAutocompleteSearch);
+
+// searchContactsElement.addEventListener("keydown", function() {
+//     const searchContactsAutocompleteList = document.querySelector("#autocomplete-contacts-list");
+//     searchContactsAutocompleteList.innerHTML = '';
+// })
+
 async function contactsAutocompleteSearch() {
+    // removeDuplicatesFromDOM('.contactAutoCompleteListItem');
     const contactsList = document.querySelector("#sidebar-contacts-list");
     let searchContactsInputValue = searchContactsElement.value.toLowerCase().trimEnd();
     let filteredContacts = [];
@@ -1300,7 +1328,7 @@ async function contactsAutocompleteSearch() {
         let contactLastName = contact.lastname;
         let contactName = `${contact.firstname} ${contact.lastname}`
 
-        console.log(searchContactsInputValue.length)
+        // console.log(searchContactsInputValue.length)
 
         if (searchContactsInputValue === "") {
             for (let i = 0; i < userContacts.length; i++) {
@@ -1340,7 +1368,7 @@ async function contactsAutocompleteSearch() {
     });
 
     const searchContactsAutocompleteList = document.querySelector("#autocomplete-contacts-list");
-
+   
     searchContactsAutocompleteList.innerHTML = '';
 
     // searchContactsElement.addEventListener('input', function() {
@@ -1360,18 +1388,18 @@ async function contactsAutocompleteSearch() {
           return unique;
         }, []);
       }
-      
-      const originalArray = [1, 2, 2, 3, 4, 4, 5];
+
       const uniqueArray = removeDuplicates(filteredContacts);
-      console.log(uniqueArray); // Output: [1, 2, 3, 4, 5]
-
-
-      console.log(uniqueArray)
-    // if (filteredContacts.length > 0) {
         searchContactsAutocompleteList.style.display = 'block';
         contactsList.style.display = "none"
-        uniqueArray.forEach(async (contact) => {
+      let elementsArr = [];
+      uniqueArray.forEach(contact => {
             const contactsAutoCompleteListItem = document.createElement('div');
+            // contactsAutoCompleteListItem.style.visibility = "hidden"
+            contactsAutoCompleteListItem.classList.add("contactsAutoCompleteListItem");
+            contactsAutoCompleteListItem.setAttribute("id", contact.contact_id)
+            // index++
+            // contactsAutoCompleteListItem.setAttribute("index", index)
             contactsAutoCompleteListItem.style.display = "flex";
             contactsAutoCompleteListItem.style.justifyContent = "space-between";
             contactsAutoCompleteListItem.style.alignItems = "center";
@@ -1395,15 +1423,23 @@ async function contactsAutocompleteSearch() {
             contactsAutoCompleteListItem.style.backgroundColor = "#fcfcff";
             })
             const contactAutoCompleteImage = document.createElement("img");
+            contactAutoCompleteImage.classList.add("contactAutoCompleteImageElement");
+            contactAutoCompleteImage.setAttribute("id", contact.contact_id)
             contactAutoCompleteImage.style.width = "35px";
             contactAutoCompleteImage.style.height = "100%";
             contactAutoCompleteImage.style.border = "0.5px solid black";
             contactAutoCompleteImage.style.borderRadius = "50%";
             contactAutoCompleteImage.style.backgroundColor = "gainsboro";
             contactAutoCompleteImage.style.objectFit = "cover";
-
-            // contactAutoCompleteImage.setAttribute("src", contact.contact_image);
+            // contactAutoCompleteImage.style.visibility = "hidden";
+            // const contactId = contact.contact_id.toString();
+            // const contactImage = await getAContactImage(userId, contactId)
+            // const imageString = `data:${contactImage.contentType};base64,${contactImage.image}`
+            contactAutoCompleteImage.setAttribute("src", contact.imageString)
+            // contactAutoCompleteImage.loading = "lazy"
             const contactListItemAutocompleteNameContainer = document.createElement("div");
+            contactListItemAutocompleteNameContainer.classList.add("contactListItemAutoCompleteNameContainer")
+            contactListItemAutocompleteNameContainer.setAttribute("id", contact.contact_id)
             contactListItemAutocompleteNameContainer.style.display = "flex";
             contactListItemAutocompleteNameContainer.style.height = "100%"
             const contactAutocompleteFavoriteContainer = document.createElement("div");
@@ -1418,11 +1454,13 @@ async function contactsAutocompleteSearch() {
             contactListItemAutocompleteNameElementContainer.style.display = "flex";
             contactListItemAutocompleteNameElementContainer.style.flexDirection = "column";
             const contactAutoCompleteNameElement = document.createElement("p");
+            contactAutoCompleteNameElement.classList.add("contactAutoCompleteNameElement");
+            contactAutoCompleteNameElement.setAttribute("id", contact.contact_id)
             // contactAutoCompleteNameElement.style.fontFamily = "sans-serif";
             contactAutoCompleteNameElement.style.fontSize = "small"
             contactAutoCompleteNameElement.style.fontWeight = "bold"
             contactAutoCompleteNameElement.style.margin = "0px 0px 0px 10px"
-            contactAutoCompleteNameElement.innerHTML = `${contact.firstname} ${contact.lastname}`
+            // contactAutoCompleteNameElement.innerHTML = `${contact.firstname} ${contact.lastname}`
             const contactAutoCompleteEmailElement = document.createElement("p");
             // contactAutoCompleteEmailElement.style.fontFamily = "sans-serif"
             contactAutoCompleteEmailElement.style.fontSize = "x-small"
@@ -1439,14 +1477,16 @@ async function contactsAutocompleteSearch() {
             contactAutoCompleteNameElement.innerHTML = `${contact.firstname} ${contact.lastname}`
         }
             
-        const contactEmailAddressText = contact.emailaddress;
+        const contactEmailAddressText = contact.email;
         // const ellipsis = "..."
-        let contactEmailAddressTextSlice = contactEmailAddressText.slice(0, 20) + ellipsis
-        console.log(contactEmailAddressText.length)
-        if (contactEmailAddressText.length > 20) {
-            contactAutoCompleteEmailElement.innerHTML = contactEmailAddressTextSlice
-        } else {
-            contactAutoCompleteEmailElement.innerHTML = contact.emailaddress
+        if (contactEmailAddressText !== undefined) {
+            let contactEmailAddressTextSlice = contactEmailAddressText.slice(0, 20) + ellipsis
+            // console.log(contactEmailAddressText.length)
+            if (contactEmailAddressText.length > 20) {
+                contactAutoCompleteEmailElement.innerHTML = contactEmailAddressTextSlice
+            } else {
+                contactAutoCompleteEmailElement.innerHTML = contact.emailaddress
+            }
         }
 
             contactsAutoCompleteListItem.classList.add("contact-list-item");
@@ -1464,24 +1504,95 @@ async function contactsAutocompleteSearch() {
                     window.location.href = contactsAutoCompleteListItem.getAttribute("data");
                 }
             })
-// const searchContactsAutocompleteList = document.querySelector("#autocomplete-contacts-list");
-//               const searchContactsAutocompleteListItems = Array.from(searchContactsAutocompleteList.children);
-//     console.log(searchContactsAutocompleteListItems.children)
 
+            contactsAutoCompleteListItem.addEventListener("click", (event) => {
+            console.log("clicked")
+            if (window.location.href === contactsAutoCompleteListItem.getAttribute("data")) {
+                event.preventDefault()
+            } else {
+                function saveDataToURL(url, data) {
+                    const urlObject = new URL(url);
+                    const params = new URLSearchParams(urlObject.search);
+                
+                    for (const key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            params.set(key, data[key]);
+                        }
+                    }
+                    urlObject.search = params.toString();
+                    return urlObject.toString();
+                }
+                console.log(contactsAutoCompleteListItem)
+                
+                const myURL = contactsAutoCompleteListItem.getAttribute("data");
+                console.log(myURL)
+
+                const str = contactsAutoCompleteListItem.children[1].innerText;
+                let char = "%";
+                let index = str.indexOf(char)
+
+                if (index !== -1) {
+                    str = str.split(char)[0]
+                }
+
+                const myData = {
+                    name: contactsAutoCompleteListItem.getAttribute("name"),
+                    // age: 30,
+                    // city: "New York"
+                };
+                
+                let newURL = saveDataToURL(myURL, myData);
+
+                if (newURL.charAt(newURL.length - 1) === '+') {
+                    console.log(newURL)
+                    let editedurl = newURL.slice(0, -1)
+                    newURL = editedurl
+                }
+               
+                // Expected output: "https://example.com/page?name=John+Doe&age=30&city=New+York"
+                window.location.href = newURL
+            }
+        });
             contactListItemAutocompleteNameContainer.appendChild(contactAutoCompleteImage);
             contactListItemAutocompleteNameElementContainer.appendChild(contactAutoCompleteNameElement);
             contactListItemAutocompleteNameElementContainer.appendChild(contactAutoCompleteEmailElement);
             contactAutocompleteFavoriteContainer.appendChild(contactAutocompleteFavoriteIcon);
-            contactListItemAutocompleteNameContainer.appendChild(contactAutoCompleteImage);
+            // contactListItemAutocompleteNameContainer.appendChild(contactAutoCompleteImage);
             contactListItemAutocompleteNameContainer.appendChild(contactListItemAutocompleteNameElementContainer);
             contactsAutoCompleteListItem.appendChild(contactListItemAutocompleteNameContainer);
-            contactsAutoCompleteListItem.appendChild(contactAutocompleteFavoriteContainer)
-            searchContactsAutocompleteList.appendChild(contactsAutoCompleteListItem);
-        });
+            contactsAutoCompleteListItem.appendChild(contactAutocompleteFavoriteContainer);
+
+            elementsArr.push(contactsAutoCompleteListItem)
+            // console.log(elementsArr)
+            elementsArr.forEach(element => {
+                // console.log(element)
+                searchContactsAutocompleteList.appendChild(element);
+            });
+      });
+
+    //   console.log(uniqueArray)
+    // if (filteredContacts.length > 0) {
+        // let index = 0;
+        // let finalAutoCompleteItemsArr = [];
+    // async function createAutoCompleteItems() {
+        
+        // return Promise.resolve(finalAutoCompleteItemsArr)
+    // }
+    // }
+    
+    // createAutoCompleteItems().then(arr => {
+    //     console.log(arr)
+    // })
+    // async function appendAutoCompleteListItems() {
+    //     const finalAutoCompleteItemsAr = await createAutoCompleteItems()
+    //     console.log(finalAutoCompleteItemsAr)
+    //     for (let i = 0; i < finalAutoCompleteItemsAr.length; i++) {
+    //         console.log(finalAutoCompleteItemsAr[i])
+    //     }
     // }
 
-    const searchContactsAutocompleteListItems = Array.from(searchContactsAutocompleteList.children);
-    console.log(searchContactsAutocompleteListItems.children)
+    // appendAutoCompleteListItems()
+
 
     // const contactsListElementHTMLArr = contactsListElement.children;
     // const contactListItems = [];
@@ -1500,69 +1611,118 @@ async function contactsAutocompleteSearch() {
     // }
 
     // console.log(contactsListElementHTMLArr.length)
+    // console.log(searchContactsAutocompleteListItems)
 
-    searchContactsAutocompleteListItems.forEach(async (element) => {
-        console.log(element.firstChild.firstChild)
-        const contactImageElement = element.firstChild.firstChild;
-        const contactId = element.getAttribute('id')
-        // const contact_id = contact.contact_id;
-        const contactImage = await getAContactImage(userId, contactId)
-        const imageString = `data:${contactImage.contentType};base64,${contactImage.image}`
-        contactImageElement.setAttribute("src", imageString);
-        contactImageElement.style.borderRadius = "50%";
+    // searchContactsAutocompleteListItems.forEach(async (element) => {
+    //     // console.log(element)
+    //     // element.style.display = "flex"
+    //     const contactListItemAutocompleteNameElementContainer = document.createElement("div");
+    //         contactListItemAutocompleteNameElementContainer.style.display = "flex";
+    //         contactListItemAutocompleteNameElementContainer.style.flexDirection = "column";
 
-        contactImageElement
-        element.addEventListener("click", (event) => {
-            console.log("clicked")
-            if (window.location.href === element.getAttribute("data")) {
-                event.preventDefault()
-            } else {
-                function saveDataToURL(url, data) {
-                    const urlObject = new URL(url);
-                    const params = new URLSearchParams(urlObject.search);
-                
-                    for (const key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            params.set(key, data[key]);
-                        }
-                    }
-                    urlObject.search = params.toString();
-                    return urlObject.toString();
-                }
-                console.log(element)
-                
-                const myURL = element.getAttribute("data");
-                console.log(myURL)
+    //      const contactAutoCompleteImage = document.createElement("img");
+    //         contactAutoCompleteImage.style.width = "35px";
+    //         contactAutoCompleteImage.style.height = "100%";
+    //         contactAutoCompleteImage.style.border = "0.5px solid black";
+    //         contactAutoCompleteImage.style.borderRadius = "50%";
+    //         contactAutoCompleteImage.style.backgroundColor = "gainsboro";
+    //         contactAutoCompleteImage.style.objectFit = "cover";
+    //     // console.log(element.firstChild.firstChild)
+    //     const contactImageElement = element.firstChild.firstChild;
+    //     const contactId = element.getAttribute('id')
+    //     // const contact_id = contact.contact_id;
+    //     const contactImage = await getAContactImage(userId, contactId)
+    //     const contact = await getUserContact(userId, contactId)
+    //     // const imageString = `data:${contactImage.contentType};base64,${contactImage.image}`
+    //     // contactAutoCompleteImage.setAttribute("src", imageString);
+    //     // contactImageElement.style.borderRadius = "50%";`
+        
+    //     const contactListAutoCompleteNameContainerItems = document.querySelectorAll(".contactListItemAutoCompleteNameContainer");
+    //     const contactListAutoCompleteNameContainerItemsArr = Array.from(contactListAutoCompleteNameContainerItems);
+    //     let contactListItemAutocompleteNameContainer;
+    //     contactListAutoCompleteNameContainerItemsArr.forEach(element => {
+    //         if (element.getAttribute("id") === contactId) {
+    //             contactListItemAutocompleteNameContainer = element
+    //         }
+    //     });
+    //     const contactAutoCompleteImageElements = document.querySelectorAll(".contactAutoCompleteImageElement");
+    //     const contactAutoCompleteImageElementsArr = Array.from(contactAutoCompleteImageElements);
+    //     let contactAutoCompleteImageElement;
+    //     contactAutoCompleteImageElementsArr.forEach(element => {
+    //         if (element.getAttribute("id") === contactId) {
+    //             contactAutoCompleteImageElement = element;
+    //             // contactAutoCompleteImageElement.setAttribute("src", imageString) 
+    //             // contactAutoCompleteImageElement.style.visibility = 'visible';  
+    //         }
+    //     })
+    //     // setTimeout(async function() {
+    //         // await contactsAutocompleteSearch
+    //         // element.style.visibility = "visible"
+    //     // }, 100)
+    //     const contactAutoCompleteNameElements = document.querySelectorAll(".contactAutoCompleteNameElement");
+    //     const contactAutoCompleteNameElementsArr = Array.from(contactAutoCompleteNameElements)
+    //     let contactAutoCompleteNameElement;
+    //     contactAutoCompleteNameElementsArr.forEach(element => {
+    //         if (element.getAttribute("id") === contactId) {
+    //             contactAutoCompleteNameElement = element;
+    //         }
+    //     })
+    //     // for (let i = 0; i < contactListAutoCompleteNameContainerItemsArr.length; i++) {
+    //     //     if (contactListAutoCompleteNameContainerItemsArr[i].getAttribute("id") === contactId) {
+    //     //         contactListItemAutocompleteNameContainer = contactListAutoCompleteNameContainerItemsArr[i]
+    //     //     }
+    //     // }
+    //     if (contactListItemAutocompleteNameContainer !== undefined) {
+    //         const contactListItemAutocompleteNameContainerChildren = contactListItemAutocompleteNameContainer.children;
+    //         const contactListItemAutocompleteNameContainerHTMLArr = Array.from(contactListItemAutocompleteNameContainerChildren);
+    //         let numberOfImgTagsArr = []
+    //         // console.log(contactListItemAutocompleteNameContainerHTMLArr)
+    //         for (let i = 0; i < contactListItemAutocompleteNameContainerHTMLArr.length; i++) {
+    //             if (contactListItemAutocompleteNameContainerHTMLArr[i].tagName === "IMG") {
+    //                 numberOfImgTagsArr.push(contactListItemAutocompleteNameContainerHTMLArr[i].tagName)
+    //             }
+    //         }
+    
+    //         // console.log(numberOfImgTagsArr)
+    //         if (numberOfImgTagsArr.length = 1) {
+    //             // console.log(contactAutoCompleteImage)
+    //             // element.style.display = "flex"
+    //             // contactAutoCompleteImageElement.setAttribute("src", imageString);
+    //             setTimeout(function() {
+    //             for (let i = 0; i < contactListItemAutocompleteNameContainerHTMLArr.length; i++) {
+    //                 let checkimg;
+    //             if (contactListItemAutocompleteNameContainerHTMLArr[i].tagName === "IMG") {
+    //                 checkimg = contactListItemAutocompleteNameContainerHTMLArr[i]
+    //                 // numberOfImgTagsArr.push(contactListItemAutocompleteNameContainerHTMLArr[i].tagName)
+    //                 if (checkimg.getAttribute("src") !== null) {
+    //                     element.style.visibility = 'visible';
+    //                     // searchContactsAutocompleteList.style.display = 'block';  
+    //                 }
+    //             }
+    //         }
+    //             }, 20)
 
-                const str = element.children[1].innerText;
-                let char = "%";
-                let index = str.indexOf(char)
+                // if (contactAutoCompleteNameElement !== undefined) {
+                //     contactAutoCompleteNameElement.innerHTML = `${contact.firstname} ${contact.lastname}`
 
-                if (index !== -1) {
-                    str = str.split(char)[0]
-                }
+                //     const contactFullNameText = `${contact.firstname} ${contact.lastname}`
+                //     const ellipsis = "..."
+                //     let contactFullNameTextSlice = contactFullNameText.slice(0, 16) + ellipsis
+                //     // console.log(contactEmailAddressText.length)
+                //     if (contactFullNameText.length > 16) {
+                //         contactAutoCompleteNameElement.innerHTML = contactFullNameTextSlice
+                //     } else {
+                //         contactAutoCompleteNameElement.innerHTML = `${contact.firstname} ${contact.lastname}`
+                //     }
+                // }
 
-                const myData = {
-                    name: element.getAttribute("name"),
-                    // age: 30,
-                    // city: "New York"
-                };
-                
-                let newURL = saveDataToURL(myURL, myData);
-
-                if (newURL.charAt(newURL.length - 1) === '+') {
-                    console.log(newURL)
-                    let editedurl = newURL.slice(0, -1)
-                    newURL = editedurl
-                }
-               
-                // Expected output: "https://example.com/page?name=John+Doe&age=30&city=New+York"
-                window.location.href = newURL
-            }
-        });
-    });
-};
-};
+                // contactListItemAutocompleteNameContainer.prepend(contactAutoCompleteImageElement);
+                // contactListItemAutocompleteNameContainer.appendChild(contactAutoCompleteNameElement);
+                // contactListItemAutocompleteNameContainer.appendChild(contactListItemAutocompleteNameElementContainer);
+            // }
+        // }
+    // });
+}};
 
 async function renderMobileContactsSearchContent() {
     const allUsers = await getAllUsers();
@@ -3301,7 +3461,7 @@ const allUsers = await getAllUsers();
         }
       });
 
-      console.log(userContacts)
+    //   console.log(userContacts)
 
     userContacts.forEach(async (contact) => {
         const contactListItem = document.createElement("div");
@@ -3386,7 +3546,7 @@ const allUsers = await getAllUsers();
         contactListEmailElement.style.margin = "0"
 
         const contactEmailAddresses = await getAContactEmailAddresses(userId, contact_id)
-        console.log(contactEmailAddresses)
+        // console.log(contactEmailAddresses)
         
         if (contactEmailAddresses.length > 0) {
             contactListEmailElement.innerHTML = contactEmailAddresses[0].emailaddress;
@@ -3447,7 +3607,7 @@ const allUsers = await getAllUsers();
 
             const ellipsis = '...'
 
-            console.log(contactListNameElementTextLength)
+            // console.log(contactListNameElementTextLength)
             if (contactListNameElementTextLength > 22) {
                 contactListNameElement.innerHTML = contactListNameElementSlice + ellipsis;
             }
@@ -3456,7 +3616,7 @@ const allUsers = await getAllUsers();
                 contactListEmailElement.innerHTML = contactListEmailElementTextSlice + ellipsis;
             }
 
-            console.log(contactListOrganizationAndRoleElementTextSlice)
+            // console.log(contactListOrganizationAndRoleElementTextSlice)
             if (contactListOrganizationAndRoleElementTextLength > 35) {
                 contactListOrganizationAndRoleElement.innerHTML = contactListOrganizationAndRoleElementTextSlice + ellipsis;
             }
@@ -3864,7 +4024,7 @@ const allUsers = await getAllUsers();
         updateContactFavorite()
     }, false)
 
-    console.log(contact)
+    // console.log(contact)
 
     const contactFavoriteIcon = document.querySelector("#contact-favorite-icon");
     if (contact.favorite === true) {
@@ -3893,7 +4053,7 @@ const allUsers = await getAllUsers();
     // }
 
     const contactEmailAddresses = await getAContactEmailAddresses(user_id, contact_id)
-        console.log(contactEmailAddresses)
+        // console.log(contactEmailAddresses)
     if (contactEmailAddresses.length > 0) {
         contactHeaderEmailElement.innerHTML = contactEmailAddresses[0].emailaddress
     } else {
@@ -3912,9 +4072,9 @@ const allUsers = await getAllUsers();
         contactOrganizationAndRoleElement.style.visibility = "hidden"
     }
 
-    console.log(contactHeaderFullNameElement.clientWidth)
+    // console.log(contactHeaderFullNameElement.clientWidth)
     const computedStyle = window.getComputedStyle(contactHeaderFullNameElement).width;
-    console.log(computedStyle)
+    // console.log(computedStyle)
     requestAnimationFrame(() => {
         const contactHeaderFullNameElementWidth = contactHeaderFullNameElement.clientWidth;
         const contactHeaderFullNameElementText = contactHeaderFullNameElement.innerHTML;
@@ -3940,7 +4100,7 @@ const allUsers = await getAllUsers();
         if (contactHeaderFullNameElementTextLength > 22) {
             contactHeaderFullNameElement.innerHTML = firstContactHeaderFullNameElementSlice + ellipsis;
         }
-        console.log(contactHeaderFullNameElementWidth)
+        // console.log(contactHeaderFullNameElementWidth)
 
         if (contactHeaderEmailElementTextLength > 38) {
             contactHeaderEmailElement.innerHTML = contactHeaderEmailElementTextSlice + ellipsis;
@@ -3955,7 +4115,7 @@ const allUsers = await getAllUsers();
         const contactHeaderOrganizationAndRoleElementFourthTextSlice = contactHeaderOrganizationAndRoleElementText.slice(0, 35);
         const contactHeaderOrganizationAndRoleElementFifthTextSlice = contactHeaderOrganizationAndRoleElementText.slice(0, 30);
 
-        console.log("el width", contactHeaderOrganizationAndRoleElementWidth)
+        // console.log("el width", contactHeaderOrganizationAndRoleElementWidth)
         // console.log(contactListOrganizationAndRoleElementWidth)
         // if (contactHeaderOrganizationAndRoleElementWidth > 400) {
         //     // console.log("el width", contactListOrganizationAndRoleElementWidth)
@@ -3982,7 +4142,7 @@ const allUsers = await getAllUsers();
     const contactEmailSelectElement = document.querySelector("#select-view-contact-email");
 
     // const contactEmailAddresses = await getAContactEmailAddresses(user_id, contact_id);
-    console.log(contactEmailAddresses)
+    // console.log(contactEmailAddresses)
     const viewContactEmailSelectElement = document.querySelector("#select-view-contact-email");
     let viewContactEmailLabelOptionsData = []
     contactEmailAddresses.forEach(contactEmailAddressObj => {
@@ -3992,7 +4152,7 @@ const allUsers = await getAllUsers();
         }
         viewContactEmailLabelOptionsData.push(emailLabelOptionsDataObj)
     });
-    console.log(viewContactEmailLabelOptionsData)
+    // console.log(viewContactEmailLabelOptionsData)
 
      for (let i = 0; i < viewContactEmailLabelOptionsData.length; i++) {
         const option = document.createElement("option");
@@ -4008,7 +4168,7 @@ const allUsers = await getAllUsers();
       }
 
     const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
-    console.log(contactPhoneNumbers)
+    // console.log(contactPhoneNumbers)
     const viewContactPhoneNumberSelectElement = document.querySelector("#select-view-contact-phonenumber");
     let viewContactPhoneNumberLabelOptionsData = []
     contactPhoneNumbers.forEach(contactPhoneNumberAddressObj => {
@@ -4018,7 +4178,7 @@ const allUsers = await getAllUsers();
         }
         viewContactPhoneNumberLabelOptionsData.push(phoneNumberLabelOptionsDataObj)
     });
-    console.log(viewContactPhoneNumberLabelOptionsData)
+    // console.log(viewContactPhoneNumberLabelOptionsData)
 
      for (let i = 0; i < viewContactPhoneNumberLabelOptionsData.length; i++) {
         const option = document.createElement("option");
@@ -6882,7 +7042,6 @@ const allUsers = await getAllUsers();
         }
     };
 
-    console.log('contact_id', contact_id)
     const deleteContactButton = document.querySelector("#delete-contact-button");
     deleteContactButton.addEventListener("click", function() {
         deleteContactEmailAddresses();
@@ -13499,6 +13658,16 @@ async function mobilePostNewContact() {
     }
 
     window.location.href = `${rootUrl}/contacts`
+};
+
+async function getContactImages(user_id) {
+    try {
+    const response = await fetch(`/contact_images/${user_id}`);
+    const jsonData = await response.json();
+    return jsonData;   
+    } catch (err) {
+    console.error(err.message)
+    }
 };
 
 async function getAContactImage(user_id, contact_id) {
