@@ -1074,7 +1074,7 @@ const allUsers = await getAllUsers();
 
     //   console.log(userContacts)
 
-    userContacts.forEach(async (contact) => {
+    userContacts.forEach(contact => {
         const contactListItem = document.createElement("div");
         contactListItem.style.display = "flex"
         contactListItem.style.justifyContent = "space-between"
@@ -1104,6 +1104,7 @@ const allUsers = await getAllUsers();
         contactImageItem.style.borderRadius = "50%";
         contactImageItem.style.backgroundColor = "gainsboro";
         contactImageItem.style.objectFit = "cover";
+        contactListItem.setAttribute("imageString", contact.imageString)
         // const contact_id = contact.contact_id;
         // const contactImage = await getAContactImage(userId, contact_id)
         // const imageString = `data:${contactImage.contentType};base64,${contactImage.image}`
@@ -1133,7 +1134,8 @@ const allUsers = await getAllUsers();
         const contactEmailElement = document.createElement("p");
         // contactEmailElement.style.width = "220px";
         contactEmailElement.setAttribute("id", `contact-email-element-${contact.contact_id}`)
-        contactEmailElement.classList.add("contact-email-element")
+        contactEmailElement.classList.add("contact-email-element");
+        contactListItem.setAttribute("contactEmailValue", contact.email)
         // contactEmailElement.style.fontFamily = "sans-serif"
         contactEmailElement.style.fontSize = "small"
         contactEmailElement.style.margin = "0px 0px 0px 10px";
@@ -1157,20 +1159,20 @@ const allUsers = await getAllUsers();
         // console.log(contactNameElementWidth)
 
 
-        // const contactEmailAddressText = contact.emailaddress;
-        // // const ellipsis = "..."
-        // let contactEmailAddressTextSlice = contactEmailAddressText.slice(0, 20) + ellipsis
-        // // console.log(contactEmailAddressText.length)
-        // if (contactEmailAddressText.length > 20) {
-        //     contactEmailElement.innerHTML = contactEmailAddressTextSlice
-        // } else {
-        //     contactEmailElement.innerHTML = contact.emailaddress
-        // }
+        const contactEmailAddressText = contact.emailaddress;
+        // const ellipsis = "..."
+        let contactEmailAddressTextSlice = contactEmailAddressText.slice(0, 20) + ellipsis
+        // console.log(contactEmailAddressText.length)
+        if (contactEmailAddressText.length > 20) {
+            contactEmailElement.innerHTML = contactEmailAddressTextSlice
+        } else {
+            contactEmailElement.innerHTML = contact.emailaddress
+        }
 
-        // if (contactEmailAddressText.length === 0) {
-        //     contactEmailElement.innerHTML = "XXXXXXXXXXXXXXXXXXXXXX...";
-        //     contactEmailElement.style.visibility = "hidden"
-        // }
+        if (contactEmailAddressText.length === 0) {
+            contactEmailElement.innerHTML = "XXXXXXXXXXXXXXXXXXXXXX...";
+            contactEmailElement.style.visibility = "hidden"
+        }
 
         if (contact.organization !== null && contact.organization !== "" && contact.organization_role !== null && contact.organization_role !== "") {
             contactOrganizationAndRoleElement.innerHTML = `${contact.organization} || ${contact.organization_role}`
@@ -1201,7 +1203,7 @@ const allUsers = await getAllUsers();
         // contactListItem.appendChild(contactListItemImageContainer);
         // contactListItem.appendChild(contactListItemNameContainer);
         contactListItem.appendChild(contactListItemNameContainer)
-        contactListItem.appendChild(contactFavoriteIconContainer)
+        // contactListItem.appendChild(contactFavoriteIconContainer)
         contactListItem.appendChild(contactFavoriteIcon)
         contactsListElement.appendChild(contactListItem)
     });
@@ -1227,20 +1229,20 @@ const allUsers = await getAllUsers();
 
     // console.log(contactsListElementHTMLArr.length)
 
-    contactListItems.forEach(async (element) => {
+    contactListItems.forEach(element => {
         // console.log(element.firstChild.firstChild)
         const contactImageElement = element.firstChild.firstChild;
         const contactId = element.getAttribute('id')
         // const contact_id = contact.contact_id;
-        const contactImage = await getAContactImage(userId, contactId)
-        const imageString = `data:${contactImage.contentType};base64,${contactImage.image}`
-        contactImageElement.setAttribute("src", imageString);
+        // const contactImage = await getAContactImage(userId, contactId)
+        // const imageString = `data:${contactImage.contentType};base64,${contactImage.image}`
+        contactImageElement.setAttribute("src", element.getAttribute("imageString"));
         contactImageElement.style.borderRadius = "50%";
         const contactEmailElement = element.firstChild.children[1].children[1]
-        const contactEmailAddresses = await getAContactEmailAddresses(userId, contactId)
+        // const contactEmailAddresses = await getAContactEmailAddresses(userId, contactId)
         // console.log(contactEmailAddresses)
-        if (contactEmailAddresses.length > 0) {
-            contactEmailElement.innerHTML = contactEmailAddresses[0].emailaddress
+        if (element.getAttribute("contactEmailValue").innerHTML !== "undefined") {
+            contactEmailElement.innerHTML = element.getAttribute("contactEmailValue");
         } else {
             contactEmailElement.innerHTML = "Text";
             contactEmailElement.style.visibility = "hidden"
@@ -1410,6 +1412,7 @@ async function contactsAutocompleteSearch() {
         contactsList.style.display = "none"
       let elementsArr = [];
       uniqueArray.forEach(contact => {
+        console.log(contact)
             const contactsAutoCompleteListItem = document.createElement('div');
             // contactsAutoCompleteListItem.style.visibility = "hidden"
             contactsAutoCompleteListItem.classList.add("contactsAutoCompleteListItem");
@@ -1419,16 +1422,16 @@ async function contactsAutocompleteSearch() {
             contactsAutoCompleteListItem.style.display = "flex";
             contactsAutoCompleteListItem.style.justifyContent = "space-between";
             contactsAutoCompleteListItem.style.alignItems = "center";
-            contactsAutoCompleteListItem.style.height = "35px";
+            contactsAutoCompleteListItem.style.height = "38px";
             // contactsAutoCompleteListItem.style.width = "295px";
-            contactsAutoCompleteListItem.style.border = "1px solid grey";
             // contactsAutoCompleteListItem.style.borderRadius = "5px"
             contactsAutoCompleteListItem.style.marginBottom = "4px";
-            contactsAutoCompleteListItem.style.padding = "5px";
-            contactsAutoCompleteListItem.style.backgroundColor = "#fcfcff";
-            contactsAutoCompleteListItem.style.overflow = "hidden";
             contactsAutoCompleteListItem.style.border = "2px solid black";
-            contactsAutoCompleteListItem.style.boxShadow = "1px 1px 1px";
+            contactsAutoCompleteListItem.style.padding = "5px";
+            contactsAutoCompleteListItem.style.backgroundColor = "rgb(252, 252, 255)";
+            contactsAutoCompleteListItem.style.overflow = "hidden";
+            contactsAutoCompleteListItem.style.cursor = "default";
+            // contactsAutoCompleteListItem.style.boxShadow = "1px 1px 1px";
             contactsAutoCompleteListItem.addEventListener("mouseover", function() {
             contactsAutoCompleteListItem.style.backgroundColor = "lightgreen";
             });
@@ -1442,7 +1445,7 @@ async function contactsAutocompleteSearch() {
             contactAutoCompleteImage.classList.add("contactAutoCompleteImageElement");
             contactAutoCompleteImage.setAttribute("id", contact.contact_id)
             contactAutoCompleteImage.style.width = "35px";
-            contactAutoCompleteImage.style.height = "100%";
+            // contactAutoCompleteImage.style.height = "100%";
             contactAutoCompleteImage.style.border = "0.5px solid black";
             contactAutoCompleteImage.style.borderRadius = "50%";
             contactAutoCompleteImage.style.backgroundColor = "gainsboro";
@@ -1469,12 +1472,13 @@ async function contactsAutocompleteSearch() {
             const contactListItemAutocompleteNameElementContainer = document.createElement("div");
             contactListItemAutocompleteNameElementContainer.style.display = "flex";
             contactListItemAutocompleteNameElementContainer.style.flexDirection = "column";
+            contactListItemAutocompleteNameElementContainer.style.justifyContent = "center";
             const contactAutoCompleteNameElement = document.createElement("p");
             contactAutoCompleteNameElement.classList.add("contactAutoCompleteNameElement");
             contactAutoCompleteNameElement.setAttribute("id", contact.contact_id)
             // contactAutoCompleteNameElement.style.fontFamily = "sans-serif";
             contactAutoCompleteNameElement.style.fontSize = "small"
-            contactAutoCompleteNameElement.style.fontWeight = "bold"
+            contactAutoCompleteNameElement.style.fontWeight = "bolder"
             contactAutoCompleteNameElement.style.margin = "0px 0px 0px 10px"
             // contactAutoCompleteNameElement.innerHTML = `${contact.firstname} ${contact.lastname}`
             const contactAutoCompleteEmailElement = document.createElement("p");
@@ -1499,11 +1503,15 @@ async function contactsAutocompleteSearch() {
             let contactEmailAddressTextSlice = contactEmailAddressText.slice(0, 20) + ellipsis
             // console.log(contactEmailAddressText.length)
             if (contactEmailAddressText.length > 20) {
-                contactAutoCompleteEmailElement.innerHTML = contactEmailAddressTextSlice
+                // contactAutoCompleteEmailElement.innerHTML = contactEmailAddressTextSlice
+                contactAutoCompleteEmailElement.innerHTML = contact.email
             } else {
-                contactAutoCompleteEmailElement.innerHTML = contact.emailaddress
+                contactAutoCompleteEmailElement.innerHTML = contact.email
             }
-        }
+        } else {
+            contactAutoCompleteEmailElement.innerHTML = "Text";
+            contactAutoCompleteEmailElement.style.visibility = "hidden";
+        };
 
             contactsAutoCompleteListItem.classList.add("contact-list-item");
             contactsAutoCompleteListItem.style.cursor = "default"
@@ -1576,7 +1584,7 @@ async function contactsAutocompleteSearch() {
             // contactListItemAutocompleteNameContainer.appendChild(contactAutoCompleteImage);
             contactListItemAutocompleteNameContainer.appendChild(contactListItemAutocompleteNameElementContainer);
             contactsAutoCompleteListItem.appendChild(contactListItemAutocompleteNameContainer);
-            contactsAutoCompleteListItem.appendChild(contactAutocompleteFavoriteContainer);
+            contactsAutoCompleteListItem.appendChild(contactAutocompleteFavoriteIcon);
 
             elementsArr.push(contactsAutoCompleteListItem)
             // console.log(elementsArr)
@@ -9264,7 +9272,20 @@ const allUsers = await getAllUsers();
         let searchFavoriteContactsInputValue = searchFavoriteContactsElement.value.toLowerCase().trimEnd(); //correct
         let filteredContacts = []; //correct
 
-        userContacts.filter(function(contact) { //correct
+        let favoriteContacts = [];
+        userContacts.forEach(contact => {
+            if (contact.favorite) {
+                favoriteContacts.push(contact)
+            };
+        });
+
+        favoriteContacts.sort(function(a, b) { //correct
+        const nameA = `${a.firstname} ${a.lastname}` //correct
+        const nameB = `${b.firstname} ${b.lastname}`; //correct
+        return nameA.localeCompare(nameB) //correct
+        });
+
+        favoriteContacts.filter(function(contact) { //correct
         let contactFirstName = contact.firstname; //correct
         let contactLastName = contact.lastname; //correct
         let contactName = `${contact.firstname} ${contact.lastname}` //correct
@@ -9272,38 +9293,38 @@ const allUsers = await getAllUsers();
         // console.log(searchFavoriteContactsInputValue.length)
 
         if (searchFavoriteContactsInputValue === "") { //correct
-            for (let i = 0; i < userContacts.length; i++) { //correct
-                filteredContacts.push(userContacts[i]) //correct
+            for (let i = 0; i < favoriteContacts.length; i++) { //correct
+                filteredContacts.push(favoriteContacts[i]) //correct
             } //correct
         }
 
         //keep this
 
         // if (contactFirstName.toLowerCase().startsWith(searchContactsInputValue)) {
-        //     for (let i = 0; i < userContacts.length; i++) {
-        //         let matchContactName = `${userContacts[i].firstname} ${userContacts[i].lastname}`
+        //     for (let i = 0; i < favoriteContacts.length; i++) {
+        //         let matchContactName = `${favoriteContacts[i].firstname} ${favoriteContacts[i].lastname}`
         //         if (contactName.toLowerCase() === matchContactName.toLowerCase()) {
-        //             filteredContacts.push(userContacts[i])
+        //             filteredContacts.push(favoriteContacts[i])
         //             // console.log(filteredContacts)
         //         }
         //     }
         // }
 
         // if (contactLastName.toLowerCase().startsWith(searchContactsInputValue)) {
-        //     for (let i = 0; i < userContacts.length; i++) {
-        //         let matchContactName = `${userContacts[i].firstname} ${userContacts[i].lastname}`
+        //     for (let i = 0; i < favoriteContacts.length; i++) {
+        //         let matchContactName = `${favoriteContacts[i].firstname} ${favoriteContacts[i].lastname}`
         //         if (contactName.toLowerCase() === matchContactName.toLowerCase()) {
-        //             filteredContacts.push(userContacts[i])
+        //             filteredContacts.push(favoriteContacts[i])
         //             // console.log(filteredContacts)
         //         }
         //     }
         // }
 
         if (contactName.toLowerCase().startsWith(searchFavoriteContactsInputValue)) { //correct
-            for (let i = 0; i < userContacts.length; i++) { //correct
-                let matchContactName = `${userContacts[i].firstname} ${userContacts[i].lastname}`; //correct
+            for (let i = 0; i < favoriteContacts.length; i++) { //correct
+                let matchContactName = `${favoriteContacts[i].firstname} ${favoriteContacts[i].lastname}`; //correct
                 if (contactName.toLowerCase() === matchContactName.toLowerCase()) { //correct
-                    filteredContacts.push(userContacts[i]); //correct
+                    filteredContacts.push(favoriteContacts[i]); //correct
                     // console.log(filteredContacts)
                 } //correct
             } //correct
@@ -13168,7 +13189,7 @@ async function handleNewContactImage() {
         console.log(newContactImageFile)
 
         reader.onload = function () {
-            base64string = reader.result.split(',')[1]
+            // base64string = reader.result.split(',')[1]
             newContactImage = reader.result;
             newContactImageElement.setAttribute("src", reader.result);
             if (newContactAddPhotoInputElement.files[0] !== undefined) {
