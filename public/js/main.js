@@ -16764,36 +16764,24 @@ async function showPages(state) {
     // console.log(offsetwidth);
     // console.log(clientwidth);
 
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+
+    // console.log(matchingUser)
+    const userId = matchingUser.user_id;
+    const user = await getUser(userId);
+
+    const userImage = await getAUserImage(userId)
+
+    const imageString = `data:${userImage.contentType};base64,${userImage.image}`
+
     await setInitialURLAsLogin()
-
-    const loadingEl = document.createElement("h2");
-    loadingEl.setAttribute("id", "loading-element");
-    loadingEl.innerHTML = "Loading..."
-    loadingEl.style.position = "absolute";
-    loadingEl.style.top = "50%";
-    loadingEl.style.left = "50%";
-    loadingEl.style.transform = "translate(-50%, -50%)";
-    loadingEl.style.margin = 0;
-    const loadingTopBar = document.createElement("div");
-    loadingTopBar.setAttribute("id", "loading-topbar")
-    loadingTopBar.style.position = "absolute";
-    loadingTopBar.style.display = "flex";
-    loadingTopBar.style.justifyContent = "space-between";
-    loadingTopBar.style.alignItems = "center";
-    loadingTopBar.style.width = "100%";
-    loadingTopBar.style.height = "9.5%";
-    loadingTopBar.style.backgroundColor = "darkcyan";
-    loadingTopBar.style.boxShadow = "2px 2px 2px";
-    loadingTopBar.style.backdropFilter = "blur(10px)";
-    loadingTopBar.style.zIndex = "2";
-    const loadingTopBarText = document.createElement("h2");
-    loadingTopBarText.style.position = "relative";
-    loadingTopBarText.style.fontSize = "xx-large";
-    loadingTopBarText.style.fontFamily = "system-ui";
-    loadingTopBarText.style.color = "white";
-    loadingTopBarText.style.margin = "0px 0px 0px 12px" 
-
-    loadingTopBarText.innerHTML = "Contactkeeper";
 
     const appName = document.querySelector("#app-name");
     
@@ -17084,26 +17072,6 @@ async function showPages(state) {
         mobileEditContactViewElement.style.display = "none"
     };
 
-    // const loadingEl = document.createElement("h3");
-    loadingTopBar.style.visibility = "hidden"
-    loadingEl.style.visibility = "hidden";
-
-    loadingTopBar.appendChild(loadingTopBarText)
-    // document.body.appendChild(loadingTopBar)
-    document.body.appendChild(loadingEl)
-
-    if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` && document.body.style.backgroundColor === "beige") {
-        // loadingTopBar.style.visibility = "visible";
-        // loadingTopBar.style.display = "block";
-        loadingEl.style.visibility = "visible";
-        loadingEl.style.display = "block";
-    }
-
-    //  const topbar = this.document.querySelector("topbar")
-    // if (topbar === undefined) {
-    //     this.document.body.style.backgroundColor = "white"
-    // }
-
     document.addEventListener('DOMContentLoaded', () => {
     const inputs = document.querySelectorAll('input'); // Selects all input elements
 
@@ -17114,6 +17082,331 @@ async function showPages(state) {
     // input.setAttribute('spellcheck', 'false');
         });
     });
+
+    //loading code
+    // const loadingElementContainer = document.createElement("div");
+    // loadingElementContainer.setAttribute("id", "loading-element-container");
+    // loadingElementContainer.style.position = "absolute";
+    // loadingElementContainer.style.display = "flex";
+    // loadingElementContainer.style.justifyContent = "space-between";
+    // loadingElementContainer.style.alignItems = "center";
+    // loadingElementContainer.style.width = "165px";
+    // loadingElementContainer.style.top = "50%";
+    // loadingElementContainer.style.left = "50%";
+    // loadingElementContainer.style.transform = "translate(-50%, -50%)";
+    // loadingElementContainer.style.margin = 0;
+    // loadingElementContainer.style.display = "flex";
+    const loadingEl = document.createElement("h2");
+    loadingEl.setAttribute("id", "loading-element");
+    loadingEl.style.margin = "10px"
+    loadingEl.innerHTML = "Loading..."
+    loadingEl.style.position = "absolute";
+    loadingEl.style.display = "flex";
+    loadingEl.style.top = "50%";
+    loadingEl.style.left = "50%";
+    loadingEl.style.transform = "translate(-50%, -50%)";
+    const loadingProgressBarContainer = document.createElement("div");
+    loadingProgressBarContainer.setAttribute("id", "loading-progress-bar-container");
+    loadingProgressBarContainer.style.width = "60%";
+    loadingProgressBarContainer.style.backgroundColor = "#ddd";
+    loadingProgressBarContainer.style.position = "absolute";
+    loadingProgressBarContainer.style.display = "flex";
+    loadingProgressBarContainer.style.top = "60%";
+    loadingProgressBarContainer.style.left = "60%";
+    loadingProgressBarContainer.style.transform = "translate(-50%, -50%)";
+    const loadingProgressBarElement = document.createElement("div");
+    loadingProgressBarElement.setAttribute("id", "loading-progress-bar-element");
+    loadingProgressBarElement.style.width = "0%";
+    loadingProgressBarElement.style.height = "30px";
+    loadingProgressBarElement.style.backgroundColor = "#04AA6D";
+    loadingProgressBarElement.style.transition = "width 0.4s linear";
+    // const loadingSpinner = document.createElement("div");
+    // loadingSpinner.setAttribute("id", "loading-spinner");
+    // loadingSpinner.style.border = "8px solid #f3f3f3";
+    // loadingSpinner.style.borderTop = "8px solid #3498db";
+    // loadingSpinner.style.borderRadius = "50%";
+    // loadingSpinner.style.width = "22px";
+    // loadingSpinner.style.height = "22px";
+    // loadingSpinner.style.marginBottom = "2px"
+    // loadingSpinner.style.animation = "spin 1s linear infinite";
+    // const spinKeyframes = [
+    //     { transform: 'rotate(0deg)' },
+    //     { transform: 'rotate(360deg)' }
+    // ];
+    // const spinTiming = {
+    //     duration: 300,
+    //     iterations: Infinity,
+    //     easing: 'linear'
+    // };
+    // loadingSpinner.animate(spinKeyframes, spinTiming)
+    const loadingTopBar = document.createElement("div");
+    loadingTopBar.setAttribute("id", "loading-topbar")
+    loadingTopBar.style.position = "absolute";
+    loadingTopBar.style.display = "flex";
+    loadingTopBar.style.justifyContent = "space-between";
+    loadingTopBar.style.alignItems = "center";
+    loadingTopBar.style.width = "100%";
+    loadingTopBar.style.height = "9.5%";
+    loadingTopBar.style.backgroundColor = "darkcyan";
+    loadingTopBar.style.boxShadow = "2px 2px 2px";
+    loadingTopBar.style.backdropFilter = "blur(10px)";
+    loadingTopBar.style.zIndex = "2";
+    const loadingTopBarText = document.createElement("h2");
+    loadingTopBarText.style.position = "relative";
+    loadingTopBarText.style.fontSize = "xx-large";
+    loadingTopBarText.style.fontFamily = "system-ui";
+    loadingTopBarText.style.color = "white";
+    loadingTopBarText.style.margin = "0px 0px 0px 12px";
+    loadingTopBarText.style.left = "32%"
+    document.body.style.overflowX = "hidden"
+    loadingTopBarText.innerHTML = "Contactkeeper";
+    const loadingSmallSidebar = document.createElement("div");
+    loadingSmallSidebar.setAttribute("id", "loading-small-sidebar");
+    loadingSmallSidebar.style.position = "fixed";
+    loadingSmallSidebar.style.width = "6.5%";
+    loadingSmallSidebar.style.height = "100%";
+    loadingSmallSidebar.style.top = "0%";
+    loadingSmallSidebar.style.left = "0%";
+    loadingSmallSidebar.style.backgroundColor = "white";
+    loadingSmallSidebar.style.borderRight = "1px solid black";
+    loadingSmallSidebar.style.boxShadow = "2px 2px 2px";
+    loadingSmallSidebar.style.overflow = "hidden";
+    loadingSmallSidebar.style.zIndex = "4";
+    const loadingSmallSidebarContainer = document.createElement("div");
+    loadingSmallSidebarContainer.setAttribute("id", "loading-small-sidebar-container")
+    loadingSmallSidebarContainer.style.display = "flex";
+    loadingSmallSidebarContainer.style.flexDirection = "column";
+    loadingSmallSidebarContainer.style.width = "100%";
+    loadingSmallSidebarContainer.style.height = "100%";
+    const loadingSmallSidebarElementsContainer = document.createElement("div");
+    loadingSmallSidebarElementsContainer.setAttribute("id", "loading-small-sidebar-elements-container");
+    loadingSmallSidebarElementsContainer.style.display = "flex";
+    loadingSmallSidebarElementsContainer.style.flexDirection = "column";
+    loadingSmallSidebarElementsContainer.style.justifyContent = "space-between";
+    loadingSmallSidebarElementsContainer.style.alignItems = "center";
+    loadingSmallSidebarElementsContainer.style.width = "84%";
+    loadingSmallSidebarElementsContainer.style.height = "70%";
+    loadingSmallSidebarElementsContainer.style.marginLeft = "8%";
+    loadingSmallSidebarElementsContainer.style.marginTop = "7px";
+    const loadingNavigateUserIconContainer = document.createElement("div");
+    loadingNavigateUserIconContainer.setAttribute("id", "loading-navigate-icon-container");
+    loadingNavigateUserIconContainer.style.display = "flex";
+    loadingNavigateUserIconContainer.style.flexDirection = "column";
+    loadingNavigateUserIconContainer.style.alignItems = "center";
+    loadingNavigateUserIconContainer.style.width = "100%";
+    loadingNavigateUserIconContainer.style.height = "70px";
+    loadingNavigateUserIconContainer.style.cursor = "default";
+    loadingNavigateUserIconContainer.style.padding = "2.5px";
+    loadingNavigateUserIconContainer.style.borderRadius = "5px";
+    const loadingNavigateUserPageIcon = document.createElement("img");
+    loadingNavigateUserPageIcon.setAttribute("id", "loading-navigate-user-page-icon");
+    loadingNavigateUserPageIcon.style.width = "50px";
+    loadingNavigateUserPageIcon.style.height = "50px";
+    loadingNavigateUserPageIcon.style.border = "1px solid black";
+    loadingNavigateUserPageIcon.style.borderRadius = "50%";
+    loadingNavigateUserPageIcon.style.backgroundColor = "gainsboro";
+    loadingNavigateUserPageIcon.setAttribute("src", imageString);
+    const loadingNavigateUserPageIconText = document.createElement("p");
+    loadingNavigateUserPageIconText.setAttribute("id", "loading-navigate-user-page-icon-text");
+    loadingNavigateUserPageIconText.classList.add("sidebar-icon-text");
+    loadingNavigateUserPageIconText.style.fontFamily = "sans-serif";
+    loadingNavigateUserPageIconText.style.fontWeight = "bolder";
+    loadingNavigateUserPageIconText.style.margin = "0";
+    loadingNavigateUserPageIconText.innerHTML = "Account";
+    const loadingNavigateContactsIconContainer = document.createElement("div");
+    loadingNavigateContactsIconContainer.setAttribute("id", "loading-navigate-contacts-list-page-icon-container");
+    loadingNavigateContactsIconContainer.style.display = "flex";
+    loadingNavigateContactsIconContainer.style.flexDirection = "column";
+    loadingNavigateContactsIconContainer.style.alignItems = "center";
+    loadingNavigateContactsIconContainer.style.width = "100%";
+    loadingNavigateContactsIconContainer.style.height = "70px";
+    loadingNavigateContactsIconContainer.style.cursor = "default";
+    loadingNavigateContactsIconContainer.style.padding = "2.5px";
+    loadingNavigateContactsIconContainer.style.borderRadius = "5px";
+    const loadingNavigateContactsListPageIcon = document.createElement("img");
+    loadingNavigateContactsListPageIcon.setAttribute("id", "loading-navigate-contacts-list-page-icon");
+    loadingNavigateContactsListPageIcon.style.width = "50px";
+    loadingNavigateContactsListPageIcon.style.height = "50px";
+    // loadingNavigateContactsListPageIcon.style.border = "1px solid black";
+    // loadingNavigateContactsListPageIcon.style.borderRadius = "50%";
+    // loadingNavigateContactsListPageIcon.style.backgroundColor = "gainsboro";
+    loadingNavigateContactsListPageIcon.setAttribute("src", "./images/contacts-svgrepo-com.svg");
+    const loadingNavigateContactsPageIconText = document.createElement("p");
+    loadingNavigateContactsPageIconText.setAttribute("id", "loading-navigate-contacts-page-icon-text");
+    loadingNavigateContactsPageIconText.classList.add("sidebar-icon-text");
+    loadingNavigateContactsPageIconText.style.fontFamily = "sans-serif";
+    loadingNavigateContactsPageIconText.style.fontWeight = "bolder";
+    loadingNavigateContactsPageIconText.style.margin = "0";
+    loadingNavigateContactsPageIconText.innerHTML = "Contacts";
+    const loadingNavigateFavoritesIconContainer = document.createElement("div");
+    loadingNavigateFavoritesIconContainer.setAttribute("id", "loading-navigate-favorites-icon-container");
+    loadingNavigateFavoritesIconContainer.style.display = "flex";
+    loadingNavigateFavoritesIconContainer.style.flexDirection = "column";
+    loadingNavigateFavoritesIconContainer.style.alignItems = "center";
+    loadingNavigateFavoritesIconContainer.style.width = "100%";
+    loadingNavigateFavoritesIconContainer.style.height = "70px";
+    loadingNavigateFavoritesIconContainer.style.cursor = "default";
+    loadingNavigateFavoritesIconContainer.style.padding = "2.5px";
+    loadingNavigateFavoritesIconContainer.style.borderRadius = "5px";
+    const loadingNavigateFavoritesPageIcon = document.createElement("img");
+    loadingNavigateFavoritesPageIcon.setAttribute("id", "loading-navigate-favorites-page-icon");
+    loadingNavigateFavoritesPageIcon.style.width = "50px";
+    loadingNavigateFavoritesPageIcon.style.height = "50px";
+    // loadingNavigateFavoritesPageIcon.style.border = "1px solid black";
+    loadingNavigateFavoritesPageIcon.style.borderRadius = "50%";
+    // loadingNavigateFavoritesPageIcon.style.backgroundColor = "gainsboro";
+    loadingNavigateFavoritesPageIcon.setAttribute("src", "./images/star-svgrepo-com.svg");
+    const loadingNavigateFavoritesPageIconText = document.createElement("p");
+    loadingNavigateFavoritesPageIconText.setAttribute("id", "loading-navigate-favorites-page-icon-text");
+    loadingNavigateFavoritesPageIconText.classList.add("sidebar-icon-text");
+    loadingNavigateFavoritesPageIconText.style.fontFamily = "sans-serif";
+    loadingNavigateFavoritesPageIconText.style.fontWeight = "bolder";
+    loadingNavigateFavoritesPageIconText.style.margin = "0";
+    loadingNavigateFavoritesPageIconText.innerHTML = "Favorites";
+    const loadingNavigateGroupsIconContainer = document.createElement("div");
+    loadingNavigateGroupsIconContainer.setAttribute("id", "loading-navigate-groups-icon-container");
+    loadingNavigateGroupsIconContainer.style.display = "flex";
+    loadingNavigateGroupsIconContainer.style.flexDirection = "column";
+    loadingNavigateGroupsIconContainer.style.alignItems = "center";
+    loadingNavigateGroupsIconContainer.style.width = "100%";
+    loadingNavigateGroupsIconContainer.style.height = "70px";
+    loadingNavigateGroupsIconContainer.style.cursor = "default";
+    loadingNavigateGroupsIconContainer.style.padding = "2.5px";
+    loadingNavigateGroupsIconContainer.style.borderRadius = "5px";
+    const loadingNavigateGroupsPageIcon = document.createElement("img");
+    loadingNavigateGroupsPageIcon.setAttribute("id", "loading-navigate-groups-page-icon");
+    loadingNavigateGroupsPageIcon.style.width = "50px";
+    loadingNavigateGroupsPageIcon.style.height = "50px";
+    // loadingNavigateGroupsPageIcon.style.border = "1px solid black";
+    loadingNavigateGroupsPageIcon.style.borderRadius = "50%";
+    // loadingNavigateGroupsPageIcon.style.backgroundColor = "gainsboro";
+    loadingNavigateGroupsPageIcon.setAttribute("src", "./images/group-svgrepo-com.svg");
+    const loadingNavigateGroupsPageIconText = document.createElement("p");
+    loadingNavigateGroupsPageIconText.setAttribute("id", "loading-navigate-groups-page-icon-text");
+    loadingNavigateGroupsPageIconText.classList.add("sidebar-icon-text");
+    loadingNavigateGroupsPageIconText.style.fontFamily = "sans-serif";
+    loadingNavigateGroupsPageIconText.style.fontWeight = "bolder";
+    loadingNavigateGroupsPageIconText.style.margin = "0";
+    loadingNavigateGroupsPageIconText.innerHTML = "Groups";
+    const loadingNavigateNewContactIconContainer = document.createElement("div");
+    loadingNavigateNewContactIconContainer.setAttribute("id", "loading-navigate-new-contact-icon-container");
+    loadingNavigateNewContactIconContainer.style.display = "flex";
+    loadingNavigateNewContactIconContainer.style.flexDirection = "column";
+    loadingNavigateNewContactIconContainer.style.alignItems = "center";
+    loadingNavigateNewContactIconContainer.style.width = "100%";
+    loadingNavigateNewContactIconContainer.style.height = "70px";
+    loadingNavigateNewContactIconContainer.style.cursor = "default";
+    loadingNavigateNewContactIconContainer.style.padding = "2.5px";
+    loadingNavigateNewContactIconContainer.style.borderRadius = "5px";
+    const loadingNavigateNewContactPageIcon = document.createElement("img");
+    loadingNavigateNewContactPageIcon.setAttribute("id", "loading-navigate-new-contact-page-icon");
+    loadingNavigateNewContactPageIcon.style.width = "50px";
+    loadingNavigateNewContactPageIcon.style.height = "50px";
+    // loadingNavigateNewContactPageIcon.style.border = "1px solid black";
+    loadingNavigateNewContactPageIcon.style.borderRadius = "50%";
+    // loadingNavigateNewContactPageIcon.style.backgroundColor = "gainsboro";
+    loadingNavigateNewContactPageIcon.setAttribute("src", "./images/add-circle-svgrepo-com.svg");
+    const loadingNavigateNewContactPageIconText = document.createElement("p");
+    loadingNavigateNewContactPageIconText.setAttribute("id", "loading-navigate-new-contact-page-icon-text");
+    loadingNavigateNewContactPageIconText.classList.add("sidebar-icon-text");
+    loadingNavigateNewContactPageIconText.style.fontFamily = "sans-serif";
+    loadingNavigateNewContactPageIconText.style.fontWeight = "bolder";
+    loadingNavigateNewContactPageIconText.style.margin = "0";
+    loadingNavigateNewContactPageIconText.innerHTML = "New";
+    const loadingSmallSidebarSecondElementsContainer = document.createElement("div");
+    loadingSmallSidebarSecondElementsContainer.style.display = "flex";
+    loadingSmallSidebarSecondElementsContainer.style.flexDirection = "column";
+    loadingSmallSidebarSecondElementsContainer.style.justifyContent = "flex-end";
+    loadingSmallSidebarSecondElementsContainer.style.alignItems = "center";
+    loadingSmallSidebarSecondElementsContainer.style.width = "84%";
+    loadingSmallSidebarSecondElementsContainer.style.height = "30%";
+    loadingSmallSidebarSecondElementsContainer.style.marginLeft = "8%";
+    loadingSmallSidebarSecondElementsContainer.style.marginTop = "5px";
+    loadingSmallSidebarSecondElementsContainer.style.marginBottom = "5px";
+    const loadingSmallSidebarLogoutButtonContainer = document.createElement("div");
+    loadingSmallSidebarLogoutButtonContainer.style.display = "flex";
+    loadingSmallSidebarLogoutButtonContainer.style.flexDirection = "column";
+    loadingSmallSidebarLogoutButtonContainer.style.alignItems = "center";
+    loadingSmallSidebarLogoutButtonContainer.style.width = "100%";
+    loadingSmallSidebarLogoutButtonContainer.style.height = "70px";
+    loadingSmallSidebarLogoutButtonContainer.style.cursor = "default";
+    loadingSmallSidebarLogoutButtonContainer.style.padding = "2.5px";
+    const loadingSmallSidebarLogoutButton = document.createElement("button");
+    loadingSmallSidebarLogoutButton.setAttribute("id", "loading-small-sidebar-logout-button");
+    loadingSmallSidebarLogoutButton.style.width = "65px";
+    loadingSmallSidebarLogoutButton.style.height = "30px";
+    loadingSmallSidebarLogoutButton.style.backgroundColor = "red";
+    loadingSmallSidebarLogoutButton.style.border = "none";
+    loadingSmallSidebarLogoutButton.style.color = "white";
+    loadingSmallSidebarLogoutButton.innerHTML = "Logout";
+
+    //loading large side panel code...
+
+
+    //
+
+    // const loadingEl = document.createElement("h3");
+    loadingTopBar.style.visibility = "hidden"; //mega parent
+    loadingSmallSidebar.style.visibility = "hidden"; //mega parent
+    loadingEl.style.visibility = "hidden";
+
+    // loadingElementContainer.appendChild(loadingEl);
+    // loadingElementContainer.appendChild(loadingSpinner);
+    loadingTopBar.appendChild(loadingTopBarText);
+    loadingProgressBarContainer.appendChild(loadingProgressBarElement)
+    loadingNavigateUserIconContainer.appendChild(loadingNavigateUserPageIcon);
+    loadingNavigateUserIconContainer.appendChild(loadingNavigateUserPageIconText);
+    loadingNavigateContactsIconContainer.appendChild(loadingNavigateContactsListPageIcon);
+    loadingNavigateContactsIconContainer.appendChild(loadingNavigateContactsPageIconText);
+    loadingNavigateFavoritesIconContainer.appendChild(loadingNavigateFavoritesPageIcon);
+    loadingNavigateFavoritesIconContainer.appendChild(loadingNavigateFavoritesPageIconText);
+    loadingNavigateGroupsIconContainer.appendChild(loadingNavigateGroupsPageIcon);
+    loadingNavigateGroupsIconContainer.appendChild(loadingNavigateGroupsPageIconText);
+    loadingNavigateNewContactIconContainer.appendChild(loadingNavigateNewContactPageIcon);
+    loadingNavigateNewContactIconContainer.appendChild(loadingNavigateNewContactPageIconText);
+    loadingSmallSidebarElementsContainer.appendChild(loadingNavigateUserIconContainer);
+    loadingSmallSidebarElementsContainer.appendChild(loadingNavigateContactsIconContainer);
+    loadingSmallSidebarElementsContainer.appendChild(loadingNavigateFavoritesIconContainer);
+    loadingSmallSidebarElementsContainer.appendChild(loadingNavigateGroupsIconContainer);
+    loadingSmallSidebarElementsContainer.appendChild(loadingNavigateNewContactIconContainer);
+    loadingSmallSidebarLogoutButtonContainer.appendChild(loadingSmallSidebarLogoutButton)
+    loadingSmallSidebarSecondElementsContainer.appendChild(loadingSmallSidebarLogoutButtonContainer);
+    loadingSmallSidebarContainer.appendChild(loadingSmallSidebarElementsContainer);
+    loadingSmallSidebarContainer.appendChild(loadingSmallSidebarSecondElementsContainer);
+    loadingSmallSidebar.appendChild(loadingSmallSidebarContainer);
+    
+    document.body.appendChild(loadingTopBar)
+    document.body.appendChild(loadingProgressBarContainer)
+    document.body.appendChild(loadingSmallSidebar)
+    document.body.appendChild(loadingEl)
+
+    const bar = document.getElementById("loading-progress-bar-element");
+
+// Trigger animation
+function startLoading() {
+  bar.style.width = "0%"; // Reset
+  setTimeout(() => {
+    bar.style.width = "100%"; // Fill
+  }, 10); // Small delay to ensure reset is registered
+}
+
+
+
+if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` && document.body.style.backgroundColor === "beige") {
+    // document.body.style.opacity = 0.5
+    loadingTopBar.style.visibility = "visible";
+    loadingSmallSidebar.style.visibility = "visible";
+    // loadingSmallSidebar.style.display = "block";
+    loadingEl.style.visibility = "visible";
+    loadingProgressBarContainer.style.visibility = "visible";
+    startLoading();
+        // loadingEl.style.display = "block";
+    };
+
+    //  const topbar = this.document.querySelector("topbar")
+    // if (topbar === undefined) {
+    //     this.document.body.style.backgroundColor = "white"
+    // }
 };
  
 // domReady(async function() {
@@ -17128,9 +17421,11 @@ async function showPages(state) {
 
 window.addEventListener("beforeunload", function () {
     const loadingEl = this.document.querySelector("#loading-element");
-    loadingEl.style.visibility = "hidden"
-    // const loadingTopBar = this.document.querySelector("#loading-topbar");
-    // loadingTopBar.style.visibility = "hidden"
+    // loadingEl.style.visibility = "visible";
+    const loadingTopBar = this.document.querySelector("#loading-topbar");
+    // loadingTopBar.style.visibility = "hidden";
+    const loadingSmallSidebar = this.document.querySelector("#loading-small-sidebar");
+    // loadingSmallSidebar.style.visibility = "hidden";
 
     this.document.body.style.visibility = "hidden";
     this.document.body.style.opacity = "0";
@@ -17149,28 +17444,29 @@ window.addEventListener("beforeunload", function () {
 
     // const loadingEl = this.document.querySelector("#loading-view");
     // loadingEl.style.visibility = "visible"
-
-})
+});
 
 window.addEventListener("load", async function(event) {
-    this.document.body.style.backgroundColor = "beige";
+    // this.document.body.style.backgroundColor = "beige";
+    
     await showPages();
-    
-    setTimeout(function() {
-        document.body.style.opacity = "1"; 
-    }, 200);
-    
+    document.body.style.opacity = "1"; 
+        
     this.setTimeout(function() {
         const loadingEl = this.document.querySelector("#loading-element");
         loadingEl.style.visibility = "hidden";
-        // const loadingTopBar = this.document.querySelector("#loading-topbar");
-        // loadingTopBar.style.visibility = "hidden";
-    }, 500)
-
-    setTimeout(function() {
+        const loadingTopBar = this.document.querySelector("#loading-topbar");
+        loadingTopBar.style.visibility = "hidden";
+        const loadingSmallSidebar = this.document.querySelector("#loading-small-sidebar");
+        loadingSmallSidebar.style.visibility = "hidden";
+        const loadingProgressBarContainer = document.querySelector("#loading-progress-bar-container");
+        loadingProgressBarContainer.style.visibility = "hidden";
         document.body.style.visibility = "visible";
         document.body.style.backgroundColor = "beige";
-    }, 500);
+    }, 500)
+
+    // setTimeout(function() {
+    // }, 500);
 
     // const loadingEl = this.document.querySelector("#loading-view");
     // loadingEl.style.visibility = "visible"
