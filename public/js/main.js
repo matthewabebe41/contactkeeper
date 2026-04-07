@@ -17820,17 +17820,19 @@ window.addEventListener("beforeunload", function () {
 window.addEventListener("pagehide", function() {
     this.document.body.visibility = "hidden"
     this.document.body.style.opacity = "0"
-    window.history.replaceState({}, '', currentUrl);
+    // window.history.replaceState({}, '', currentUrl);
 })
 
 window.addEventListener("popstate", function(event) {
-    event.preventDefault()
+    // event.preventDefault()
     this.document.body.visibility = "hidden"
     this.document.body.style.opacity = "0"
 })
 
 window.addEventListener("pageshow", function() {
-    this.document.body.style.opacity = "1"
+    // this.document.body.style.opacity = "1"
+    document.body.visibility = "hidden"
+    // document.body.style.opacity = "0"
 })
 
 window.addEventListener("DOMContentLoaded", function() {
@@ -17840,6 +17842,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
 window.addEventListener("load", async function() {
     const previousPage = document.referrer;
+    document.body.style.opacity = "1";
 
     if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` 
         && window.location.href !== `${rootUrl}/recover-password` && previousPage !== `${rootUrl}/login`) {
@@ -17847,12 +17850,12 @@ window.addEventListener("load", async function() {
         document.body.style.visibility = "visible";
     }
 
-    const bar = document.getElementById("loading-progress-bar-element");
+    // const bar = document.getElementById("loading-progress-bar-element");
 
     this.setTimeout(async function() {
         await loadingBar()
-        bar.style.width = "0%"
-    }, 750)  
+        // bar.style.width = "0%"
+    }, 700)  
 
     
     // document.body.style.opacity = "1"; 
