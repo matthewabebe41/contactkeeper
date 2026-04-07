@@ -17820,9 +17820,11 @@ window.addEventListener("beforeunload", function () {
 window.addEventListener("pagehide", function() {
     this.document.body.visibility = "hidden"
     this.document.body.style.opacity = "0"
+    window.history.replaceState({}, '', currentUrl);
 })
 
-window.addEventListener("popstate", function() {
+window.addEventListener("popstate", function(event) {
+    event.preventDefault()
     this.document.body.visibility = "hidden"
     this.document.body.style.opacity = "0"
 })
