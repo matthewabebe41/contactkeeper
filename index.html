@@ -483,11 +483,17 @@
                 <div id="edit-contact-information-row-one" style="display: flex; justify-content: space-between; width: 100%;">
                     <div id="edit-user-first-name-container" style="display: flex; flex-direction: column; width: 35%;">
                         <label style="font-weight: bold;">First Name</label>
-                        <input id="edit-user-firstname" placeholder="First Name">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <input id="edit-user-firstname" autocomplete="off" placeholder="First Name" style="width: 80%;">
+                        <button id="update-user-firstname-button">Edit</button>
+                        </div>
                     </div>
                     <div id="edit-user-last-name-container" style="display: flex; flex-direction: column; width: 35%;">
                         <label style="font-weight: bold;">Last Name</label>
-                        <input id="edit-user-lastname" placeholder="Last Name">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <input id="edit-user-lastname" autocomplete="off" placeholder="Last Name" style="width: 80%">
+                        <button id="update-user-lastname-button">Edit</button>
+                        </div>
                     </div>
                 </div>
                 <div id="edit-user-information-row-two" style="display: flex; width: 100%;">
@@ -495,7 +501,10 @@
                         <div style="display: flex; align-items: flex-end;">
                             <div style="display: flex; flex-direction: column; width: 100%;">
                                 <label style="font-weight: bold;">Email</label>
-                                <input id="edit-user-email" placeholder="example@domain.com">
+                                <div style="display: flex; justify-content: space-between; width: 100%;">
+                                <input id="edit-user-email" autocomplete="off" placeholder="example@domain.com" style="width: 93%;">
+                                <button id="update-user-email-button">Edit</button>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -503,7 +512,10 @@
                 <div id="edit-user-information-row-three" style="display: flex; justify-content: space-between; width: 100%;">
                     <div id="edit-user-organization-container" style="display: flex; flex-direction: column; width: 100%;">
                         <label style="font-weight: bold;">Phone</label>
-                        <input id="edit-user-phonenumber" minlength="10" maxlength="13" placeholder="Enter at least 10 digits">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <input id="edit-user-phonenumber" autocomplete="off" minlength="10" maxlength="13" placeholder="Enter at least 10 digits" style="width: 93%">
+                        <button id="update-user-phonenumber-button">Edit</button>
+                    </div>
                     </div>
                 </div>  
                 <div id="edit-user-information-row-four" style="display: flex; width: 100%;">

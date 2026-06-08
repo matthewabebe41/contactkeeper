@@ -2512,6 +2512,22 @@ const allUsers = await getAllUsers();
     editUserPhoneElement.value = user.phonenumber;
     editUserPasswordElement.value = user.user_password;
 
+    const editUserFirstNameButton = document.querySelector("#update-user-firstname-button");
+    editUserFirstNameButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        
+        // handleUpdateUserFirstnameInput()
+        updateUserFirstName()
+    })
+
+    const editUserLastNameButton = document.querySelector("#update-user-lastname-button");
+    editUserLastNameButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        // handleUpdateUserLastnameInput()
+        updateUserLastName()
+    })
+
     // const newContactPhoneNumberElement = document.querySelector("#new-contact-phonenumber");
     // const phonenumber = newContactPhoneNumberElement.value
     // console.log(phonenumber)
@@ -2635,6 +2651,72 @@ const allUsers = await getAllUsers();
         deleteUser();
     })
 };
+
+async function handleUpdateUserFirstnameInput() {
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const userId = matchingUser.user_id;
+    const user = await getUser(userId);
+
+    // console.log(user)
+
+    const editUserFirstNameElement = document.querySelector("#edit-user-firstname");
+    const editUserFirstNameValue = editUserFirstNameElement.value;
+
+     const editUserFirstNameObj = {
+        userId: userId,
+        sessionId: user.session_id,
+        emailaddress: user.emailaddress,
+        firstname: editUserFirstNameValue,
+        lastname: user.lastname,
+        phonenumber: user.phonenumber,
+        password: user.user_password
+    };
+
+    console.log(editUserFirstNameObj)
+
+    return editUserFirstNameObj
+};
+
+async function handleUpdateUserLastnameInput() {
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const userId = matchingUser.user_id;
+    const user = await getUser(userId);
+
+    // console.log(user)
+
+    const editUserLastNameElement = document.querySelector("#edit-user-lastname");
+    const editUserLastNameValue = editUserLastNameElement.value;
+
+     const editUserLastNameObj = {
+        userId: userId,
+        sessionId: user.session_id,
+        emailaddress: user.emailaddress,
+        firstname: user.firstname,
+        lastname: editUserLastNameValue,
+        phonenumber: user.phonenumber,
+        password: user.user_password
+    };
+
+    console.log(editUserLastNameObj)
+
+    return editUserLastNameObj
+};
+
+
 
 async function renderMobileEditUserContent() {
 const allUsers = await getAllUsers();
@@ -3068,7 +3150,7 @@ async function handleUploadImageInput() {
         console.log(newUserImageFile)
 
         reader.onload = function () {
-            base64string = reader.result.split(',')[1]
+            const base64string = reader.result.split(',')[1]
             newUserImage = reader.result;
             newUserImageElement.setAttribute("src", reader.result);
             newUserImageElement.style.borderRadius = "50%"
@@ -14027,6 +14109,155 @@ async function updateUser(event) {
     }
 };
 
+async function updateUserFirstName() {
+    const url = window.location.href;
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const user = await getUser(user_id)
+
+    const editUserFirstNameObj = await handleUpdateUserFirstnameInput()
+
+    const userId = editUserFirstNameObj.userId;
+    const firstname = editUserFirstNameObj.firstname;
+    const lastname = editUserFirstNameObj.lastname;
+    const emailaddress = editUserFirstNameObj.emailaddress;
+    const phonenumber = editUserFirstNameObj.phonenumber;
+    const password = editUserFirstNameObj.password;
+    const session_id = editUserFirstNameObj.sessionId;
+
+    if (user.firstname === editUserFirstNameObj.firstname) {
+        alert("Input matches stored name. Please make a change before saving.")
+        return
+    }
+
+    const body = { firstname, lastname, emailaddress, phonenumber, password, session_id };
+    try {
+        const response = await fetch(`/users/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+        function saveDataToURL(url, data) {
+            const urlObject = new URL(url);
+            const params = new URLSearchParams(urlObject.search);
+        
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    params.set(key, data[key]);
+                }
+            }
+            urlObject.search = params.toString();
+            return urlObject.toString();
+        }
+                
+        const myURL = `${rootUrl}/user`
+        const myData = {
+            name: `${firstname} ${lastname}`,
+            // age: 30,
+            // city: "New York"
+        };
+        
+        let newURL = saveDataToURL(myURL, myData);
+    
+        if (newURL.charAt(newURL.length - 1) === '+') {
+            console.log(newURL)
+            let editedurl = newURL.slice(0, -1)
+            newURL = editedurl
+        }
+
+        alert("Updated your first name.")
+    
+        window.location.href = newURL;
+    // }
+};
+
+async function updateUserLastName() {
+    const url = window.location.href;
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const user = await getUser(user_id)
+
+    const editUserLastNameObj = await handleUpdateUserLastnameInput()
+
+    const userId = editUserLastNameObj.userId;
+    const firstname = editUserLastNameObj.firstname;
+    const lastname = editUserLastNameObj.lastname;
+    const emailaddress = editUserLastNameObj.emailaddress;
+    const phonenumber = editUserLastNameObj.phonenumber;
+    const password = editUserLastNameObj.password;
+    const session_id = editUserLastNameObj.sessionId;
+
+    if (user.lastname === editUserLastNameObj.lastname) {
+        alert("Input matches stored name. Please make a change before saving.")
+        return
+    }
+
+    const body = { firstname, lastname, emailaddress, phonenumber, password, session_id };
+    try {
+        const response = await fetch(`/users/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    function saveDataToURL(url, data) {
+            const urlObject = new URL(url);
+            const params = new URLSearchParams(urlObject.search);
+        
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    params.set(key, data[key]);
+                }
+            }
+            urlObject.search = params.toString();
+            return urlObject.toString();
+        }
+                
+        const myURL = `${rootUrl}/user`
+        const myData = {
+            name: `${firstname} ${lastname}`,
+            // age: 30,
+            // city: "New York"
+        };
+        
+        let newURL = saveDataToURL(myURL, myData);
+    
+        if (newURL.charAt(newURL.length - 1) === '+') {
+            console.log(newURL)
+            let editedurl = newURL.slice(0, -1)
+            newURL = editedurl
+        }
+
+        alert("Updated your last name.")
+    
+        window.location.href = newURL;
+    // }
+};
+
+
 async function mobileUpdateUser() {
     const url = window.location.href;
     const allUsers = await getAllUsers();
@@ -14404,9 +14635,9 @@ async function updateUserPassword(event) {
     const emailaddress = user.emailaddress;
     const phonenumber = user.phonenumber;
     const password = editUserPasswordObject.password;
-    const user_image = user.user_image;
+    // const user_image = user.user_image;
 
-    const body = { firstname, lastname, emailaddress, phonenumber, password, user_image, session_id };
+    const body = { firstname, lastname, emailaddress, phonenumber, password, session_id };
     try {
         const response = await fetch(`/users/${user_id}`, {
             method: "PUT",
