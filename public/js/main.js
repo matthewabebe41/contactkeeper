@@ -2526,7 +2526,7 @@ const allUsers = await getAllUsers();
 
         // handleUpdateUserLastnameInput()
         updateUserLastName()
-    })
+    });
 
     // const newContactPhoneNumberElement = document.querySelector("#new-contact-phonenumber");
     // const phonenumber = newContactPhoneNumberElement.value
@@ -2538,6 +2538,22 @@ const allUsers = await getAllUsers();
     editUserPhoneElement.addEventListener("focus", function() {
         resetPhoneNumberFormatOnFocus(editUserPhoneElement)
     });
+
+    const editUserEmailButton = document.querySelector("#update-user-email-button");
+    editUserEmailButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        // handleUpdateUserEmailInput()
+        updateUserEmail()
+    });
+
+    const editUserPhonenumberButton = document.querySelector("#update-user-phonenumber-button");
+    editUserPhonenumberButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        // handleUpdateUserPhonenumberInput();
+        updateUserPhonenumber()
+    })
 
     const editUserInformationRowFive = document.querySelector("#edit-user-information-row-five");
     const editUserInformationRowSix = document.querySelector("#edit-user-information-row-six");
@@ -2618,11 +2634,11 @@ const allUsers = await getAllUsers();
     //     }, false)
     // })
 
-    const submitEditUserButton = document.querySelector("#submit-edit-user-button");
-    submitEditUserButton.addEventListener("click", function(event) {
-        event.preventDefault()
-        updateUser()
-    }, false)
+    // const submitEditUserButton = document.querySelector("#submit-edit-user-button");
+    // submitEditUserButton.addEventListener("click", function(event) {
+    //     event.preventDefault()
+    //     updateUser()
+    // }, false)
 
     const updateUserPasswordButton = document.querySelector("#update-user-password-button");
     updateUserPasswordButton.addEventListener("click", function(event) {
@@ -2716,7 +2732,65 @@ async function handleUpdateUserLastnameInput() {
     return editUserLastNameObj
 };
 
+async function handleUpdateUserEmailInput() {
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const userId = matchingUser.user_id;
+    const user = await getUser(userId);
 
+    const editUserEmailElement = document.querySelector("#edit-user-email");
+    const editUserEmailValue = editUserEmailElement.value;
+
+    const editUserEmailObj = {
+        userId: userId,
+        sessionId: user.session_id,
+        emailaddress: editUserEmailValue,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        phonenumber: user.phonenumber,
+        password: user.user_password
+    };
+
+    console.log(editUserEmailObj)
+
+    return editUserEmailObj
+};
+
+async function handleUpdateUserPhonenumberInput() {
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const userId = matchingUser.user_id;
+    const user = await getUser(userId);
+
+    const editUserPhonenumberElement = document.querySelector("#edit-user-phonenumber");
+    const editUserPhonenumberValue = editUserPhonenumberElement.value;
+
+    const editUserPhonenumberObj = {
+        userId: userId,
+        sessionId: user.session_id,
+        emailaddress: user.emailaddress,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        phonenumber: editUserPhonenumberValue,
+        password: user.user_password
+    };
+
+    console.log(editUserPhonenumberObj)
+
+    return editUserPhonenumberObj
+};
 
 async function renderMobileEditUserContent() {
 const allUsers = await getAllUsers();
@@ -14180,7 +14254,6 @@ async function updateUserFirstName() {
         alert("Updated your first name.")
     
         window.location.href = newURL;
-    // }
 };
 
 async function updateUserLastName() {
@@ -14252,11 +14325,136 @@ async function updateUserLastName() {
         }
 
         alert("Updated your last name.")
-    
         window.location.href = newURL;
-    // }
+        // window.history.replaceState(null, "", newURL)
+        // window.location.reload(true)
 };
 
+async function updateUserEmail() {
+    const url = window.location.href;
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const user = await getUser(user_id)
+
+    const editUserEmailObj = await handleUpdateUserEmailInput()
+
+    const userId = editUserEmailObj.userId;
+    const firstname = editUserEmailObj.firstname;
+    const lastname = editUserEmailObj.lastname;
+    const emailaddress = editUserEmailObj.emailaddress;
+    const phonenumber = editUserEmailObj.phonenumber;
+    const password = editUserEmailObj.password;
+    const session_id = editUserEmailObj.sessionId;
+
+    if (user.emailaddress === editUserEmailObj.emailaddress) {
+        alert("Input matches stored email address. Please make a change before saving.")
+        return
+    }
+
+    const body = { firstname, lastname, emailaddress, phonenumber, password, session_id };
+    try {
+        const response = await fetch(`/users/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    function saveDataToURL(url, data) {
+            const urlObject = new URL(url);
+            const params = new URLSearchParams(urlObject.search);
+        
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    params.set(key, data[key]);
+                }
+            }
+            urlObject.search = params.toString();
+            return urlObject.toString();
+        }
+                
+        const myURL = `${rootUrl}/user`
+        const myData = {
+            name: `${firstname} ${lastname}`,
+            // age: 30,
+            // city: "New York"
+        };
+        
+        let newURL = saveDataToURL(myURL, myData);
+    
+        if (newURL.charAt(newURL.length - 1) === '+') {
+            console.log(newURL)
+            let editedurl = newURL.slice(0, -1)
+            newURL = editedurl
+        }
+
+        alert("Updated your email address.")
+    
+        window.location.href = newURL;
+};
+
+async function updateUserPhonenumber() {
+    const url = window.location.href;
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const user = await getUser(user_id)
+
+    const editUserPhonenumberObj = await handleUpdateUserPhonenumberInput()
+
+    const userId = editUserPhonenumberObj.userId;
+    const firstname = editUserPhonenumberObj.firstname;
+    const lastname = editUserPhonenumberObj.lastname;
+    const emailaddress = editUserPhonenumberObj.emailaddress;
+    const phonenumber = editUserPhonenumberObj.phonenumber;
+    const password = editUserPhonenumberObj.password;
+    const session_id = editUserPhonenumberObj.sessionId;
+
+    if (user.phonenumber === editUserPhonenumberObj.phonenumber) {
+        alert("Input matches stored phone number. Please make a change before saving.")
+        return
+    }
+
+    const body = { firstname, lastname, emailaddress, phonenumber, password, session_id };
+    try {
+        const response = await fetch(`/users/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    const myURL = `${rootUrl}/user?user_id=${userId}&name=${firstname}+${lastname}`
+    
+        if (myURL.charAt(myURL.length - 1) === '+') {
+            console.log(myURL)
+            let editedurl = myURL.slice(0, -1)
+            myURL = editedurl
+        }
+
+        alert("Updated your phone number.")
+    
+        window.location.href = myURL;
+};
 
 async function mobileUpdateUser() {
     const url = window.location.href;
@@ -18065,6 +18263,29 @@ window.addEventListener("pageshow", function() {
     document.body.visibility = "hidden"
     // document.body.style.opacity = "0"
 })
+
+// window.addEventListener('pageshow', (event) => {
+//   // event.persisted is true when the page is loaded from the Back/Forward cache
+//   if (event.persisted) {
+    
+//     // Check if the current URL contains old or stale data
+//     const currentUrl = new URL(window.location.href);
+//     if (currentUrl.searchParams.has('outdated_param')) {
+      
+//       // Update the URL silently without a page reload
+//       currentUrl.searchParams.set('updated_param', 'fresh_data');
+//       history.replaceState(null, '', currentUrl.toString());
+      
+//       // Call your function to update the stale UI data
+//       fetchFreshData();
+//     }
+//   }
+// });
+
+// function fetchFreshData() {
+//   console.log("Fetching new data for the updated URL...");
+// }
+
 
 window.addEventListener("DOMContentLoaded", function() {
     // this.document.body.style.visibility = "hidden";
