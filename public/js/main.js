@@ -2378,6 +2378,7 @@ const allUsers = await getAllUsers();
     const editUserAddPhotoInputElement = document.querySelector("#edit-user-add-photo");
     
     let editUserImageSrcStr = editUserImage.getAttribute("src").toString();
+    if (editUserImageSrcStr !== "./images/user-5-svgrepo-com.svg") {
     let startIndex = editUserImageSrcStr.indexOf('d');
     let endIndex = editUserImageSrcStr.indexOf(',');
     
@@ -2405,7 +2406,7 @@ const allUsers = await getAllUsers();
             let reader = new FileReader()
 
             reader.onload = function () {
-                base64string = reader.result.split(',')[1]
+               const base64string = reader.result.split(',')[1]
                 // imageFile = reader.result;
                 // console.log(base64string)
                 // newUserImageInputElement.setAttribute("src", base64string);
@@ -2428,10 +2429,12 @@ const allUsers = await getAllUsers();
         .catch(error => console.error('Error fetching image:', error));
 
         console.log(imageString)
-
+    }
+        
+    //check for unecessary conditions.
         if (editUserImage.getAttribute("src") !== imageString && editUserAddPhotoInputElement.value !== "") {
             editUserAddPhotoInputElement.value = "";
-            editUserImage.setAttribute("src", imageString)
+            editUserImage.setAttribute("src", "./images/user-5-svgrepo-com.svg")
         } else if (editUserImage.getAttribute("src") === imageString && editUserAddPhotoInputElement.value === "") {
             editUserImage.setAttribute("src", "./images/user-5-svgrepo-com.svg")
         } else if (editUserImage.getAttribute("src") !== imageString && editUserAddPhotoInputElement.value === "") {
@@ -2512,6 +2515,130 @@ const allUsers = await getAllUsers();
     editUserPhoneElement.value = user.phonenumber;
     editUserPasswordElement.value = user.user_password;
 
+    editUserFirstNameElement.addEventListener("focus", async function() {
+        // console.log(user)
+
+        const userFirstName = user.firstname;
+        const userLastName = user.lastname;
+        const userEmailAddress = user.emailaddress;
+        const userPhonenumber = user.phonenumber;
+
+        editUserLastNameElement.value = userLastName;
+        editUserEmailElement.value = userEmailAddress;
+        editUserPhoneElement.value = userPhonenumber;
+    });
+
+    editUserLastNameElement.addEventListener("focus", async function() {
+        // console.log(user)
+
+        const userFirstName = user.firstname;
+        const userLastName = user.lastname;
+        const userEmailAddress = user.emailaddress;
+        const userPhonenumber = user.phonenumber;
+
+        editUserFirstNameElement.value = userFirstName;
+        editUserEmailElement.value = userEmailAddress;
+        editUserPhoneElement.value = userPhonenumber;
+    });
+
+    editUserEmailElement.addEventListener("focus", async function() {
+        // console.log(user)
+
+        const userFirstName = user.firstname;
+        const userLastName = user.lastname;
+        const userEmailAddress = user.emailaddress;
+        const userPhonenumber = user.phonenumber;
+
+        editUserFirstNameElement.value = userFirstName;
+        editUserLastNameElement.value = userLastName;
+        editUserPhoneElement.value = userPhonenumber;
+    });
+
+    editUserPhoneElement.addEventListener("focus", async function() {
+        // console.log(user)
+
+        const userFirstName = user.firstname;
+        const userLastName = user.lastname;
+        const userEmailAddress = user.emailaddress;
+        const userPhonenumber = user.phonenumber;
+
+        editUserFirstNameElement.value = userFirstName;
+        editUserLastNameElement.value = userLastName;
+        editUserEmailElement.value = userEmailAddress;
+    });
+
+    //     editContactFirstNameElement.addEventListener("focus", async function() {
+    //     const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
+    //     const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
+    //     const contactAddresses = await getAContactAddress(user_id, contact_id);
+    //     const contactWebsites = await getAContactWebsite(user_id, contact_id);
+
+    //     const contactFirstName = contact.firstname;
+    //     const contactLastName = contact.lastname;
+    //     const contactGender = contact.gender;
+    //     const contactBirthday = contact.birthday;
+    //     const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
+    //     const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
+    //     const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
+    //     const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
+    //     let selectedEmail;
+    //     for (let i = 0; i < contactEmailAddress.length; i++) {
+    //         if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
+    //             selectedEmail = contactEmailAddress[i].emailaddress;
+    //         }
+    //     };
+    //     const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
+    //     const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
+    //     const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
+    //     const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
+    //     let selectedPhoneNumber;
+    //     for (let i = 0; i < contactPhoneNumbers.length; i++) {
+    //         if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
+    //             selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
+    //         }
+    //     };
+    //     const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
+    //     const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
+    //     const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
+    //     const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
+    //     let selectedAddress;
+    //     for (let i = 0; i < contactAddresses.length; i++) {
+    //         if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
+    //             selectedAddress = contactAddresses[i].address;
+    //         }
+    //     }
+    //     const contactOrganization = contact.organization;
+    //     const contactOrganizationRole = contact.organization_role;
+    //     const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
+    //     const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
+    //     const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
+    //     const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
+    //     let selectedWebsite;
+    //     for (let i = 0; i < contactWebsites.length; i++) {
+    //         // console.log(contactWebsites[i].websiteid)
+    //         // console.log(contactWebsitesSelectedIndexId)
+    //         if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
+    //             selectedWebsite = contactWebsites[i].website
+    //         }
+    //     }
+    //     const contactNotes = contact.notes;
+    //     const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
+    //     editContactSelectGenderElement.style.display = "none";
+    //     editContactGenderElement.style.display = "block";
+
+    //     editContactLastNameElement.value = contactLastName;
+    //     editContactGenderElement.value = contactGender;
+    //     editContactBirthdayElement.value = contactBirthday;
+    //     editContactEmailAddressElement.value = selectedEmail;
+    //     editContactPhoneNumberElement.value = "";
+    //     editContactPhoneNumberElement.value = selectedPhoneNumber;
+    //     editContactAddressElement.value = selectedAddress;
+    //     editContactOrganizationElement.value = contactOrganization;
+    //     editContactRoleElement.value = contactOrganizationRole;
+    //     editContactSocialMediaElement.value = selectedWebsite;
+    //     editContactNotesElement.value = contactNotes;
+    // });
+
     const editUserFirstNameButton = document.querySelector("#update-user-firstname-button");
     editUserFirstNameButton.addEventListener("click", function(event) {
         event.preventDefault();
@@ -2561,6 +2688,27 @@ const allUsers = await getAllUsers();
     const editUserHidePasswordButton = document.querySelector("#edit-user-hide-password-button");
     editUserChangePasswordButton.addEventListener("click", function(event) {
         event.preventDefault()
+
+        const userFirstName = user.firstname;
+        const userLastName = user.lastname;
+        const userEmailAddress = user.emailaddress;
+        const userPhonenumber = user.phonenumber;
+
+        editUserFirstNameElement.value = userFirstName;
+        editUserLastNameElement.value = userLastName;
+        editUserEmailElement.value = userEmailAddress;
+        editUserPhoneElement.value = userPhonenumber;
+
+        editUserFirstNameElement.readOnly = true;
+        editUserLastNameElement.readOnly = true;
+        editUserEmailElement.readOnly = true;
+        editUserPhoneElement.readOnly = true;
+
+        editUserFirstNameElement.setAttribute("title", "Close change password form to continue editing.")
+        editUserLastNameElement.setAttribute("title", "Close change password form to continue editing.")
+        editUserEmailElement.setAttribute("title", "Close change password form to continue editing.")
+        editUserPhoneElement.setAttribute("title", "Close change password form to continue editing.")
+
         editUserInformationRowFive.style.visibility = "visible";
         editUserInformationRowSix.style.visibility = "visible";
         editUserChangePasswordButton.style.display = "none";
@@ -2575,6 +2723,17 @@ const allUsers = await getAllUsers();
 
     editUserHidePasswordButton.addEventListener("click", function(event) {
         event.preventDefault()
+
+        editUserFirstNameElement.readOnly = false;
+        editUserLastNameElement.readOnly = false;
+        editUserEmailElement.readOnly = false;
+        editUserPhoneElement.readOnly = false;
+
+        editUserFirstNameElement.removeAttribute("title")
+        editUserLastNameElement.removeAttribute("title")
+        editUserEmailElement.removeAttribute("title")
+        editUserPhoneElement.removeAttribute("title")
+
         editUserInformationRowFive.style.visibility = "hidden";
         editUserInformationRowSix.style.visibility = "hidden";
         editUserPasswordElement.value = user.user_password;
@@ -17100,7 +17259,7 @@ function formatPhoneNumberForData(element) {
     let phonenumber = element.value;
     phonenumber = removeNonNumericCharacters(phonenumber)
     phonenumber.replace(/[\s+\-()]/g, '')
-    console.log(phonenumber)
+    // console.log(phonenumber)
 
 if (phonenumber.length === 10) {
 

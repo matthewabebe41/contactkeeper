@@ -80,23 +80,23 @@ app.get("/search-contacts", (req, res) => {
 });
 
 //get an image
-app.get("/images/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const result = await pool.query('SELECT * FROM images WHERE id = $1', [id]);
-    if (result.rows.length > 0) {
-                const imageData = result.rows[0].data; // bytea data as Buffer
-                const contentType = result.rows[0].mime_type; // e.g., 'image/jpeg'
-                const base64Image = imageData.toString('base64');
-                res.json({ image: base64Image, contentType: contentType });
-            } else {
-                res.status(404).send('Image not found');
-            }
-        } catch (error) {
-            console.error('Error fetching image:', error);
-            res.status(500).send('Server error');
-        }
-})
+// app.get("/images/:id", async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const result = await pool.query('SELECT * FROM images WHERE id = $1', [id]);
+//     if (result.rows.length > 0) {
+//                 const imageData = result.rows[0].data; // bytea data as Buffer
+//                 const contentType = result.rows[0].mime_type; // e.g., 'image/jpeg'
+//                 const base64Image = imageData.toString('base64');
+//                 res.json({ image: base64Image, contentType: contentType });
+//             } else {
+//                 res.status(404).send('Image not found');
+//             }
+//         } catch (error) {
+//             console.error('Error fetching image:', error);
+//             res.status(500).send('Server error');
+//         }
+// })
 
 //post image
 // app.post("/images", upload.single('imageFile'), async (req, res) => {
