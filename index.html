@@ -9,7 +9,7 @@
 <body style="height: 100vh; width: 100%; background-color: beige; background-size: cover; background-repeat: no-repeat; visibility: hidden; margin: 0; overflow-y: scroll; overscroll-behavior: none;"></body>
 
     <div id="topbar" style="position: fixed; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 9.5%; background-color: darkcyan; box-shadow: 2px 2px 2px; backdrop-filter: blur(10px); z-index: 3;">
-            <h2 id="app-name" style="position: relative; font-size: xx-large; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; color: white; left: 32%; margin: 0px 0px 0px 12px;">Contactkeeper</h2>
+            <h2 id="app-name" style="position: relative; font-size: xx-large; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; color: white; margin: 0px 0px 0px 12px;">Contactkeeper</h2>
         <div id="mobile-list-menu-icon-container" style="display: flex; height: 100%; align-items: center;">
             <img id="mobile-search-icon" src="./images/search-svgrepo-com.svg" style="width: 45px; padding: 5px; display: none;">
             <img id="mobile-list-menu-icon" src="./images/menu-svgrepo-com.svg" style="width: 40px; padding: 5px; display: none;">
@@ -17,8 +17,12 @@
         </div>
     </div>
 
-    <div id="mobile-menu" style="display: none; position: absolute; flex-direction: column; width: 100%; height: 30%; top: 9.4%; background-color: ghostwhite; z-index: 2;">
-        <ul style="display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; padding: 0px; margin: 0px;">
+    <div id="loading-topbar-doc" style="display: none;">
+        <h2>Loading Bar</h2>
+    </div>
+
+    <div id="mobile-menu" style="display: none; position: fixed; flex-direction: column; width: 100%; top: 9.4%; background-color: ghostwhite; z-index: 2;">
+        <ul style="display: flex; flex-direction: column; justify-content: space-between; width: 100%; background-color: grey; padding: 0px; margin: 0px;">
             <li id="mobile-account-menu-item" style="display: flex; justify-content: center; align-items: center; height: 25%; font-size: large; font-weight: bold; border-bottom: 1px solid black; padding: 2px; list-style-type: none;">Account</li>
             <li id="mobile-contacts-list-menu-item" style="display: flex; justify-content: center; align-items: center; height: 25%; font-size: large; font-weight: bold; border-bottom: 1px solid black; padding: 2px; list-style-type: none;">Contacts</li>
             <li id="mobile-favorites-list-menu-item" style="display: flex; justify-content: center; align-items: center; height: 25%; font-size: large; font-weight: bold; border-bottom: 1px solid black; padding: 2px; list-style-type: none;">Favorites</li>
@@ -800,7 +804,7 @@
                             <label style="font-weight: bold;">Email</label>
                         </div>
                         <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
-                           <select id="select-view-contact-email" style="width: 100px; height: 19px;"></select>
+                           <select id="select-view-contact-email" style="width: 150px; height: 19px;"></select>
                        </div>
                     </div>
                     <textarea id="contact-emailaddress" readonly style="height: 60px; font-size: large; border: 1px solid black; box-shadow: 3px 3px 3px; outline: none; resize: none;"></textarea>
@@ -811,7 +815,7 @@
                             <label style="font-weight: bold;">Phone</label>
                         </div>
                           <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
-                           <select id="select-view-contact-phonenumber" style="width: 100px; height: 19px;"></select>
+                           <select id="select-view-contact-phonenumber" style="width: 150px; height: 19px;"></select>
                        </div>
                     </div>
                     <textarea id="contact-phonenumber" readonly style="height: 60px; font-size: large; border: 1px solid black; box-shadow: 3px 3px 3px; outline: none; resize: none;"></textarea>
@@ -822,7 +826,7 @@
                             <label style="font-weight: bold;">Address</label>
                         </div>
                         <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
-                           <select id="select-view-contact-address" style="width: 100px; height: 19px;"></select>
+                           <select id="select-view-contact-address" style="width: 150px; height: 19px;"></select>
                        </div>
                     </div>
                     <textarea id="contact-address" readonly style="height: 60px; font-size: large; border: 1px solid black; box-shadow: 3px 3px 3px; outline: none; resize: none;"></textarea>
@@ -857,7 +861,7 @@
                             <label style="font-weight: bold;">Website</label>
                         </div>
                         <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
-                           <select id="select-view-contact-website" style="width: 100px; height: 19px;"></select>
+                           <select id="select-view-contact-website" style="width: 150px; height: 19px;"></select>
                        </div>
                     </div>
                     <textarea id="contact-social-media" readonly style="height: 60px; font-size: large; border: 1px solid black; box-shadow: 3px 3px 3px; outline: none; resize: none;"></textarea>
@@ -1040,8 +1044,8 @@
                             </div>
                             <div style="display: flex; justify-content: space-between; width: 100%;">
                                 <input id="edit-contact-emailaddress" autocomplete="off" placeholder="example@domain.com" style="width: 78%;">
-                                <button id="create-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: #00d92f;">New</button>
                                 <button id="update-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: lightblue;">Edit</button>
+                                <button id="create-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: #00d92f;">New</button>
                                 <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button>
                             </div>
                         </div>
@@ -1114,8 +1118,8 @@
                             </div>
                             <div style="display: flex; justify-content: space-between; width: 100%;">
                                 <input id="edit-contact-phonenumber" autocomplete="off" minlength="10" maxlength="13" placeholder="Enter at least 10 digits" style="width: 78%;">
-                                <button id="create-contact-phonenumber" style="background-color: #00d92f;">New</button>
                                 <button id="update-contact-phonenumber" style="background-color: lightblue;">Edit</button>
+                                <button id="create-contact-phonenumber" style="background-color: #00d92f;">New</button>
                                 <button id="remove-contact-phonenumber" style="background-color: indianred;">Remove</button>
                             </div>
                         </div>
@@ -1214,8 +1218,8 @@
                             </div>
                             <div style="display: flex; justify-content: space-between; width: 100%;">
                                 <input id="edit-contact-address" autocomplete="off" maxlength="60" placeholder="Building / Street City, State, Postal Code" style="width: 78%;">
-                                <button id="create-contact-address" style="background-color: #00d92f;">New</button>
                                 <button id="update-contact-address" style="background-color: lightblue;">Edit</button>
+                                <button id="create-contact-address" style="background-color: #00d92f;">New</button>
                                 <button id="remove-contact-address" style="background-color: indianred;">Remove</button>
                             </div>
                         </div>
@@ -1278,8 +1282,8 @@
                             </div>
                             <div style="display: flex; justify-content: space-between; width: 100%;">
                                 <input id="edit-contact-website" autocomplete="off" placeholder="www.examplesite.com/username" style="width: 78%;">
+                                <button id="update-contact-website" style="background-color: lightblue;">Edit</button>
                                    <button id="create-contact-website" style="background-color: #00d92f;">New</button>
-                                   <button id="update-contact-website" style="background-color: lightblue;">Edit</button>
                                    <button id="remove-contact-website" style="background-color: indianred;">Remove</button>
                             </div>
                         </div>

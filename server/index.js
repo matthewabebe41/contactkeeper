@@ -647,7 +647,7 @@ app.put("/contacts/:user_id/:contact_id", async (req, res) => {
     try {
         const { user_id, contact_id } = req.params;
         const { firstname, lastname, gender, birthday, organization, organization_role, favorite, notes } = req.body;
-        const updateContact = await pool.query("UPDATE contacts SET firstname = $1, lastname = $2, birthday = $3, gender = $4, organization = $5, organization_role = $6, favorite = $7, notes = $8 WHERE user_id = $9 AND contact_id = $10", [firstname, lastname, birthday, gender, organization, organization_role, favorite, notes, user_id, contact_id]);
+        const updateContact = await pool.query("UPDATE contacts SET firstname = $1, lastname = $2, gender = $3, birthday = $4, organization = $5, organization_role = $6, favorite = $7, notes = $8 WHERE user_id = $9 AND contact_id = $10", [firstname, lastname, gender, birthday, organization, organization_role, favorite, notes, user_id, contact_id]);
         res.json(updateContact.rows[0]);
     } catch (err) {
         console.error(err.message);

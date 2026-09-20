@@ -4014,8 +4014,27 @@ const allUsers = await getAllUsers();
     };
 };
 
+//match with desktop code
 async function renderMobileContactsListContent() {
-const allUsers = await getAllUsers();
+// const allUsers = await getAllUsers();
+//     const sessionId = sessionStorage.getItem("user");
+//     let matchingUser;
+//     for (let i = 0; i < allUsers.length; i++) {
+//         if (allUsers[i].session_id === sessionId) {
+//             matchingUser = allUsers[i]
+//         }
+//     }
+//     const userId = matchingUser.user_id;
+//     const user = await getUser(userId);
+//     const userContacts = await getUserContacts(userId)
+
+//     const contactsListUserImage = document.querySelector("#mobile-contacts-user-image");
+//     if (user.user_image !== null && user.user_image !== './images/user-5-svgrepo-com.svg') {
+//         contactsListUserImage.setAttribute("src", user.user_image);
+//         contactsListUserImage.style.borderRadius = "50%";
+//     }
+
+    const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
     let matchingUser;
     for (let i = 0; i < allUsers.length; i++) {
@@ -4025,13 +4044,28 @@ const allUsers = await getAllUsers();
     }
     const userId = matchingUser.user_id;
     const user = await getUser(userId);
-    const userContacts = await getUserContacts(userId)
-
-    const contactsListUserImage = document.querySelector("#mobile-contacts-user-image");
-    if (user.user_image !== null && user.user_image !== './images/user-5-svgrepo-com.svg') {
-        contactsListUserImage.setAttribute("src", user.user_image);
-        contactsListUserImage.style.borderRadius = "50%";
+    const userContacts = await getUserContacts(userId);
+    for (let i = 0; i < userContacts.length; i++) {
+        const contactId = userContacts[i].contact_id
+        const contactImage = await getAContactImage(userId, contactId);
+        const contactEmailAddresses = await getAContactEmailAddresses(userId, contactId)
+        const contactEmailObj = contactEmailAddresses[0];
+        let contactEmail;
+        if (contactEmailObj !== undefined) {
+            contactEmail = contactEmailObj.emailaddress;
+        }
+        // console.log(contactEmail)
+        const contactImageStr = `data:${contactImage.contentType};base64,${contactImage.image}`
+        userContacts[i]["email"] = contactEmail;
+        userContacts[i]["imageString"] = contactImageStr;
     }
+
+    const userImage = await getAUserImage(userId);
+    const imageString = `data:${userImage.contentType};base64,${userImage.image}`
+    const contactsListUserImage = document.querySelector("#mobile-contacts-user-image");
+    // console.log(imageString)
+    contactsListUserImage.setAttribute("src", imageString);
+    contactsListUserImage.style.borderRadius = "50%";
 
     // const contactsUserHeaderNameContainer = document.querySelector("#contacts-user-header-name-container");
     // contactsUserHeaderNameContainer.style.margin = "0px 0px 0px 10px"
@@ -4205,12 +4239,7 @@ const allUsers = await getAllUsers();
         contactListItemImage.style.borderRadius = "50%"
         contactListItemImage.style.backgroundColor = "gainsboro";
         contactListItemImage.style.objectFit = "cover";
-        
-        if (contact.contact_image !== null && contact.contact_image !== "./images/user-2-svgrepo-com.svg") {
-            contactListItemImage.setAttribute("src", contact.contact_image);
-        } else {
-            contactListItemImage.setAttribute("src", "./images/user-2-svgrepo-com.svg");
-        }
+        contactListItemImage.setAttribute("src", contact.imageString);
 
         // contactListItem.innerHTML = `${contact.firstname} ${contact.lastname}`;
         const contactListNameContainer = document.createElement("div");
@@ -4264,8 +4293,15 @@ const allUsers = await getAllUsers();
         }
 
         const contactListNameContainerWidth = contactListNameContainer.clientWidth;
-        console.log(contactListItemNameElement.clientWidth)
-        const contactEmailAddressText = contact.emailaddress;
+        // console.log(contact.email)
+        let contactEmail;
+        if (contact.email !== undefined && contact.email !== null) {
+            contactEmail = contact.email
+        } else {
+            contactEmail = "";
+        }
+        console.log(contactEmail)
+        const contactEmailAddressText = contactEmail;
         const contactEmailAddressElementWidth = contactListEmailElement.clientWidth;
         let contactEmailAddressTextSlice = contactEmailAddressText.slice(0, 25) + ellipsis
         if (contactEmailAddressElementWidth > contactListNameContainerWidth) {
@@ -4666,6 +4702,7 @@ const allUsers = await getAllUsers();
         const option = document.createElement("option");
         option.text = "None available"
         option.value = "None available"
+        contactEmailAddressElement.value = ""
         viewContactEmailSelectElement.appendChild(option)
     }
     viewContactEmailSelectElement.addEventListener("change", function() {
@@ -4675,9 +4712,9 @@ const allUsers = await getAllUsers();
         //     console.log(editContactEmailLabelSelectedIndex)
         // }
         contactEmailAddresses.forEach(contactEmailAddressObj => {
-            if (selectedText === contactEmailAddressObj.emailaddresslabel) {
+            if (selectedText === contactEmailAddressObj.emailaddresslabel && selectedText !== "None available") {
                 contactEmailAddressElement.value = contactEmailAddressObj.emailaddress
-            }
+            };
         })
     });
 
@@ -4699,6 +4736,7 @@ const allUsers = await getAllUsers();
         const option = document.createElement("option");
         option.text = "None available"
         option.value = "None available"
+        contactPhoneNumberElement.value = ""
         viewContactPhoneNumberSelectElement.appendChild(option)
     }
 
@@ -4733,6 +4771,7 @@ const allUsers = await getAllUsers();
         const option = document.createElement("option");
         option.text = "None available"
         option.value = "None available"
+        contactAddressElement.value = ""
         viewContactAddressSelectElement.appendChild(option)
     }
     viewContactAddressSelectElement.addEventListener("change", function() {
@@ -4766,6 +4805,7 @@ const allUsers = await getAllUsers();
         const option = document.createElement("option");
         option.text = "None available"
         option.value = "None available"
+        contactSocialMediaElement.value = ""
         viewContactWebsitesSelectElement.appendChild(option)
     }
     viewContactWebsitesSelectElement.addEventListener("change", function() {
@@ -5528,6 +5568,7 @@ const allUsers = await getAllUsers();
     const editContactNotesElement = document.querySelector("#edit-contact-notes");
     editContactNotesElement.style.fontFamily = "sans-serif";
 
+    //focus codes
     editContactFirstNameElement.addEventListener("focus", async function() {
         const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
         const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
@@ -5598,6 +5639,40 @@ const allUsers = await getAllUsers();
         editContactRoleElement.value = contactOrganizationRole;
         editContactSocialMediaElement.value = selectedWebsite;
         editContactNotesElement.value = contactNotes;
+
+    // if (editContactFirstNameElement.value === "undefined") {
+    //     editContactFirstNameElement.value = ""
+    // }
+    if (editContactLastNameElement.value === "undefined") {
+        editContactLastNameElement.value = ""
+    }
+    if (editContactGenderElement.value === "undefined") {
+        editContactGenderElement.value = ""
+    }
+    if (editContactBirthdayElement.value === "undefined") {
+        editContactBirthdayElement.value = ""
+    }
+    if (editContactEmailAddressElement.value === "undefined") {
+        editContactEmailAddressElement.value = ""
+    }
+    if (editContactPhoneNumberElement.value === "undefined") {
+        editContactPhoneNumberElement.value = ""
+    }
+    if (editContactAddressElement.value === "undefined") {
+        editContactAddressElement.value = ""
+    }
+    if (editContactOrganizationElement.value === "undefined") {
+        editContactOrganizationElement.value = ""
+    }
+    if (editContactRoleElement.value === "undefined") {
+        editContactRoleElement.value = ""
+    }
+    if (editContactSocialMediaElement.value === "undefined") {
+        editContactSocialMediaElement.value = ""
+    }
+    if (editContactNotesElement.value === "undefined") {
+        editContactNotesElement.value = ""
+    }
     });
 
     editContactLastNameElement.addEventListener("focus", async function() {
@@ -5670,6 +5745,40 @@ const allUsers = await getAllUsers();
         editContactRoleElement.value = contactOrganizationRole;
         editContactSocialMediaElement.value = selectedWebsite;
         editContactNotesElement.value = contactNotes;
+
+    if (editContactFirstNameElement.value === "undefined") {
+        editContactFirstNameElement.value = ""
+    }
+    // if (editContactLastNameElement.value === "undefined") {
+    //     editContactLastNameElement.value = ""
+    // }
+    if (editContactGenderElement.value === "undefined") {
+        editContactGenderElement.value = ""
+    }
+    if (editContactBirthdayElement.value === "undefined") {
+        editContactBirthdayElement.value = ""
+    }
+    if (editContactEmailAddressElement.value === "undefined") {
+        editContactEmailAddressElement.value = ""
+    }
+    if (editContactPhoneNumberElement.value === "undefined") {
+        editContactPhoneNumberElement.value = ""
+    }
+    if (editContactAddressElement.value === "undefined") {
+        editContactAddressElement.value = ""
+    }
+    if (editContactOrganizationElement.value === "undefined") {
+        editContactOrganizationElement.value = ""
+    }
+    if (editContactRoleElement.value === "undefined") {
+        editContactRoleElement.value = ""
+    }
+    if (editContactSocialMediaElement.value === "undefined") {
+        editContactSocialMediaElement.value = ""
+    }
+    if (editContactNotesElement.value === "undefined") {
+        editContactNotesElement.value = ""
+    }
     });
 
     editContactGenderElement.addEventListener("focus", async function() {
@@ -5752,6 +5861,40 @@ const allUsers = await getAllUsers();
         editContactRoleElement.value = contactOrganizationRole;
         editContactSocialMediaElement.value = selectedWebsite;
         editContactNotesElement.value = contactNotes;
+
+    if (editContactFirstNameElement.value === "undefined") {
+        editContactFirstNameElement.value = ""
+    }
+    if (editContactLastNameElement.value === "undefined") {
+        editContactLastNameElement.value = ""
+    }
+    // if (editContactGenderElement.value === "undefined") {
+    //     editContactGenderElement.value = ""
+    // }
+    if (editContactBirthdayElement.value === "undefined") {
+        editContactBirthdayElement.value = ""
+    }
+    if (editContactEmailAddressElement.value === "undefined") {
+        editContactEmailAddressElement.value = ""
+    }
+    if (editContactPhoneNumberElement.value === "undefined") {
+        editContactPhoneNumberElement.value = ""
+    }
+    if (editContactAddressElement.value === "undefined") {
+        editContactAddressElement.value = ""
+    }
+    if (editContactOrganizationElement.value === "undefined") {
+        editContactOrganizationElement.value = ""
+    }
+    if (editContactRoleElement.value === "undefined") {
+        editContactRoleElement.value = ""
+    }
+    if (editContactSocialMediaElement.value === "undefined") {
+        editContactSocialMediaElement.value = ""
+    }
+    if (editContactNotesElement.value === "undefined") {
+        editContactNotesElement.value = ""
+    }
     });
 
     editContactBirthdayElement.addEventListener("focus", async function() {
@@ -5824,6 +5967,40 @@ const allUsers = await getAllUsers();
         editContactRoleElement.value = contactOrganizationRole;
         editContactSocialMediaElement.value = selectedWebsite;
         editContactNotesElement.value = contactNotes;
+
+    if (editContactFirstNameElement.value === "undefined") {
+        editContactFirstNameElement.value = ""
+    }
+    if (editContactLastNameElement.value === "undefined") {
+        editContactLastNameElement.value = ""
+    }
+    if (editContactGenderElement.value === "undefined") {
+        editContactGenderElement.value = ""
+    }
+    // if (editContactBirthdayElement.value === "undefined") {
+    //     editContactBirthdayElement.value = ""
+    // }
+    if (editContactEmailAddressElement.value === "undefined") {
+        editContactEmailAddressElement.value = ""
+    }
+    if (editContactPhoneNumberElement.value === "undefined") {
+        editContactPhoneNumberElement.value = ""
+    }
+    if (editContactAddressElement.value === "undefined") {
+        editContactAddressElement.value = ""
+    }
+    if (editContactOrganizationElement.value === "undefined") {
+        editContactOrganizationElement.value = ""
+    }
+    if (editContactRoleElement.value === "undefined") {
+        editContactRoleElement.value = ""
+    }
+    if (editContactSocialMediaElement.value === "undefined") {
+        editContactSocialMediaElement.value = ""
+    }
+    if (editContactNotesElement.value === "undefined") {
+        editContactNotesElement.value = ""
+    }
     });
 
     editContactEmailAddressElement.addEventListener("focus", async function() {
@@ -5896,6 +6073,40 @@ const allUsers = await getAllUsers();
         editContactRoleElement.value = contactOrganizationRole;
         editContactSocialMediaElement.value = selectedWebsite;
         editContactNotesElement.value = contactNotes;
+
+    if (editContactFirstNameElement.value === "undefined") {
+        editContactFirstNameElement.value = ""
+    }
+    if (editContactLastNameElement.value === "undefined") {
+        editContactLastNameElement.value = ""
+    }
+    if (editContactGenderElement.value === "undefined") {
+        editContactGenderElement.value = ""
+    }
+    if (editContactBirthdayElement.value === "undefined") {
+        editContactBirthdayElement.value = ""
+    }
+    // if (editContactEmailAddressElement.value === "undefined") {
+    //     editContactEmailAddressElement.value = ""
+    // }
+    if (editContactPhoneNumberElement.value === "undefined") {
+        editContactPhoneNumberElement.value = ""
+    }
+    if (editContactAddressElement.value === "undefined") {
+        editContactAddressElement.value = ""
+    }
+    if (editContactOrganizationElement.value === "undefined") {
+        editContactOrganizationElement.value = ""
+    }
+    if (editContactRoleElement.value === "undefined") {
+        editContactRoleElement.value = ""
+    }
+    if (editContactSocialMediaElement.value === "undefined") {
+        editContactSocialMediaElement.value = ""
+    }
+    if (editContactNotesElement.value === "undefined") {
+        editContactNotesElement.value = ""
+    }
     });
 
     editContactPhoneNumberElement.addEventListener("focus", async function() {
@@ -5967,6 +6178,40 @@ const allUsers = await getAllUsers();
         editContactRoleElement.value = contactOrganizationRole;
         editContactSocialMediaElement.value = selectedWebsite;
         editContactNotesElement.value = contactNotes;
+
+    if (editContactFirstNameElement.value === "undefined") {
+        editContactFirstNameElement.value = ""
+    }
+    if (editContactLastNameElement.value === "undefined") {
+        editContactLastNameElement.value = ""
+    }
+    if (editContactGenderElement.value === "undefined") {
+        editContactGenderElement.value = ""
+    }
+    if (editContactBirthdayElement.value === "undefined") {
+        editContactBirthdayElement.value = ""
+    }
+    if (editContactEmailAddressElement.value === "undefined") {
+        editContactEmailAddressElement.value = ""
+    }
+    // if (editContactPhoneNumberElement.value === "undefined") {
+    //     editContactPhoneNumberElement.value = ""
+    // }
+    if (editContactAddressElement.value === "undefined") {
+        editContactAddressElement.value = ""
+    }
+    if (editContactOrganizationElement.value === "undefined") {
+        editContactOrganizationElement.value = ""
+    }
+    if (editContactRoleElement.value === "undefined") {
+        editContactRoleElement.value = ""
+    }
+    if (editContactSocialMediaElement.value === "undefined") {
+        editContactSocialMediaElement.value = ""
+    }
+    if (editContactNotesElement.value === "undefined") {
+        editContactNotesElement.value = ""
+    }
     });
 
     editContactAddressElement.addEventListener("focus", async function() {
@@ -6039,6 +6284,40 @@ const allUsers = await getAllUsers();
         editContactRoleElement.value = contactOrganizationRole;
         editContactSocialMediaElement.value = selectedWebsite;
         editContactNotesElement.value = contactNotes;
+
+    if (editContactFirstNameElement.value === "undefined") {
+        editContactFirstNameElement.value = ""
+    }
+    if (editContactLastNameElement.value === "undefined") {
+        editContactLastNameElement.value = ""
+    }
+    if (editContactGenderElement.value === "undefined") {
+        editContactGenderElement.value = ""
+    }
+    if (editContactBirthdayElement.value === "undefined") {
+        editContactBirthdayElement.value = ""
+    }
+    if (editContactEmailAddressElement.value === "undefined") {
+        editContactEmailAddressElement.value = ""
+    }
+    if (editContactPhoneNumberElement.value === "undefined") {
+        editContactPhoneNumberElement.value = ""
+    }
+    // if (editContactAddressElement.value === "undefined") {
+    //     editContactAddressElement.value = ""
+    // }
+    if (editContactOrganizationElement.value === "undefined") {
+        editContactOrganizationElement.value = ""
+    }
+    if (editContactRoleElement.value === "undefined") {
+        editContactRoleElement.value = ""
+    }
+    if (editContactSocialMediaElement.value === "undefined") {
+        editContactSocialMediaElement.value = ""
+    }
+    if (editContactNotesElement.value === "undefined") {
+        editContactNotesElement.value = ""
+    }
     });
 
     editContactOrganizationElement.addEventListener("focus", async function() {
@@ -6111,6 +6390,40 @@ const allUsers = await getAllUsers();
         editContactRoleElement.value = contactOrganizationRole;
         editContactSocialMediaElement.value = selectedWebsite;
         editContactNotesElement.value = contactNotes;
+
+    if (editContactFirstNameElement.value === "undefined") {
+        editContactFirstNameElement.value = ""
+    }
+    if (editContactLastNameElement.value === "undefined") {
+        editContactLastNameElement.value = ""
+    }
+    if (editContactGenderElement.value === "undefined") {
+        editContactGenderElement.value = ""
+    }
+    if (editContactBirthdayElement.value === "undefined") {
+        editContactBirthdayElement.value = ""
+    }
+    if (editContactEmailAddressElement.value === "undefined") {
+        editContactEmailAddressElement.value = ""
+    }
+    if (editContactPhoneNumberElement.value === "undefined") {
+        editContactPhoneNumberElement.value = ""
+    }
+    if (editContactAddressElement.value === "undefined") {
+        editContactAddressElement.value = ""
+    }
+    // if (editContactOrganizationElement.value === "undefined") {
+    //     editContactOrganizationElement.value = ""
+    // }
+    if (editContactRoleElement.value === "undefined") {
+        editContactRoleElement.value = ""
+    }
+    if (editContactSocialMediaElement.value === "undefined") {
+        editContactSocialMediaElement.value = ""
+    }
+    if (editContactNotesElement.value === "undefined") {
+        editContactNotesElement.value = ""
+    }
     });
 
     editContactRoleElement.addEventListener("focus", async function() {
@@ -6183,6 +6496,40 @@ const allUsers = await getAllUsers();
         editContactOrganizationElement.value = contactOrganization;
         editContactSocialMediaElement.value = selectedWebsite;
         editContactNotesElement.value = contactNotes;
+
+        if (editContactFirstNameElement.value === "undefined") {
+        editContactFirstNameElement.value = ""
+    }
+    if (editContactLastNameElement.value === "undefined") {
+        editContactLastNameElement.value = ""
+    }
+    if (editContactGenderElement.value === "undefined") {
+        editContactGenderElement.value = ""
+    }
+    if (editContactBirthdayElement.value === "undefined") {
+        editContactBirthdayElement.value = ""
+    }
+    if (editContactEmailAddressElement.value === "undefined") {
+        editContactEmailAddressElement.value = ""
+    }
+    if (editContactPhoneNumberElement.value === "undefined") {
+        editContactPhoneNumberElement.value = ""
+    }
+    if (editContactAddressElement.value === "undefined") {
+        editContactAddressElement.value = ""
+    }
+    if (editContactOrganizationElement.value === "undefined") {
+        editContactOrganizationElement.value = ""
+    }
+    // if (editContactRoleElement.value === "undefined") {
+    //     editContactRoleElement.value = ""
+    // }
+    if (editContactSocialMediaElement.value === "undefined") {
+        editContactSocialMediaElement.value = ""
+    }
+    if (editContactNotesElement.value === "undefined") {
+        editContactNotesElement.value = ""
+    }
     });
 
     editContactSocialMediaElement.addEventListener("focus", async function() {
@@ -6255,6 +6602,40 @@ const allUsers = await getAllUsers();
         editContactOrganizationElement.value = contactOrganization;
         editContactRoleElement.value = contactOrganizationRole;
         editContactNotesElement.value = contactNotes;
+
+        if (editContactFirstNameElement.value === "undefined") {
+        editContactFirstNameElement.value = ""
+    }
+    if (editContactLastNameElement.value === "undefined") {
+        editContactLastNameElement.value = ""
+    }
+    if (editContactGenderElement.value === "undefined") {
+        editContactGenderElement.value = ""
+    }
+    if (editContactBirthdayElement.value === "undefined") {
+        editContactBirthdayElement.value = ""
+    }
+    if (editContactEmailAddressElement.value === "undefined") {
+        editContactEmailAddressElement.value = ""
+    }
+    if (editContactPhoneNumberElement.value === "undefined") {
+        editContactPhoneNumberElement.value = ""
+    }
+    if (editContactAddressElement.value === "undefined") {
+        editContactAddressElement.value = ""
+    }
+    if (editContactOrganizationElement.value === "undefined") {
+        editContactOrganizationElement.value = ""
+    }
+    if (editContactRoleElement.value === "undefined") {
+        editContactRoleElement.value = ""
+    }
+    // if (editContactSocialMediaElement.value === "undefined") {
+    //     editContactSocialMediaElement.value = ""
+    // }
+    if (editContactNotesElement.value === "undefined") {
+        editContactNotesElement.value = ""
+    }
     });
 
     editContactNotesElement.addEventListener("focus", async function() {
@@ -6327,7 +6708,42 @@ const allUsers = await getAllUsers();
         editContactOrganizationElement.value = contactOrganization;
         editContactRoleElement.value = contactOrganizationRole;
         editContactSocialMediaElement.value = selectedWebsite;
+
+        if (editContactFirstNameElement.value === "undefined") {
+        editContactFirstNameElement.value = ""
+    }
+    if (editContactLastNameElement.value === "undefined") {
+        editContactLastNameElement.value = ""
+    }
+    if (editContactGenderElement.value === "undefined") {
+        editContactGenderElement.value = ""
+    }
+    if (editContactBirthdayElement.value === "undefined") {
+        editContactBirthdayElement.value = ""
+    }
+    if (editContactEmailAddressElement.value === "undefined") {
+        editContactEmailAddressElement.value = ""
+    }
+    if (editContactPhoneNumberElement.value === "undefined") {
+        editContactPhoneNumberElement.value = ""
+    }
+    if (editContactAddressElement.value === "undefined") {
+        editContactAddressElement.value = ""
+    }
+    if (editContactOrganizationElement.value === "undefined") {
+        editContactOrganizationElement.value = ""
+    }
+    if (editContactRoleElement.value === "undefined") {
+        editContactRoleElement.value = ""
+    }
+    if (editContactSocialMediaElement.value === "undefined") {
+        editContactSocialMediaElement.value = ""
+    }
+    // if (editContactNotesElement.value === "undefined") {
+    //     editContactNotesElement.value = ""
+    // }
     });
+    //end focus codes
 
     const updateContactFirstnameButton = document.querySelector("#update-contact-firstname-button");
     updateContactFirstnameButton.addEventListener("click", function() {
@@ -6396,10 +6812,10 @@ const allUsers = await getAllUsers();
     const editContactEmailLabelSelectElement = document.querySelector("#edit-contact-email-label-select");
     const editEmailLabelOpitonsData = [
         { text: "None", value: "None"},
+        { text: "Primary", value: "Primary" },
         { text: "Home", value: "Home" },
         { text: "Work", value: "Work" },
-        { text: "School", value: "School" },
-        { text: "Other", value: "Other" }
+        { text: "School", value: "School" }
       ];
 
     for (let i = 0; i < editEmailLabelOpitonsData.length; i++) {
@@ -6491,10 +6907,10 @@ const allUsers = await getAllUsers();
     const createNewContactEmailLabelSelect = document.querySelector("#create-new-contact-email-label-select");
      const emailLabelOpitonsData = [
         { text: "None", value: "None"},
+        { text: "Primary", value: "Primary" },
         { text: "Home", value: "Home" },
         { text: "Work", value: "Work" },
-        { text: "School", value: "School" },
-        { text: "Other", value: "Other" }
+        { text: "School", value: "School" }
       ];
 
     for (let i = 0; i < emailLabelOpitonsData.length; i++) {
@@ -7213,7 +7629,7 @@ const allUsers = await getAllUsers();
     editContactLastNameElement.value = contact.lastname;
     editContactGenderElement.value = contact.gender;
     editContactBirthdayElement.value = contact.birthday;
-    // editContactEmailAddressElement.value = contact.emailaddress;
+    editContactEmailAddressElement.value = contact.emailaddress;
     editContactPhoneNumberElement.value = contact.phonenumber;
     editContactAddressElement.value = contact.address;
     editContactOrganizationElement.value = contact.organization;
@@ -7221,6 +7637,40 @@ const allUsers = await getAllUsers();
     editContactSocialMediaElement.value = contact.website;
     editContactNotesElement.value = contact.notes;
     editContactNotesElement.style.fontFamily = "sans-serif";
+
+    if (editContactFirstNameElement.value === "undefined") {
+        editContactFirstNameElement.value = ""
+    }
+    if (editContactLastNameElement.value === "undefined") {
+        editContactLastNameElement.value = ""
+    }
+    if (editContactGenderElement.value === "undefined") {
+        editContactGenderElement.value = ""
+    }
+    if (editContactBirthdayElement.value === "undefined") {
+        editContactBirthdayElement.value = ""
+    }
+    if (editContactEmailAddressElement.value === "undefined") {
+        editContactEmailAddressElement.value = ""
+    }
+    if (editContactPhoneNumberElement.value === "undefined") {
+        editContactPhoneNumberElement.value = ""
+    }
+    if (editContactAddressElement.value === "undefined") {
+        editContactAddressElement.value = ""
+    }
+    if (editContactOrganizationElement.value === "undefined") {
+        editContactOrganizationElement.value = ""
+    }
+    if (editContactRoleElement.value === "undefined") {
+        editContactRoleElement.value = ""
+    }
+    if (editContactSocialMediaElement.value === "undefined") {
+        editContactSocialMediaElement.value = ""
+    }
+    if (editContactNotesElement.value === "undefined") {
+        editContactNotesElement.value = ""
+    }
 
     const editContactEmailSelect = document.querySelector("#select-edit-contact-email");
     const editContactEmailLabelSelectedIndex = editContactEmailSelect.selectedIndex;
@@ -7359,7 +7809,8 @@ const allUsers = await getAllUsers();
     const genderOpitonsData = [
         { text: "None", value: "None"},
         { text: "Female", value: "Female" },
-        { text: "Male", value: "Male" }
+        { text: "Male", value: "Male" },
+        { text: "Transgender", value: "Transgender" }
       ];
 
       const newContactGenderElement = document.querySelector("#edit-contact-gender")
@@ -7444,7 +7895,7 @@ async function handleEditContactImage() {
         console.log(editContactImageFile)
 
         reader.onload = function () {
-            base64string = reader.result.split(',')[1]
+            const base64string = reader.result.split(',')[1]
             editContactImage = reader.result;
             editContactImageElement.setAttribute("src", reader.result);
             if (editContactAddPhotoInputElement.files[0] !== undefined) {
@@ -8928,7 +9379,7 @@ async function handleEditContactNotesInput() {
         gender: contact.gender,
         birthday: contact.birthday,
         organization: contact.organization,
-        role: contact.value,
+        role: contact.organization_role,
         favorite: contact.favorite,
         notes: editContactNotesElement.value
     };
@@ -15294,6 +15745,11 @@ async function updateContactEmailAddress() {
     const emailAddressLabel = editContactEmailObj.emailaddresslabel;
     const emailaddress = editContactEmailObj.emailaddress;
 
+    if (emailaddress === "") {
+        alert("Please add another email address before updating.");
+        return
+    }
+
     const body = { userid, contactid, emailid, emailAddressLabel, emailaddress };
     try {
         const response = await fetch(`/contactEmailAddresses/${userid}/${contactid}/${emailid}`, {
@@ -16021,7 +16477,8 @@ const allUsers = await getAllUsers();
     // Expected output: "https://example.com/page?name=John+Doe&age=30&city=New+York"
 
     alert("Contact first name updated.")
-    window.location.href = newURL
+    // window.location.href = newURL
+    window.location.reload();
 };
 
 async function updateContactLastName() {
@@ -16097,7 +16554,8 @@ const allUsers = await getAllUsers();
     // Expected output: "https://example.com/page?name=John+Doe&age=30&city=New+York"
 
     alert("Contact last name updated.")
-    window.location.href = newURL
+    // window.location.href = newURL
+    window.location.reload();
 };
 
 async function updateContactGender() {
@@ -17238,13 +17696,23 @@ async function showPages() {
         await renderRecoverPassword()
         return
     }
-    // console.log(matchingUser)
-    const userId = matchingUser.user_id;
+    console.log(matchingUser)
+
+    let userId;
+    if (matchingUser !== undefined) {
+        userId = matchingUser.user_id;
+    }
     // const user = await getUser(userId);
 
-    const userImage = await getAUserImage(userId)
+    let userImage;
+    if (userId !== undefined) {
+        userImage = await getAUserImage(userId)
+    }
 
-    const imageString = `data:${userImage.contentType};base64,${userImage.image}`
+    let imageString;
+    if (userImage !== undefined) {
+        imageString = `data:${userImage.contentType};base64,${userImage.image}`
+    }
 
 
     const appName = document.querySelector("#app-name");
@@ -18126,6 +18594,9 @@ async function loadingPage() {
     // const loadingEl = document.createElement("h3");
     // loadingTopBar.style.visibility = "hidden"; //mega parent
     // loadingSmallSidebar.style.visibility = "hidden"; //mega parent
+
+    const loadingBarDoc = document.querySelector("#topbar");
+    loadingBarDoc.style.display = "none";
    
     loadingTopBar.appendChild(loadingTopBarText);
     loadingNavigateUserIconContainer.appendChild(loadingNavigateUserPageIcon);
@@ -18298,6 +18769,9 @@ window.addEventListener("DOMContentLoaded", function() {
 })
 
 window.addEventListener("load", async function() {
+const clientWidth = window.innerWidth;
+
+if (clientWidth > 1070) {
     const previousPage = document.referrer;
     document.body.style.opacity = "1";
 
@@ -18312,7 +18786,7 @@ window.addEventListener("load", async function() {
     this.setTimeout(async function() {
         await loadingBar()
         // bar.style.width = "0%"
-    }, 500)  
+    }, 400)  
 
     
     // document.body.style.opacity = "1"; 
@@ -18340,6 +18814,8 @@ window.addEventListener("load", async function() {
         loadingEl.style.visibility = "hidden";
         const loadingTopBar = this.document.querySelector("#loading-topbar");
         loadingTopBar.style.visibility = "hidden";
+        const topBar = document.querySelector("#topbar");
+        topBar.style.display = "flex";
         const loadingSmallSidebar = this.document.querySelector("#loading-small-sidebar");
         loadingSmallSidebar.style.visibility = "hidden";
         const loadingLargeSideBar = document.querySelector("#loading-large-sidebar");
@@ -18375,7 +18851,7 @@ window.addEventListener("load", async function() {
             groupContactsListContainer.style.visibility = "visible";
         };
 
-    }, 1599)
+    }, 1600)
     } else if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` && window.location.href !== `${rootUrl}/recover-password` && previousPage === `${rootUrl}/login`) {
         // if (window.location.href.startsWith(`${rootUrl}/contacts`)) {
         this.setTimeout(function() {
@@ -18434,6 +18910,9 @@ window.addEventListener("load", async function() {
     //     })
     //     parentToExclude.style.visibility = "hidden"
     // }, 200)
+} else if (clientWidth <= 1070) {
+    await showPages()
+}
 });
 
 document.addEventListener("keydown", function(event) {
