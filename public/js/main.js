@@ -17529,7 +17529,12 @@ async function removeContactDeleteContactGroupings(removeContactGroupingsArr) {
 };
 
 async function setInitialURLAsLogin() {
+    console.log("run setinitialurlaslogin")
+    console.log("all users")
+    const users = ['bob', 'smith', 'john']
+    console.log(users)
 const allUsers = await getAllUsers();
+console.log(allUsers)
     const sessionId = sessionStorage.getItem("user");
     // let matchingUser;
     // for (let i = 0; i < allUsers.length; i++) {
@@ -17550,6 +17555,8 @@ const allUsers = await getAllUsers();
     if (window.location.href === `${rootUrl}/login`) {
         return
     };
+
+    console.log(sessionId)
 
     if (sessionId === null && window.location.href !== `${rootUrl}/register` && sessionId === null && window.location.href !== `${rootUrl}/recover-password`) {
         window.location.href = `${rootUrl}/login`
@@ -17663,7 +17670,7 @@ function resetPhoneNumberFormatOnFocus(element) {
 // };
 
 async function showPages() {
-    // console.log("show pages")
+    console.log("show pages")
     const offsetwidth = document.body.offsetwidth;
     const clientwidth = window.innerWidth;
 
@@ -17683,6 +17690,7 @@ async function showPages() {
     const loginViewElement = document.querySelector("#login-view");
     const registerViewElement = document.querySelector("#register-view");
     const recoverPasswordViewElement = document.querySelector("#recover-password-view");
+    console.log(matchingUser)
     if (matchingUser === undefined && window.location.href === `${rootUrl}/login` && clientwidth > 1070) {
         loginViewElement.style.display = "block"
         await renderLoginContent()
@@ -18774,11 +18782,20 @@ const clientWidth = window.innerWidth;
 if (clientWidth > 1070) {
     const previousPage = document.referrer;
     document.body.style.opacity = "1";
+    console.log("show this")
 
     if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` 
-        && window.location.href !== `${rootUrl}/recover-password` && previousPage !== `${rootUrl}/login`) {
+        && window.location.href !== `${rootUrl}/recover-password` && window.location.href !== `${rootUrl}/` && previousPage !== `${rootUrl}/login`) {
         await loadingPage()
         document.body.style.visibility = "visible";
+    } else {
+        // this.setTimeout(function() {
+        await showPages()
+        document.body.style.visibility = "visible";
+        console.log("show login")
+        return
+        // document.body.style.backgroundColor = "beige";
+        // }, 500)
     }
 
     // const bar = document.getElementById("loading-progress-bar-element");
@@ -18804,11 +18821,13 @@ if (clientWidth > 1070) {
         // }, 100)
         
         await showPages();
+        console.log("show this")
         
         const sectionTags = document.getElementsByTagName("SECTION");
         const sectionTagsArr = Array.from(sectionTags);
         
         if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` && window.location.href !== `${rootUrl}/recover-password` && previousPage !== `${rootUrl}/login`) {
+            console.log("show this")
         this.setTimeout(function() {
         const loadingEl = this.document.querySelector("#loading-element");
         loadingEl.style.visibility = "hidden";
@@ -18854,6 +18873,7 @@ if (clientWidth > 1070) {
     }, 1600)
     } else if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` && window.location.href !== `${rootUrl}/recover-password` && previousPage === `${rootUrl}/login`) {
         // if (window.location.href.startsWith(`${rootUrl}/contacts`)) {
+        console.log("show this")
         this.setTimeout(function() {
             sectionTagsArr.forEach(element => {
                 element.style.visibility = "visible";
@@ -18866,16 +18886,11 @@ if (clientWidth > 1070) {
             document.body.style.visibility = "visible"
 
         }, 500)
-        // };
-    } else {
-    this.setTimeout(function() {
-        document.body.style.visibility = "visible";
-        // document.body.style.backgroundColor = "beige";
-    }, 500)
+    } 
+
 
     // const loadingBar = document.getElementById("loading-progress-bar-element");
     // loadingBar.style.width = "0%"
-}
 
 
     // setTimeout(function() {

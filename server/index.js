@@ -78,6 +78,18 @@ app.get("/edit_contact_:contact_id", (req, res) => {
 app.get("/search-contacts", (req, res) => {
     res.sendFile(path.join(__dirname, "../index.html"));
 });
+// app.all("/{*splat}", (req, res) => {
+    // Check if the request prefers HTML (like a browser page load)
+//   if (req.accepts('html')) {
+    // res.status(404).sendFile('../index.html'); // or res.render('404')
+    // res.status(404).send("<h1>404! Page not found.</h1>")
+    // return;
+//   }
+
+  // Default fallback for fetch/XHR requests expecting JSON or text
+//   res.status(404).json({ error: 'Not Found' });
+    // res.sendFile(path.join(__dirname, "../index.html"));
+// });
 
 //get an image
 // app.get("/images/:id", async (req, res) => {
@@ -220,7 +232,7 @@ app.get("/users", async (req, res) => {
     } catch (err) {
         console.error(err.message);
     }
-})
+});
 
 //get a user
 app.get("/users/:user_id", async (req, res) => {
