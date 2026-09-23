@@ -278,9 +278,9 @@ async function renderMobileRegisterContent() {
             let reader = new FileReader()
 
             reader.onload = function () {
-                base64string = reader.result.split(',')[1]
+                const base64string = reader.result.split(',')[1]
                 // imageFile = reader.result;
-                console.log(base64string)
+                // console.log(base64string)
                 newUserImageInputElement.setAttribute("src", base64string);
                 // newUserImageElement.style.borderRadius = "50%"
             };
@@ -18778,9 +18778,9 @@ window.addEventListener("DOMContentLoaded", function() {
 
 window.addEventListener("load", async function() {
 const clientWidth = window.innerWidth;
+const previousPage = document.referrer;
 
 if (clientWidth > 1070) {
-    const previousPage = document.referrer;
     document.body.style.opacity = "1";
     console.log("show this")
 
@@ -18926,7 +18926,20 @@ if (clientWidth > 1070) {
     //     parentToExclude.style.visibility = "hidden"
     // }, 200)
 } else if (clientWidth <= 1070) {
-    await showPages()
+    if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` 
+        && window.location.href !== `${rootUrl}/recover-password` && window.location.href !== `${rootUrl}/` && previousPage !== `${rootUrl}/login`) {
+        // await loadingPage()
+        await showPages()
+        document.body.style.visibility = "visible";
+    } else {
+        // this.setTimeout(function() {
+        await showPages()
+        document.body.style.visibility = "visible";
+        console.log("show login")
+        return
+        // document.body.style.backgroundColor = "beige";
+        // }, 500)
+    }
 }
 });
 

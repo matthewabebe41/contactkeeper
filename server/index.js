@@ -91,6 +91,7 @@ app.get("/search-contacts", (req, res) => {
     // res.sendFile(path.join(__dirname, "../index.html"));
 // });
 
+
 //get an image
 // app.get("/images/:id", async (req, res) => {
 //     try {
@@ -813,6 +814,27 @@ app.delete("/contactGroups/:user_id", async (req, res) => {
 async function helloApp() {
     console.log("hello app")
 }
+
+app.use((req, res, next) => {
+    // Optional: Explicitly adjust or strip CSP headers if your client app needs a blank canvas 
+    res.setHeader("Content-Security-Policy", "default-src 'self'");
+
+     // Check if the request prefers HTML (like a browser page load)
+  if (req.accepts('html')) {
+    // res.status(404).sendFile('../index.html'); // or res.render('404')
+    res.status(404).send("<h1>404! Page not found.</h1>")
+    return;
+  }
+
+  // Default fallback for fetch/XHR requests expecting JSON or text
+  res.status(404).json({ error: 'Not Found' });
+    // res.sendFile(path.join(__dirname, "../index.html"));
+
+    // res.status(404).json({
+        // error: "Not Found",
+        // message: `The requested path '${req.originalUrl}' does not exist.`
+    // });
+});
 
 
 app.listen(process.env.PORT || 3000, () => {
