@@ -18935,8 +18935,9 @@ if (clientWidth > 1070) {
     } else {
         // this.setTimeout(function() {
         await showPages()
+        document.body.style.overflow = "hidden";
         document.body.style.visibility = "visible";
-        console.log("show login")
+        // console.log("show login")
         return
         // document.body.style.backgroundColor = "beige";
         // }, 500)
