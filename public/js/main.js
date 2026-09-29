@@ -13,45 +13,34 @@ async function renderLoginContent() {
         const allUsers = await getAllUsers();
         const loginUserObject = await handleLoginInput();
 
-        console.log(allUsers)
         let matchingUser;
         let found = false;
         
         for (let i = 0; i < allUsers.length; i++) {
             if (allUsers[i].emailaddress === loginUserObject.emailAddress) {
                 found = true;
-                matchingUser = allUsers[i]
-                sessionStorage.setItem("user", matchingUser.session_id)
+                matchingUser = allUsers[i];
+                sessionStorage.setItem("user", matchingUser.session_id);
             };
-
-        }
-
-        // if (allUsers.emailaddress === loginUserObject.emailAddress) {
-        //     found = true;
-        //     matchingUser = allUsers
-        //     sessionStorage.setItem("user", matchingUser.user_id)
-        // }
+        };
 
         if (!found) {
             alert("user not found")
             return
-        }
+        };
 
-        let matchingPass = false
+        let matchingPass = false;
 
         if (matchingUser.user_password === loginUserObject.password) {
             matchingPass = true;
-            // sessionStorage.setItem("user", matchingUser.user_id)
             window.location.href = `${rootUrl}/contacts`;
-            // break
-        }
+        };
     
-        console.log(matchingPass)
         if (!matchingPass) {
             alert("incorrect password")
             return
-        } 
-    })
+        };
+    });
 
     const navigateRegisterPageButton = document.querySelector("#navigate-to-register-view-button");
     navigateRegisterPageButton.addEventListener("click", function(event) {
@@ -59,65 +48,6 @@ async function renderLoginContent() {
     window.location.href = `${rootUrl}/register`;
     });
 };
-
-async function renderMobileLoginContent() {
-    const smallSidebar = document.querySelector("#small-sidebar");
-    const largeSidebar = document.querySelector("#large-sidebar");
-    smallSidebar.style.display = "none";
-    largeSidebar.style.display = "none";
-
-      const mobileLoginUserButton = document.querySelector("#mobile-login-user-button");
-      mobileLoginUserButton.addEventListener("click", async function(event) {
-        event.preventDefault();
-
-        const allUsers = await getAllUsers();
-        const loginUserObject = await handleMobileLoginInput();
-
-        console.log(allUsers)
-        let matchingUser;
-        let found = false;
-        
-        for (let i = 0; i < allUsers.length; i++) {
-            if (allUsers[i].emailaddress === loginUserObject.emailAddress) {
-                found = true;
-                matchingUser = allUsers[i]
-                sessionStorage.setItem("user", matchingUser.session_id)
-            }
-        }
-
-        // if (allUsers.emailaddress === loginUserObject.emailAddress) {
-        //     found = true;
-        //     matchingUser = allUsers
-        //     sessionStorage.setItem("user", matchingUser.user_id)
-        // }
-
-        if (!found) {
-            alert("user not found")
-            return
-        }
-
-        let matchingPass = false
-
-        if (matchingUser.user_password === loginUserObject.password) {
-            matchingPass = true;
-            // sessionStorage.setItem("user", matchingUser.user_id)
-            window.location.href = `${rootUrl}/contacts`;
-            // break
-        }
-    
-        console.log(matchingPass)
-        if (!matchingPass) {
-            alert("incorrect password")
-            return
-        } 
-    })
-
-    const mobileNavigateRegisterPageButton = document.querySelector("#mobile-navigate-to-register-view-button");
-    mobileNavigateRegisterPageButton.addEventListener("click", function(event) {
-    event.preventDefault()
-    window.location.href = `${rootUrl}/register`;
-    });
-}
 
 async function handleLoginInput() {
     const loginEmaiElement = document.querySelector("#user-email-address-element");
@@ -131,6 +61,52 @@ async function handleLoginInput() {
     return loginUserObject
 };
 
+async function renderMobileLoginContent() {
+// small and large sidebar elements have a display none already. Make sure to use display none to effectively remove desktop elements when needed.
+
+      const mobileLoginUserButton = document.querySelector("#mobile-login-user-button");
+      mobileLoginUserButton.addEventListener("click", async function(event) {
+        event.preventDefault();
+
+        const allUsers = await getAllUsers();
+        const loginUserObject = await handleMobileLoginInput();
+
+        let matchingUser;
+        let found = false;
+        
+        for (let i = 0; i < allUsers.length; i++) {
+            if (allUsers[i].emailaddress === loginUserObject.emailAddress) {
+                found = true;
+                matchingUser = allUsers[i];
+                sessionStorage.setItem("user", matchingUser.session_id);
+            };
+        };
+
+        if (!found) {
+            alert("user not found")
+            return
+        };
+
+        let matchingPass = false;
+
+        if (matchingUser.user_password === loginUserObject.password) {
+            matchingPass = true;
+            window.location.href = `${rootUrl}/contacts`;
+        };
+    
+        if (!matchingPass) {
+            alert("incorrect password")
+            return
+        };
+    });
+
+    const mobileNavigateRegisterPageButton = document.querySelector("#mobile-navigate-to-register-view-button");
+    mobileNavigateRegisterPageButton.addEventListener("click", function(event) {
+    event.preventDefault()
+    window.location.href = `${rootUrl}/register`;
+    });
+};
+
 async function handleMobileLoginInput() {
     const mobileLoginEmailElement = document.querySelector("#mobile-user-email-address-element");
     const mobileLoginPasswordElement = document.querySelector("#mobile-user-password-element");
@@ -141,7 +117,7 @@ async function handleMobileLoginInput() {
     };
 
     return loginUserObject
-}
+};
 
 async function renderRegisterContent() {
     const smallSidebar = document.querySelector("#small-sidebar");
