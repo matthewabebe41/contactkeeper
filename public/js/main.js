@@ -141,9 +141,9 @@ async function renderRegisterContent() {
             let reader = new FileReader()
 
             reader.onload = function () {
-                base64string = reader.result.split(',')[1]
+                const base64string = reader.result.split(',')[1]
                 // imageFile = reader.result;
-                console.log(base64string)
+                // console.log(base64string)
                 newUserImageInputElement.setAttribute("src", base64string);
                 // newUserImageElement.style.borderRadius = "50%"
             };
@@ -232,13 +232,72 @@ async function renderRegisterContent() {
     });
 };
 
-async function renderMobileRegisterContent() {
-    const smallSidebar = document.querySelector("#small-sidebar");
-    const largeSidebar = document.querySelector("#large-sidebar");
-    smallSidebar.style.display = "none";
-    largeSidebar.style.display = "none";
+async function handleRegisterInput(event) {
+    const registerUserFirstNameElement = document.querySelector("#register-user-first-name");
+    const registerUserLastNameElement = document.querySelector("#register-user-last-name");
+    const registerUserEmailElement = document.querySelector("#register-user-email");
+    const registerUserPhonenumberElement = document.querySelector("#register-user-phonenumber")
+    const registerUserPasswordElement = document.querySelector("#register-user-password");
+    const registerUserConfirmPasswordElement = document.querySelector("#register-user-confirm-password");
 
-      const newUserImageElement = document.querySelector("#register-user-image");
+    const confirmationPassword = registerUserConfirmPasswordElement.value;
+
+    const allUsers = await getAllUsers()
+    const registerUserEmailInput = registerUserEmailElement.value;
+
+    for (let i = 0; i < allUsers.length; i++) {
+        if (registerUserEmailInput === "") {
+            // event.preventDefault()
+            alert("Email is a required field. Please provide an email address.")
+            return
+        };
+
+        if (allUsers[i].emailaddress === registerUserEmailInput) {
+            // event.preventDefault()
+            alert("This email address is already in use. Please try again.")
+            return
+        };
+    };
+
+    let userIdArr = [];
+    for (let i = 0; i < allUsers.length; i++) {
+        userIdArr.push(allUsers[i].user_id)
+    };
+
+    let maxId = -Infinity;
+    for (let i = 0; i < userIdArr.length; i++) {
+        if (userIdArr[i] > maxId) {
+            maxId = userIdArr[i];
+        };
+    };
+
+    console.log(maxId)
+    if (maxId === -Infinity) {
+        maxId = 0
+    };
+
+    const registerUserObject = {
+        userId: maxId + 1,
+        sessionId: await generateSessionId(30),
+        firstName: registerUserFirstNameElement.value,
+        lastName: registerUserLastNameElement.value,
+        emailAddress: registerUserEmailElement.value,
+        phonenumber: registerUserPhonenumberElement.value,
+        password: registerUserPasswordElement.value
+    };
+
+    if (registerUserObject.password !== confirmationPassword) {
+        alert("Passwords do not match.")
+        return
+    };
+
+    console.log(registerUserObject)
+
+    return registerUserObject;
+};
+
+async function renderMobileRegisterContent() {
+    const newUserImageElement = document.querySelector("#register-user-image");
     const newUserImageInputElement = document.querySelector("#register-user-image-input")
     const newUserImageUrl = newUserImageElement.getAttribute("src")
     fetch(newUserImageUrl)
@@ -357,71 +416,6 @@ async function generateSessionId(length) {
     return sessionId;
 };
 
-async function handleRegisterInput(event) {
-    const registerUserFirstNameElement = document.querySelector("#register-user-first-name");
-    const registerUserLastNameElement = document.querySelector("#register-user-last-name");
-    const registerUserEmailElement = document.querySelector("#register-user-email");
-    const registerUserPhonenumberElement = document.querySelector("#register-user-phonenumber")
-    const registerUserPasswordElement = document.querySelector("#register-user-password");
-    const registerUserConfirmPasswordElement = document.querySelector("#register-user-confirm-password");
-
-    const confirmationPassword = registerUserConfirmPasswordElement.value;
-
-    const allUsers = await getAllUsers()
-    const registerUserEmailInput = registerUserEmailElement.value;
-
-    for (let i = 0; i < allUsers.length; i++) {
-        if (registerUserEmailInput === "") {
-            // event.preventDefault()
-            alert("Email is a required field. Please provide an email address.")
-            return
-        }
-
-        if (allUsers[i].emailaddress === registerUserEmailInput) {
-            // event.preventDefault()
-            alert("This email address is already in use. Please try again.")
-            return
-        }
-    }
-
-    let userIdArr = []
-    for (let i = 0; i < allUsers.length; i++) {
-        userIdArr.push(allUsers[i].user_id)
-    }
-
-    let maxId = -Infinity;
-    for (let i = 0; i < userIdArr.length; i++) {
-        if (userIdArr[i] > maxId) {
-            maxId = userIdArr[i];
-        }
-    }
-
-    console.log(maxId)
-    if (maxId === -Infinity) {
-        maxId = 0
-    }
-
-    const registerUserObject = {
-        userId: maxId + 1,
-        sessionId: await generateSessionId(30),
-        firstName: registerUserFirstNameElement.value,
-        lastName: registerUserLastNameElement.value,
-        emailAddress: registerUserEmailElement.value,
-        phonenumber: registerUserPhonenumberElement.value,
-        password: registerUserPasswordElement.value,
-        userImage: null
-    };
-
-    if (registerUserObject.password !== confirmationPassword) {
-        alert("Passwords do not match.")
-        return
-    }
-
-    console.log(registerUserObject)
-
-    return registerUserObject
-};
-
 async function handleMobileRegisterInput(event) {
     const registerUserFirstNameElement = document.querySelector("#mobile-register-user-first-name");
     const registerUserLastNameElement = document.querySelector("#mobile-register-user-last-name");
@@ -473,8 +467,7 @@ async function handleMobileRegisterInput(event) {
         lastName: registerUserLastNameElement.value,
         emailAddress: registerUserEmailElement.value,
         phonenumber: registerUserPhonenumberElement.value,
-        password: registerUserPasswordElement.value,
-        userImage: null
+        password: registerUserPasswordElement.value
     };
 
     if (registerUserObject.password !== confirmationPassword) {
@@ -14424,11 +14417,10 @@ async function postNewUser() {
     const emailaddress = registerUserObject.emailAddress;
     const phonenumber = registerUserObject.phonenumber;
     const user_password = registerUserObject.password;
-    const user_image = registerUserObject.userImage
 
     console.log(registerUserObject)
 
-    const body = { user_id, session_id, firstname, lastname, emailaddress, phonenumber, user_password, user_image };
+    const body = { user_id, session_id, firstname, lastname, emailaddress, phonenumber, user_password };
     try {
         const response = await fetch(`/users`, {
             method: "POST",
@@ -14440,7 +14432,7 @@ async function postNewUser() {
         console.error(err)
     }
 
-    // alert("You have registered a new account.")
+    alert("You have registered a new account.")
     window.location.href = `${rootUrl}/login`
 };
 
@@ -14454,11 +14446,10 @@ async function mobilePostNewUser() {
     const emailaddress = registerUserObject.emailAddress;
     const phonenumber = registerUserObject.phonenumber;
     const user_password = registerUserObject.password;
-    const user_image = registerUserObject.userImage
 
     console.log(registerUserObject)
 
-    const body = { user_id, session_id, firstname, lastname, emailaddress, phonenumber, user_password, user_image };
+    const body = { user_id, session_id, firstname, lastname, emailaddress, phonenumber, user_password };
     try {
         const response = await fetch(`/users`, {
             method: "POST",
@@ -14470,6 +14461,7 @@ async function mobilePostNewUser() {
         console.error(err)
     }
 
+    alert("You have registered a new account.")
     window.location.href = `${rootUrl}/login`
 };
 

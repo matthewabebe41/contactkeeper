@@ -249,8 +249,8 @@ app.get("/users/:user_id", async (req, res) => {
 //post a user
 app.post("/users", async (req, res) => {
     try {
-       const {user_id, session_id, firstname, lastname, emailaddress, phonenumber, user_password, user_image} = req.body;
-       const newUser = await pool.query("INSERT INTO users (user_id, session_id, firstname, lastname, emailaddress, phonenumber, user_password, user_image) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *", [user_id, session_id, firstname, lastname, emailaddress, phonenumber, user_password, user_image])
+       const {user_id, session_id, firstname, lastname, emailaddress, phonenumber, user_password} = req.body;
+       const newUser = await pool.query("INSERT INTO users (user_id, session_id, firstname, lastname, emailaddress, phonenumber, user_password) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *", [user_id, session_id, firstname, lastname, emailaddress, phonenumber, user_password])
        res.json(newUser.rows[0]);
     } catch (error) {
         console.error(error.message)
