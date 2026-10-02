@@ -6,6 +6,17 @@ async function renderLoginContent() {
     smallSidebar.style.display = "none";
     largeSidebar.style.display = "none";
 
+    const forgotPasswordLabel = document.querySelector("#forgot-password-label");
+        forgotPasswordLabel.addEventListener("mouseover", function() {
+        forgotPasswordLabel.style.color = "blue"
+    });
+    forgotPasswordLabel.addEventListener("mouseout", function() {
+        forgotPasswordLabel.style.color = "grey"
+    });
+    forgotPasswordLabel.addEventListener("click", function() {
+        window.location.href =`${rootUrl}/recover-password`
+    });
+
     const loginUserButton = document.querySelector("#login-user-button");
     loginUserButton.addEventListener("click", async function(event) {
         event.preventDefault();
@@ -391,31 +402,6 @@ async function renderMobileRegisterContent() {
     });
 };
 
-async function generateSessionId(length) {
-    const allUsers = await getAllUsers()
-    let allUserSessionIds = [];
-
-    for (let i = 0; i < allUsers.length; i++) {
-        allUserSessionIds.push(allUsers[i].session_id)
-    }
-
-    console.log(allUserSessionIds)
-    const lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
-    const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numberChars = "0123456789";
-    const symbolChars = "!@#$%^&*()_+=-`~[]\{}|;':\",./<>?";
-    const allChars = lowercaseChars + uppercaseChars + numberChars + symbolChars;
-    let sessionId = "";
-    do {
-        for (let i = 0; i < length; i++) {
-          const randomIndex = Math.floor(Math.random() * allChars.length);
-          sessionId += allChars.charAt(randomIndex);
-        }
-    } while (allUserSessionIds.includes(sessionId))
-
-    return sessionId;
-};
-
 async function handleMobileRegisterInput(event) {
     const registerUserFirstNameElement = document.querySelector("#mobile-register-user-first-name");
     const registerUserLastNameElement = document.querySelector("#mobile-register-user-last-name");
@@ -478,16 +464,41 @@ async function handleMobileRegisterInput(event) {
     return registerUserObject
 };
 
-const forgotPasswordLabel = document.querySelector("#forgot-password-label");
-forgotPasswordLabel.addEventListener("mouseover", function() {
-    forgotPasswordLabel.style.color = "blue"
-});
-forgotPasswordLabel.addEventListener("mouseout", function() {
-    forgotPasswordLabel.style.color = "grey"
-});
-forgotPasswordLabel.addEventListener("click", function() {
-    window.location.href =`${rootUrl}/recover-password`
-})
+async function generateSessionId(length) {
+    const allUsers = await getAllUsers()
+    let allUserSessionIds = [];
+
+    for (let i = 0; i < allUsers.length; i++) {
+        allUserSessionIds.push(allUsers[i].session_id)
+    }
+
+    console.log(allUserSessionIds)
+    const lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+    const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numberChars = "0123456789";
+    const symbolChars = "!@#$%^&*()_+=-`~[]\{}|;':\",./<>?";
+    const allChars = lowercaseChars + uppercaseChars + numberChars + symbolChars;
+    let sessionId = "";
+    do {
+        for (let i = 0; i < length; i++) {
+          const randomIndex = Math.floor(Math.random() * allChars.length);
+          sessionId += allChars.charAt(randomIndex);
+        }
+    } while (allUserSessionIds.includes(sessionId))
+
+    return sessionId;
+};
+
+// const forgotPasswordLabel = document.querySelector("#forgot-password-label");
+// forgotPasswordLabel.addEventListener("mouseover", function() {
+//     forgotPasswordLabel.style.color = "blue"
+// });
+// forgotPasswordLabel.addEventListener("mouseout", function() {
+//     forgotPasswordLabel.style.color = "grey"
+// });
+// forgotPasswordLabel.addEventListener("click", function() {
+//     window.location.href =`${rootUrl}/recover-password`
+// });
 
 const mobileForgotPasswordLabel = document.querySelector("#mobile-forgot-password-label");
 mobileForgotPasswordLabel.addEventListener("mouseover", function() {
