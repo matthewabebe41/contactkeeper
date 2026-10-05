@@ -3525,6 +3525,7 @@ const allUsers = await getAllUsers();
 }
 
 async function renderContactsListContent() {
+// document.body.style.overflow = ""
 const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
     let matchingUser;
@@ -17790,11 +17791,15 @@ async function showPages() {
     }
 
     const contactsListViewElement = document.querySelector("#contacts-list-view");
+    // const contactsListContainer = document.querySelector("#my-contacts-list-container")
     if (window.location.href === `${rootUrl}/contacts` && clientwidth > 1070) {
+        // document.body.style.overflow = "";
         contactsListViewElement.style.display = "block";
-        appName.style.left = "32%"
+        appName.style.left = "32%";
         // loadingEl.style.display = "none"
         await renderContactsListContent()
+        // contactsListContainer.style.visibility = "visible";
+        // console.log(contactsListContainer)
     } else {
         contactsListViewElement.style.display = "none";
     };
@@ -18077,7 +18082,7 @@ async function loadingBar() {
             bar.style.width = "0%"; // Reset
             setTimeout(() => {
                 bar.style.width = "100%"; // Fill
-            }, 10); // Small delay to ensure reset is registered
+            }, 100); // Small delay to ensure reset is registered
     }
 
     if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register`
@@ -18763,13 +18768,40 @@ if (clientWidth > 1070) {
     document.body.style.opacity = "1";
     console.log("show this")
 
-    if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` 
+    // Get navigation entries
+let pageReloaded = false;
+const navigationEntries = performance.getEntriesByType('navigation');
+
+if (navigationEntries.length > 0) {
+  const navigationType = navigationEntries[0].type;
+  
+  if (navigationType === 'reload') {
+    console.log('The page was refreshed!');
+    pageReloaded = true;
+    // Insert your refresh-handling logic here
+  } else {
+    console.log(`Page was accessed via: ${navigationType}`); // e.g., 'navigate', 'back_forward'
+  }
+}
+
+
+    if (window.location.href === `${rootUrl}/contacts` && previousPage === `${rootUrl}/login` && pageReloaded === false) {
+        document.body.style.overflow = "";
+        // document.body.style.visibility = "visible";
+    } else if (window.location.href === `${rootUrl}/contacts` && previousPage === `${rootUrl}/login` && pageReloaded === true) {
+        await loadingPage();
+        // document.body.style.overflow = "";
+        document.body.style.visibility = "visible"
+    } else if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` 
         && window.location.href !== `${rootUrl}/recover-password` && window.location.href !== `${rootUrl}/` && previousPage !== `${rootUrl}/login`) {
         await loadingPage()
+        // document.body.style.overflow = ""
+        // document.body.style.backgroundColor = "beige";
         document.body.style.visibility = "visible";
     } else {
         // this.setTimeout(function() {
         await showPages()
+        document.body.style.backgroundColor = "darkslategrey"
         document.body.style.overflow = "hidden";
         document.body.style.visibility = "visible";
         console.log("show login")
@@ -18780,10 +18812,12 @@ if (clientWidth > 1070) {
 
     // const bar = document.getElementById("loading-progress-bar-element");
 
-    this.setTimeout(async function() {
-        await loadingBar()
-        // bar.style.width = "0%"
-    }, 400)  
+    if (previousPage !== `${rootUrl}/login` || pageReloaded === true) {
+        this.setTimeout(async function() {
+            await loadingBar()
+            // bar.style.width = "0%"
+        }, 400)  
+    }
 
     
     // document.body.style.opacity = "1"; 
@@ -18806,7 +18840,7 @@ if (clientWidth > 1070) {
         const sectionTags = document.getElementsByTagName("SECTION");
         const sectionTagsArr = Array.from(sectionTags);
         
-        if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` && window.location.href !== `${rootUrl}/recover-password` && previousPage !== `${rootUrl}/login`) {
+        if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` && window.location.href !== `${rootUrl}/recover-password` && previousPage !== `${rootUrl}/login` || pageReloaded === true) {
             console.log("show this")
         this.setTimeout(function() {
         const loadingEl = this.document.querySelector("#loading-element");
