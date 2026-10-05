@@ -18948,6 +18948,7 @@ if (navigationEntries.length > 0) {
     } else {
         // this.setTimeout(function() {
         await showPages()
+        document.body.style.backgroundColor = "darkslategrey";
         document.body.style.overflow = "hidden";
         document.body.style.visibility = "visible";
         // console.log("show login")
