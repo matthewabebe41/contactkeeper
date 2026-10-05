@@ -565,7 +565,7 @@ async function renderMobileRecoverPassword() {
         resetPhoneNumberFormatOnFocus(recoverUserPasswordPhoneNumberElement)
     });
 
-    const navigateToLoginFromRecoverPasswordButton = document.querySelector("#mobile-navigate-to-login-view-from-recover-password-button");
+    const navigateToLoginFromRecoverPasswordButton = document.querySelector("#mobile-navigate-to-login-from-recover-password-button");
     navigateToLoginFromRecoverPasswordButton.addEventListener("click", function(event) {
         event.preventDefault()
         window.location.href = `${rootUrl}/login`;
@@ -15229,9 +15229,9 @@ async function mobileRecoverUserAccount() {
     const emailaddress = recoverUserObject.emailaddress;
     const phonenumber = recoverUserObject.phonenumber;
     const password = recoverUserObject.password;
-    const user_image = recoverUserObject.userImage;
+    // const user_image = recoverUserObject.userImage;
 
-    const body = { firstname, lastname, emailaddress, phonenumber, password, user_image };
+    const body = { firstname, lastname, emailaddress, phonenumber, password, session_id };
     try {
         const response = await fetch(`/users/${user_id}`, {
             method: "PUT",
