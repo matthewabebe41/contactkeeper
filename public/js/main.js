@@ -4058,13 +4058,22 @@ async function renderMobileContactsListContent() {
 
     // console.log(userContacts)
 
+    //do this for mobile list situations
+    const topBar = document.querySelector("#topbar")
+    const mobileContactsListUserHeaderContainer = document.querySelector("#mobile-contacts-list-user-header-container");
+    const mobileContactsListSearchElementsContainer = document.querySelector('#mobile-contacts-list-search-elements-container');
+    const topBarHeight = topBar.getBoundingClientRect().height;
+    const mobileContactsListUserHeaderContainerHeight = mobileContactsListUserHeaderContainer.getBoundingClientRect().height;
+    const mobileContactsListSearchElementsContainerHeight = mobileContactsListSearchElementsContainer.getBoundingClientRect().height;
+    const bufferHeight = `${topBarHeight + mobileContactsListUserHeaderContainerHeight + mobileContactsListSearchElementsContainerHeight + 16.58}px`
+
     const contactsListContainer = document.createElement("div"); //correct
     contactsListContainer.setAttribute("id", "my-mobile-contacts-list-container"); //correct
     contactsListContainer.style.visibility = "hidden"; //correct ... hiding list initially
     const numberOfContactsElement = document.querySelector("#mobile-my-contacts-number"); //correct
     numberOfContactsElement.innerHTML = userContacts.length; //correct
     contactsListContainer.style.position = "absolute"; //correct
-    contactsListContainer.style.top = "28.75%" //correct
+    contactsListContainer.style.top = bufferHeight //correct
     // contactsListContainer.style.left'
     contactsListContainer.style.width = "100%"
     const contactsList = document.createElement("ul");
@@ -10220,13 +10229,21 @@ const allUsers = await getAllUsers();
       });
       //code above is correct (consider shorter sort code)
 
+    const topBar = document.querySelector("#topbar")
+    const mobileFavoritesListUserHeaderContainer = document.querySelector("#mobile-favorites-list-header-user-container");
+    const mobileFavoritesListSearchElementsContainer = document.querySelector("#mobile-favorites-list-search-elements-container");
+    const topBarHeight = topBar.getBoundingClientRect().height;
+    const mobileFavoritesListUserHeaderContainerHeight = mobileFavoritesListUserHeaderContainer.getBoundingClientRect().height;
+    const mobileFavoritesListSearchElementsContainerHeight = mobileFavoritesListSearchElementsContainer.getBoundingClientRect().height;
+    const bufferHeight = `${topBarHeight + mobileFavoritesListUserHeaderContainerHeight + mobileFavoritesListSearchElementsContainerHeight + 16.58}px`
+
     const favoriteContactsListContainer = document.createElement("div"); //correct
     favoriteContactsListContainer.setAttribute("id", "my-mobile-favorite-contacts-list-container"); //correct
     favoriteContactsListContainer.style.visibility = "hidden"; //correct
     const numberOfFavoriteContactsElement = document.querySelector("#mobile-favorites-number"); //correct
     numberOfFavoriteContactsElement.innerHTML = favoriteContacts.length; //correct
     favoriteContactsListContainer.style.position = "absolute"; //correct
-    favoriteContactsListContainer.style.top = "31.25%"; //correct
+    favoriteContactsListContainer.style.top = bufferHeight //correct
     favoriteContactsListContainer.style.width = "100%"; //correct
     const favoriteContactsList = document.createElement("ul"); //correct
     favoriteContactsList.setAttribute("id", "my-favorite-contacts-list"); //correct
