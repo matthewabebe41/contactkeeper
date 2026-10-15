@@ -21,7 +21,7 @@
         <h2>Loading Bar</h2>
     </div>
 
-    <div id="mobile-menu" style="display: none; position: fixed; flex-direction: column; width: 100%; top: 9.4%; background-color: ghostwhite; z-index: 2;">
+    <div id="mobile-menu" style="display: none; position: fixed; flex-direction: column; width: 100%; top: 9.4%; background-color: ghostwhite; z-index: 4;">
         <ul style="display: flex; flex-direction: column; justify-content: space-between; width: 100%; background-color: grey; padding: 0px; margin: 0px;">
             <li id="mobile-account-menu-item" style="display: flex; justify-content: center; align-items: center; height: 25%; font-size: large; font-weight: bold; border-bottom: 1px solid black; padding: 2px; list-style-type: none;">Account</li>
             <li id="mobile-contacts-list-menu-item" style="display: flex; justify-content: center; align-items: center; height: 25%; font-size: large; font-weight: bold; border-bottom: 1px solid black; padding: 2px; list-style-type: none;">Contacts</li>
@@ -730,30 +730,36 @@
     </section>
 
     <section id="mobile-contacts-list-view"  style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none; overflow: hidden;">
-         <div id="mobile-contacts-list-user-header-container" style="position: absolute; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 15%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
-            <div id="mobile-contacts-user-image-container" style="display: flex; align-items: center; width: 20%; height: 100%; padding: 5px;">
-                <div id="mobile-contacts-list-header-user-image-circle" style="position: relative; display: flex; justify-content: center; align-items: center; width: 100%; aspect-ratio: 1; border: 0.5px solid grey; border-radius: 50%; box-shadow: 2px 2px 2px; background-color: gainsboro;">
-                    <img id="mobile-contacts-user-image" src="./images/user-5-svgrepo-com.svg" style="width: 100%; height: 100%; object-fit: cover;">
+         <div id="mobile-contacts-list-user-header-container" style="position: fixed; display: flex; justify-content: center; align-items: center; width: 100%; height: 15%; background-color: #f9f9f9; box-shadow: 2px 2px 2px; z-index: 2;">
+            <h2 id="mobile-contacts-list-header-user-name" style="font-family: Arial;"></h2>
+            <!-- <div id="mobile-contacts-user-image-container" style="display: flex; align-items: center; width: 20%; height: 100%; padding: 5px;">
+                <img id="mobile-contacts-user-image" src="./images/user-5-svgrepo-com.svg" style="width: 100%; height: 100%; object-fit: cover;">
+                <div id="mobile-user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; min-width: 0; margin: 0px 0px 0px 10px;">
+                    <p id="mobile-contacts-list-header-user-name"></p>
+                    <p id="mobile-contacts-list-header-user-email"></p>
                 </div>
-                <!-- <div id="mobile-contacts-user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; margin: 0px 0px 0px 10px;">
-                    <p id="mobile-contact-header-user-name" style="font-weight: bold;">Name</p>
-                    <p id="mobile-contact-header-user-email" style="font-style: italic; margin: 0px 0px 16px 0px;">Email</p>
-                </div> -->
-            </div>
-            <div id="mobile-contacts-user-name-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 54.5%; height: 100%;">
-                <div></div>
+            </div> -->
+            <!-- <div id="mobile-contacts-user-name-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 54.5%; height: 100%;">
                 <h2 id="mobile-contacts-user-name" style="margin: 0;"></h2>
-                <p id="mobile-contacts-user-email" style="margin: 0;"></p>
+            </div> -->
+            <!-- <div id="mobile-contacts-user-header-spacing-container" style="display: flex; flex: 0 0 50%; min-width: 0; width: 50%; height: 100%; box-sizing: border-box;"></div> -->
             </div>
-            <div id="mobile-contact-user-favorite-icon-container" style="display: flex; justify-content: flex-end; width: 20%; height: 100%; padding: 5px;">
-                <div id="mobile-contacts-list-header-user-favorite-square" style="position: relative; display: flex; justify-content: center; align-items: center; width: 100%;">
-                    <img id="mobile-contact-user-favorite-icon" src="./images/star-gold-svgrepo-com.svg" style="width: 100%; display: none;">
+            <div id="mobile-contacts-list-search-container" style="position: fixed; display: flex; flex: 0 0 25%; align-items: center; background-color: ghostwhite; border-top: 3px solid black; border-bottom: 3px solid black; width: 100%; top: 23.5%; padding: 5px; z-index: 2;">
+            <div id="mobile-contacts-list-search-elements-container" style="display: flex; align-items: center; width: 100%; height: 100%">
+                <div id="mobile-contacts-list-search-label-container" style="display: flex; align-items: center; width: 20%;">
+                    <h2 id="mobile-my-contacts-number" style="display: inline-flex; justify-content: center; align-items: center; width: 15px; height: 15px; background-color: navy; color: white; padding: 10px; border-radius: 50%; cursor: default; margin: 0px 0px 0px 5px;"></h2>
+                    <!-- <h2 id="mobile-my-contacts-label" style="width: 140px; cursor: default; margin: 0px 0px 0px 8px">Contacts</h2> -->
                 </div>
+                <div id="mobile-contacts-list-search-element-container" style="display: flex; flex: 0 0 65%; justify-content: center; width: 60%;">
+                    <input id="mobile-search-my-contacts-input" type="search" name="search-my-contacts" placeholder="Search My Contacts" style="width: 90%; height: 22.5px; border: 1px solid black; text-indent: 20px; background-image:url(./images/search-svgrepo-com.svg); background-repeat: no-repeat; background-size: 16px; background-position: 0.8% 2px; outline: none;">
+                </div>
+                <div id="mobile-my-contacts-list-spacing-element-container" style="display: flex; width: 20%;"></div>
             </div>
         </div>
-        <div id="contacts-list-container" style="position: absolute; display: flex; flex-direction: column; width: 100%; height: 96%; top: 20%;">
+         <div id="mobile-contacts-list-container" style="position: absolute; display: flex; flex-direction: column; width: 100%; height: 96%; top: 20%;">
             <!-- <h3>Contacts</h3> -->
-            <div id="contacts-list"></div>
+            <div id="mobile-contacts-list"></div>
+            <div id="mobile-contacts-autocomplete-list"></div>
         </div>
     </section>
 
@@ -1478,30 +1484,36 @@
     </section>
 
     <section id="mobile-favorites-list-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none; overflow: hidden;">
-        <div id="mobile-favorites-list-header-user-container" style="position: absolute; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 15%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
-            <div id="mobile-favorites-user-image-container" style="display: flex; align-items: center; width: 20%; height: 100%; padding: 5px;">
-                <div id="mobile-favorites-list-header-user-image-circle" style="position: relative; display: flex; justify-content: center; align-items: center; width: 100%; border: 0.5px solid grey; box-shadow: 2px 2px 2px; border-radius: 50%; background-color: gainsboro; aspect-ratio: 1;">
-                    <img id="mobile-favorites-user-image" src="./images/user-5-svgrepo-com.svg" style="width: 100%; height: 100%; object-fit: cover;">
+        <div id="mobile-favorites-list-header-user-container" style="position: fixed; display: flex; justify-content: center; align-items: center; width: 100%; height: 15%; background-color: #f9f9f9; box-shadow: 2px 2px 2px; z-index: 2;">
+            <h2 id="mobile-favorites-list-header-user-name" style="font-family: Arial;"></h2>
+            <!-- <div id="mobile-favorites-user-image-container" style="display: flex; align-items: center; width: 20%; height: 100%; padding: 5px;">
+                <img id="mobile-favorites-user-image" src="./images/user-5-svgrepo-com.svg" style="width: 100%; height: 100%; object-fit: cover;">
+                <div id="mobile-favorites-user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; min-width: 0; margin: 0px 0px 0px 10px;">
+                    <p id="mobile-favorites-header-user-name">Name</p>
+                    <p id="mobile-favorites-header-user-email">Email</p>
                 </div>
-                <!-- <div id="mobile-favorites-user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; margin: 0px 0px 00px 10px;"> -->
-                    <!-- <p id="mobile-favorites-header-user-name" style="font-weight: bold; margin: 0px;">Name</p> -->
-                    <!-- <p id="mobile-favorites-header-user-email" style="font-style: italic; margin: 0px 0px 16px 0px;">Email</p> -->
-                <!-- </div> -->
             </div>
             <div id="mobile-favorites-user-name-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 54.5%; height: 100%;">
-                <div></div>
                 <h2 id="mobile-favorites-user-name" style="margin: 0"></h2>
-                <p id="mobile-favorites-user-email" style="margin: 0"></p>
             </div>
-            <div id="mobile-favorites-list-user-favorite-icon-container" style="display: flex; justify-content: flex-end; width: 20%; height: 100%; padding: 5px;">
-                <div id="mobile-favorites-list-header-user-favorite-square" style="position: relative; display: flex; justify-content: center; align-items: center; width: 100%;">
-                    <img id="mobile-favorites-list-user-favorite-icon" src="./images/star-gold-svgrepo-com.svg" style="width: 100%; display: none;">
+            <div id="mobile-favorites-user-header-spacing-container" style="display: flex; flex: 0 0 50%; min-width: 0; width: 50%; height: 100%; box-sizing: border-box;"></div> -->
+        </div>
+         <div id="mobile-favorites-list-search-container" style="position: fixed; display: flex; flex: 0 0 25%; align-items: center; background-color: ghostwhite; border-top: 3px solid black; border-bottom: 3px solid black; width: 100%; top: 23.5%; padding: 5px; z-index: 2;">
+            <div id="mobile-favorites-list-search-elements-container" style="display: flex; align-items: center; width: 100%; height: 100%">
+                <div id="mobile-favorites-list-search-label-container" style="display: flex; align-items: center; width: 20%;">
+                    <h2 id="mobile-favorites-number" style="display: inline-flex; justify-content: center; align-items: center; width: 15px; height: 15px; background-color: navy; color: white; padding: 10px; border-radius: 50%; cursor: default; margin: 0px 0px 0px 5px;"></h2>
+                    <!-- <h2 id="mobile-favorites-label" style="width: 140px; cursor: default; margin: 0px 0px 0px 8px">Contacts</h2> -->
                 </div>
+                <div id="mobile-favorites-list-search-element-container" style="display: flex; flex: 0 0 65%; justify-content: center; width: 60%;">
+                    <input id="mobile-search-favorites-input" type="search" name="mobile-search-favorites" placeholder="Search Favorite Contacts" style="width: 90%; height: 22.5px; border: 1px solid black; text-indent: 20px; background-image:url(./images/search-svgrepo-com.svg); background-repeat: no-repeat; background-size: 16px; background-position: 0.8% 2px; outline: none;">
+                </div>
+                <div id="mobile-favorites-list-spacing-element-container" style="display: flex; width: 20%;"></div>
             </div>
         </div>
-        <div id="favorite-contacts-list-container" style="position: absolute; display: flex; flex-direction: column; width: 100%; height: 96%; top: 20%;">
+        <div id="mobile-favorites-list-container" style="position: absolute; display: flex; flex-direction: column; width: 100%; height: 96%; top: 20%;">
             <!-- <h3>Contacts</h3> -->
-            <div id="favorite-contacts-list"></div>
+            <div id="mobile-favorites-list"></div>
+            <div id="mobile-favorites-autocomplete-list"></div>
         </div>
     </section>
 
