@@ -11433,62 +11433,72 @@ async function renderMobileGroupsListContent() {
 
     const userContactGroupings = await getUserContactGroupings(userId)
     console.log(userContactGroupings)
+    //code above is correct
 
     // const searchGroupsAutocompleteList = document.querySelector("#autocomplete-groups-list");
-    const searchGroupsAutocompleteList = document.createElement("ul")
-    searchGroupsAutocompleteList.setAttribute("id", "mobile-autocomplete-groups-list");
-    searchGroupsAutocompleteList.style.display = "flex";
-    searchGroupsAutocompleteList.style.flexDirection = "column";
-    searchGroupsAutocompleteList.style.alignItems = "center";
-    searchGroupsAutocompleteList.style.listStyle = "none";
-    // searchGroupsAutocompleteList.style.height = "100%";
-    searchGroupsAutocompleteList.style.margin = "0px";
-    searchGroupsAutocompleteList.style.padding = "0px";
-    // searchGroupsAutocompleteList.innerHTML = '';
+    const searchGroupsAutocompleteList = document.createElement("ul") //correct
+    searchGroupsAutocompleteList.setAttribute("id", "mobile-autocomplete-groups-list"); //correct
+    searchGroupsAutocompleteList.style.listStyle = "none"; //correct
+    searchGroupsAutocompleteList.style.height = "100%"; //correct
+    searchGroupsAutocompleteList.style.margin = "5px 0px 0px 14px"; // correct 5 0 0 18
+    searchGroupsAutocompleteList.style.padding = "0px"; //correct
+    searchGroupsAutocompleteList.innerHTML = ''; //correct
+    // searchGroupsAutocompleteList.style.display = "flex";
+    // searchGroupsAutocompleteList.style.flexDirection = "column";
+    // searchGroupsAutocompleteList.style.alignItems = "center";
 
     const groupsListContainer = document.createElement("div");
-    // const groupsListContainer = document.querySelector("#groups-list-container");
+    groupsListContainer.setAttribute("id", "groups-list-container");
     groupsListContainer.style.position = "absolute";
     groupsListContainer.style.display = "flex";
     groupsListContainer.style.flexDirection = "column";
     groupsListContainer.style.width = "100%"
     groupsListContainer.style.top = "18%";
+    //left property uneeded
+    groupsListContainer.style.visibility = "hidden"
+    
+    // const groupsListContainer = document.querySelector("#groups-list-container");
     // groupsListContainer.style.left = "50%";
-
+    
     //  requestAnimationFrame(() => {
-    //     const groupsListContainer = document.querySelector("#mobile-groups-list-container");
-    //     const screenHeight = window.innerHeight;
+        //     const groupsListContainer = document.querySelector("#mobile-groups-list-container");
+        //     const screenHeight = window.innerHeight;
     //     const elementHeight = screenHeight * 0.093;
     //     const roundedElementHeightStr = elementHeight.toString() + "px"
-
+    
     //      console.log(screenHeight)
-
+    
     //      console.log(elementHeight.toString())
-         
-
+    
+    
     //     groupsListContainer.style.marginTop = roundedElementHeightStr
     // });
+
+    //code above is correct
 
     const groupsList = document.createElement("ul");
     groupsList.setAttribute("id", "mobile-groups-list")
     groupsList.style.listStyle = "none";
     // groupsList.style.height = "100%";
-    groupsList.style.margin = "0px";
+    groupsList.style.margin = "5px 0px 0px 14px"; //correct 5 0 0 18
     groupsList.style.padding = "0px";
-    groupsList.style.display = "flex";
-    groupsList.style.flexDirection = "column";
-    groupsList.style.alignItems = "center";
+    // groupsList.style.display = "block";
+    // groupsList.style.flexDirection = "row";
+    // groupsList.style.alignItems = "center";
     // groupsList.style.justifyContent = "space-around"
+
+    //code above is correct
     
     userGroups.forEach(group => {
         const groupListItem = document.createElement("div");
         groupListItem.setAttribute("groupId", group.group_id)
         groupListItem.setAttribute("mobileGroupName", `${group.groupname}`)
         groupListItem.setAttribute("data", `${rootUrl}/group_${group.group_id}`);
+        groupListItem.classList.add("mobileGroupListItem")
         groupListItem.style.display = "inline-flex";
         groupListItem.style.flexDirection = "column";
-        groupListItem.style.width = "210px";
-        groupListItem.style.height = "145px";
+        groupListItem.style.width = "42%";
+        groupListItem.style.height = "150px";
         groupListItem.style.margin = "10px 10px 10px 10px"
         groupListItem.style.backgroundColor = "#ededed";
         groupListItem.style.border = "2px solid black";
@@ -11564,6 +11574,7 @@ async function renderMobileGroupsListContent() {
                 window.location.href = newURL
             }
         });
+        //code above is correct
         
         const groupListItemHeaderElement = document.createElement("div");
         // groupListItemHeaderElement.style.position = "relative"
@@ -11577,6 +11588,7 @@ async function renderMobileGroupsListContent() {
         groupListItemEditIcon.setAttribute("id", "mobile-group-list-item-edit-icon")
         groupListItemEditIcon.setAttribute("src", "./images/edit-svgrepo-com.svg")
         groupListItemEditIcon.style.width = "20px";
+        //code above is correct
         
         groupListItemEditIcon.addEventListener("click", function(event) {
             const clickedGroupListItemElement = event.target;
@@ -11585,8 +11597,29 @@ async function renderMobileGroupsListContent() {
             groupListItemToEdit.classList.remove("edit-inactive");
             groupListItemToEdit.classList.add("edit-active")
             console.log("open edit modal")
+            // const groupListItemEditModalHeaderElement = document.querySelector("#mobile-group-list-item-edit-modal-header-element");
+            // groupListItemEditModalHeaderElement.style.pointerEvents = "none";
+            // navigateCreateGroupPageButton.style.pointerEvents = "none";
+            //unclear above
+            const groupsListSearchInput = document.querySelector("#search-groups-input");
+            groupsListSearchInput.style.pointerEvents = "none";
+            const groupListItems = document.querySelectorAll(".groupListItem");
+            const groupListItemsHTMLArr = Array.from(groupListItems);
+            groupListItemsHTMLArr.forEach(element => {
+                element.style.backgroundColor = "#ededed";
+                element.addEventListener("mouseover", function() {
+                    element.style.backgroundColor = "#ededed";
+                });
+                element.addEventListener("mouseout", function() {
+                    element.style.backgroundColor = "#ededed";
+                });
+            });
+            // console.log(groupListItemsHTMLArr)
+
             groupListItemEditModalContainer.style.display = "flex"
-        })
+        });
+        //code above is correct
+
         const groupListItemTextElement = document.createElement("h4");
         groupListItemTextElement.setAttribute("id", "mobile-group-list-item-text-element");
         groupListItemTextElement.style.margin = "0px"
@@ -11610,6 +11643,8 @@ async function renderMobileGroupsListContent() {
             }
         })
         console.log(numberOfContactsInGroup)
+        //code above is correct
+
         const numberOfContactsInGroupContainer = document.createElement("div");
         numberOfContactsInGroupContainer.style.display = "flex";
         numberOfContactsInGroupContainer.style.justifyContent = "center";
@@ -11635,6 +11670,7 @@ async function renderMobileGroupsListContent() {
         groupsListContainer.appendChild(groupsList)
         document.body.appendChild(groupsListContainer);
     });
+    //code above is correct
 
     const groupsListViewElement = document.querySelector("#mobile-groups-list-view")
         const groupListItemEditModalContainer = document.createElement("div");
@@ -11653,6 +11689,7 @@ async function renderMobileGroupsListContent() {
         groupListItemEditModalContainer.style.display = "none";
         groupListItemEditModalContainer.style.padding = "10px";
         groupListItemEditModalContainer.style.zIndex = "1"
+        //code above is correct
 
     window.addEventListener('scroll', function() {
         let scrollYPosition = this.window.pageYOffset;
@@ -11679,12 +11716,28 @@ async function renderMobileGroupsListContent() {
         groupListItemEditModalHeaderElement.style.margin = "0px"
         groupListItemEditModalHeaderElement.innerHTML = "Edit Group Name";
         const groupListItemEditModalCloseIcon = document.createElement("img");
+        groupListItemEditModalCloseIcon.setAttribute("id", "mobile-group-list-item-edit-modal-close-icon")
         groupListItemEditModalCloseIcon.setAttribute("src", "./images/close-md-svgrepo-com.svg");
         groupListItemEditModalCloseIcon.style.width = "20px";
         groupListItemEditModalCloseIcon.style.backgroundColor = "red";
+        //code above is correct
         groupListItemEditModalCloseIcon.addEventListener("click", function() {
+            const groupsListSearchInput = document.querySelector("#search-groups-input");
+            groupsListSearchInput.style.pointerEvents = "auto";
+            const groupListItems = document.querySelectorAll(".groupListItem");
+            const groupListItemsHTMLArr = Array.from(groupListItems);
+            groupListItemsHTMLArr.forEach(element => {
+                element.addEventListener("mouseover", function() {
+                    element.style.backgroundColor = "lightgreen";
+                });
+                element.addEventListener("mouseout", function() {
+                    element.style.backgroundColor = "#ededed";
+                });
+            });
+
             groupListItemEditModalContainer.style.display = "none";
         });
+        //code above is correct
         const groupListItemEditModalInputContainer = document.createElement("div");
         groupListItemEditModalInputContainer.setAttribute("id", "mobile-group-list-item-edit-modal-input-container")
         groupListItemEditModalInputContainer.style.display = "flex";
@@ -11707,6 +11760,7 @@ async function renderMobileGroupsListContent() {
         const groupListItemEditModalButtonElement = document.createElement("button");
         groupListItemEditModalButtonElement.setAttribute("id", "mobile-group-list-item-edit-modal-button-element")
         groupListItemEditModalButtonElement.innerHTML = "Done";
+        //code above is correct
         groupListItemEditModalHeaderContainer.appendChild(groupListItemEditModalHeaderElement);
         groupListItemEditModalHeaderContainer.appendChild(groupListItemEditModalCloseIcon);
         groupListItemEditModalInputContainer.appendChild(groupListItemEditModalInputLabelElement);
@@ -11735,7 +11789,8 @@ async function renderMobileGroupsListContent() {
 
     groupListItemEditModalButtonElement.addEventListener("click", function(event) {
         console.log(event.target)
-    })
+    });
+    //code above is correct
 
     const searchGroupsElement = document.querySelector("#mobile-search-groups-input");
     searchGroupsElement.addEventListener("input", groupsAutocompleteSearch)
@@ -11813,18 +11868,21 @@ async function renderMobileGroupsListContent() {
     //   console.log(uniqueArray); // Output: [1, 2, 3, 4, 5]
 
     // if (filteredGroups.length > 0) {
-        searchGroupsAutocompleteList.style.display = 'flex';
+        searchGroupsAutocompleteList.style.display = 'block';
         groupsList.style.display = "none"
+        //code above is correct
+
         uniqueArray.forEach(group => {
             const groupsAutoCompleteListItem = document.createElement('div');
+            groupsAutoCompleteListItem.classList.add("mobileGroupListItem");
             groupsAutoCompleteListItem.setAttribute("groupId", group.group_id)
             groupsAutoCompleteListItem.setAttribute("mobileGroupName", `${group.groupname}`)
             groupsAutoCompleteListItem.setAttribute("data", `${rootUrl}/group_${group.group_id}`);
             groupsAutoCompleteListItem.setAttribute("groupId", group.group_id)
             groupsAutoCompleteListItem.style.display = "inline-flex";
             groupsAutoCompleteListItem.style.flexDirection = "column";
-            groupsAutoCompleteListItem.style.width = "210px";
-            groupsAutoCompleteListItem.style.height = "145px";
+            groupsAutoCompleteListItem.style.width = "42%";
+            groupsAutoCompleteListItem.style.height = "150px";
             groupsAutoCompleteListItem.style.margin = "10px 10px 10px 10px";
             groupsAutoCompleteListItem.style.backgroundColor = "#ededed";
             groupsAutoCompleteListItem.style.border = "2px solid black";
@@ -11836,6 +11894,8 @@ async function renderMobileGroupsListContent() {
         groupsAutoCompleteListItem.addEventListener("mouseout", function() {
             groupsAutoCompleteListItem.style.backgroundColor = "#ededed"
         });
+
+        //code above is correct
 
             groupsAutoCompleteListItem.addEventListener("click", (event) => {
 
@@ -11902,6 +11962,8 @@ async function renderMobileGroupsListContent() {
             }
         });
 
+        //code above is correct
+
             const groupAutoCompleteListItemHeaderElement = document.createElement("div");
             // groupAutoCompleteListItemHeaderElement.style.position = "relative"
             groupAutoCompleteListItemHeaderElement.style.display = "flex"
@@ -11922,8 +11984,21 @@ async function renderMobileGroupsListContent() {
                 groupListItemToEdit.classList.remove("edit-inactive");
                 groupListItemToEdit.classList.add("edit-active")
                 console.log("open edit modal")
+                const groupsListSearchInput = document.querySelector("#search-groups-input");
+                groupsListSearchInput.style.pointerEvents = "none";
+                const groupListItems = document.querySelectorAll(".groupListItem");
+                const groupListItemsHTMLArr = Array.from(groupListItems);
+                groupListItemsHTMLArr.forEach(element => {
+                    element.style.backgroundColor = "#ededed";
+                    element.addEventListener("mouseover", function() {
+                        element.style.backgroundColor = "#ededed";
+                    });
+                    element.addEventListener("mouseout", function() {
+                        element.style.backgroundColor = "#ededed";
+                    });
+                });
                 groupListItemEditModalContainer.style.display = "flex"
-            })
+            });
             const groupAutoCompleteListItemTextElement = document.createElement("h4");
             groupAutoCompleteListItemTextElement.style.margin = "0px"
             groupAutoCompleteListItemTextElement.innerHTML = group.groupname;
@@ -11952,6 +12027,7 @@ async function renderMobileGroupsListContent() {
         autoCompleteNumberOfContactsInGroupContainer.style.height = "100%"
         const autoCompleteNumberOfContactsInGroupElement = document.createElement("h2");
         autoCompleteNumberOfContactsInGroupElement.innerHTML = autoCompleteNumberOfContactsInGroup;
+        autoCompleteNumberOfContactsInGroupElement.style.pointerEvents = "none";
         autoCompleteNumberOfContactsInGroupElement.style.margin = "0px"
         requestAnimationFrame(() => {
             const groupAutoCompleteListItemHeaderElementHeight = groupAutoCompleteListItemHeaderElement.clientHeight.toString();
