@@ -19296,6 +19296,10 @@ window.addEventListener("beforeunload", function () {
 });
 
 window.addEventListener("pagehide", function() {
+    if (window.location.href === `${rootUrl}/login`) {
+        document.body.style.backgroundColor = "beige";
+    };
+    
     this.document.body.visibility = "hidden"
     this.document.body.style.opacity = "0"
     // window.history.replaceState({}, '', currentUrl);
@@ -19488,7 +19492,29 @@ if (navigationEntries.length > 0) {
     largeSidebar.style.display = "none";
     smallSidebar.style.display = "none";
 
-    if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` 
+    let pageReloaded = false;
+    const navigationEntries = performance.getEntriesByType('navigation');
+
+    if (navigationEntries.length > 0) {
+  const navigationType = navigationEntries[0].type;
+  
+  if (navigationType === 'reload') {
+    console.log('The page was refreshed!');
+    pageReloaded = true;
+    // Insert your refresh-handling logic here
+  } else {
+    console.log(`Page was accessed via: ${navigationType}`); // e.g., 'navigate', 'back_forward'
+  }
+}
+
+    if (window.location.href === `${rootUrl}/contacts` && previousPage === `${rootUrl}/login` && pageReloaded === false) {
+        document.body.style.overflow = "";
+        // document.body.style.visibility = "visible";
+    } else if (window.location.href === `${rootUrl}/contacts` && previousPage === `${rootUrl}/login` && pageReloaded === true) {
+        await mobileLoadingPage();
+        // document.body.style.overflow = "";
+        document.body.style.visibility = "visible"
+    } else if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` 
         && window.location.href !== `${rootUrl}/recover-password` && window.location.href !== `${rootUrl}/` && previousPage !== `${rootUrl}/login`) {
         // await loadingPage()
         // await showPages()
