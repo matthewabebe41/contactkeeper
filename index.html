@@ -21,6 +21,10 @@
         <h2>Loading Bar</h2>
     </div>
 
+    <div id="logging-in-text" style="display: none; top: 50%; left: 50%; transform:translate(-50%, -50%)">
+        <h2>Logging in</h2>
+    </div>
+
     <div id="mobile-menu" style="display: none; position: fixed; flex-direction: column; width: 100%; top: 9.4%; background-color: ghostwhite; z-index: 4;">
         <ul style="display: flex; flex-direction: column; justify-content: space-between; width: 100%; background-color: grey; padding: 0px; margin: 0px;">
             <li id="mobile-account-menu-item" style="display: flex; justify-content: center; align-items: center; height: 25%; font-size: large; font-weight: bold; border-bottom: 1px solid black; padding: 2px; list-style-type: none;">Account</li>
@@ -351,22 +355,24 @@
     </section>
 
     <section id="user-view" style="position: absolute; width: 68.5%; height: 90.5%; top: 9.5%; left: 31.5%; display: none;">
-        <div id="user-header-container" style="position: absolute; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
-            <div id="user-image-container" style="position: absolute; display: flex; align-items: center; height: 100%; padding: 10px;">
-                <img id="user-image" src="./images/user-5-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; object-fit: cover;">
-                <div id="user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; margin: 0px 0px 0px 10px;">
-                    <p id="header-user-name" style="font-weight: bold; margin: 0px;">Name</p>
-                    <p id="header-user-email" style="font-style: italic; margin: 0px 0px 16px 0px;">Email</p>
+        <div id="user-header-container" style="position: fixed; display: flex; align-items: center; width: 100%; height: 20%; background-color: #f9f9f9; box-shadow: 2px 2px 2px; margin-top: 1.25px; z-index: 2;">
+            <div id="user-image-container" style="display: flex; flex: 0 0 25%; align-items: center; min-width: 0; width: 25%; height: 100%; padding: 10px; box-sizing: border-box;">
+                <img id="user-image" src="./images/user-5-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 95px; height: 95px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; box-shadow: 2px 2px 2px; object-fit: cover; z-index: 1;">
+                <div id="user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; min-width: 0; margin: 0px 0px 0px 10px;">
+                    <p id="header-user-name" style="font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0px;">Name</p>
+                    <p id="header-user-email" style="font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0px 0px 16px 0px;">Email</p>
                 </div>
             </div>
-            <div id="user-name-container" style="position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%;">
-                <h2 id="user-name" style="margin: 0"></h2>
-                <p id="user-email" style="margin: 0"></p>
+            <div id="user-name-container" style="display: flex; flex: 0 0 25%; justify-content: center; align-items: center; min-width: 0; width: 25%; height: 100%; box-sizing: border-box;">
+                <div id="user-header-label-container" style="display: flex; justify-content: center; min-width: 0;">
+                    <h2 id="user-header-label" style="cursor: default; user-select: none; margin: 10px 70px 0px 0px;">Account</h2>
+                </div>
             </div>
+            <div id="user-header-spacing-container" style="display: flex; flex: 0 0 50%; min-width: 0; width: 50%; height: 100%; box-sizing: border-box;"></div>
         </div>
         <div style="position: absolute; top: 20.8%; width: 100%; border-top: 3px solid black; border-bottom: 3px solid black;">
             <div style="display: flex; align-items: center; height: 45px; background-color: ghostwhite;">
-                <h2 style="margin: 0px 10px 0px 5px; padding: 5px;">Account Information</h2>
+                <h2 style="margin: 0px 10px 0px 5px; padding: 5px;">User Information</h2>
             </div>
         </div>
         <div id="user-information-container" style="position: absolute; display: flex; justify-content: center; align-items: center; width: 100%; height: 57%; top: 31.5%;">
@@ -405,32 +411,27 @@
     </section>
 
     <section id="mobile-user-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none; overflow: hidden;">
-        <div id="mobile-user-header-container" style="position: absolute; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 15%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
-            <div id="mobile-user-image-container" style="display: flex; align-items: center; width: 20%; height: 100%; padding: 5px;">
-                <div id="mobile-user-image-circle" style="position: relative; display: flex; justify-content: center; align-items: center; width: 100%; aspect-ratio: 1; border: 0.5px solid grey; border-radius: 50%; box-shadow: 2px 2px 2px; background-color: gainsboro; z-index: 1;">
-                    <img id="mobile-user-image" src="./images/user-5-svgrepo-com.svg" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <!-- <div id="mobile-user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; margin: 0px 0px 0px 10px;"> -->
-                    <!-- <p id="mobile-header-user-name" style="font-weight: bold; margin: 0px;">Name</p> -->
-                    <!-- <p id="mobile-header-user-email" style="font-style: italic; margin: 0px 0px 16px 0px;">Email</p> -->
-                <!-- </div> -->
-            </div>
-            <div id="mobile-user-name-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 54.5%; height: 100%;">
-                <h2 id="mobile-user-name" style="margin: 0;"></h2>
-                <p id="mobile-user-email" style="margin: 0"></p>
-            </div>
-             <div id="mobile-user-favorite-icon-container" style="display: flex; justify-content: flex-end; width: 20%; height: 100%; padding: 5px;">
-                <div id="mobile-user-favorite-square" style="position: relative; display: flex; justify-content: center; align-items: center; width: 80%;">
-                    <img id="mobile-user-favorite-icon" src="./images/star-gold-svgrepo-com.svg" style="width: 100%; display: none;">
+        <div id="mobile-user-header-container" style="position: fixed; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 13.5%; background-color: #f9f9f9; box-shadow: 2px 2px 2px; margin-top: 1.25px; z-index: 2;">
+            <div id="mobile-user-image-container" style="display: flex; flex: 0 0 20%; align-items: center; min-width: 0; width: 20%; height: 100%; padding: 5px; box-sizing: border-box;">
+                <img id="mobile-user-image" src="./images/user-5-svgrepo-com.svg" style="position: relative; display: flex; justify-content: center; align-items: center; width: 75px; border: 1px solid black; border-radius: 50%; background-color: gainsboro; object-fit: cover; z-index: 1;">
+                <div id="mobile-user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; min-width: 0; margin: 0px 0px 0px 10px;">
+                    <p id="mobile-header-user-name" style="font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0px;">Name</p>
+                    <p id="mobile-header-user-email" style="font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0px 0px 16px 0px;">Email</p>
                 </div>
             </div>
+            <div id="mobile-user-name-container" style="display: flex; flex: 0 0 54.5%; justify-content: center; align-items: center; min-width: 0; width: 54.5%; height: 100%; box-sizing: border-box;">
+                <div id="mobile-user-header-label-container" style="display: flex; justify-content: center; min-width: 0;">
+                    <h2 id="mobile-user-header-label" style="cursor: default; user-select: none;">Account</h2>
+                </div>
+            </div>
+           <div id="mobile-user-header-spacing-container" style="display: flex; flex: 0 0 20%; min-width: 0; width: 20%; height: 100%; box-sizing: border-box; padding: 5px;"></div>
         </div>
-        <div style="position: absolute; top: 15.2%; width: 100%;">
+        <div id="mobile-user-account-information-header-label-container" style="position: fixed; display: flex; flex: 0 0 25%; align-items: center; background-color: ghostwhite; border-top: 3px solid black; border-bottom: 3px solid black; width: 100%; height: 4.5%; top: 22.25%; padding: 5px; z-index: 2;">
             <div style="display: flex; align-items: center; height: 45px; background-color: ghostwhite;">
                 <h2 style="margin: 0px 10px 0px 5px; padding: 5px;">Account Information</h2>
             </div>
         </div>
-        <div id="mobile-user-infomration-container" style="position: absolute; display: flex; justify-content: center; align-items: center; width: 100%; height: 57%; top: 26%;">
+        <div id="mobile-user-information-container" style="position: fixed; display: flex; justify-content: center; align-items: center; width: 100%; height: 57%;">
             <div style="display: flex; justify-content: center; width: 100%; height: 100%;">
 
             <div id="mobile-user-information-column-one" style="position: relative; display: flex; flex-direction: column; justify-content: space-around; width: 50%;">
@@ -730,7 +731,7 @@
     </section>
 
     <section id="mobile-contacts-list-view"  style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none; overflow: hidden;">
-         <div id="mobile-contacts-list-user-header-container" style="position: fixed; display: flex; justify-content: center; align-items: center; width: 100%; height: 15%; background-color: #f9f9f9; box-shadow: 2px 2px 2px; z-index: 2;">
+         <div id="mobile-contacts-list-user-header-container" style="position: fixed; display: flex; justify-content: center; align-items: center; width: 100%; height: 13.5%; background-color: #f9f9f9; box-shadow: 2px 2px 2px; z-index: 2;">
             <h2 id="mobile-contacts-list-header-user-name" style="font-family: Arial;"></h2>
             <!-- <div id="mobile-contacts-user-image-container" style="display: flex; align-items: center; width: 20%; height: 100%; padding: 5px;">
                 <img id="mobile-contacts-user-image" src="./images/user-5-svgrepo-com.svg" style="width: 100%; height: 100%; object-fit: cover;">
@@ -744,7 +745,7 @@
             </div> -->
             <!-- <div id="mobile-contacts-user-header-spacing-container" style="display: flex; flex: 0 0 50%; min-width: 0; width: 50%; height: 100%; box-sizing: border-box;"></div> -->
             </div>
-            <div id="mobile-contacts-list-search-container" style="position: fixed; display: flex; flex: 0 0 25%; align-items: center; background-color: ghostwhite; border-top: 3px solid black; border-bottom: 3px solid black; width: 100%; height: 4.5%; top: 24.75%; padding: 5px; z-index: 2;">
+            <div id="mobile-contacts-list-search-container" style="position: fixed; display: flex; flex: 0 0 25%; align-items: center; background-color: ghostwhite; border-top: 3px solid black; border-bottom: 3px solid black; width: 100%; height: 4.5%; padding: 5px; z-index: 2;">
             <div id="mobile-contacts-list-search-elements-container" style="display: flex; align-items: center; width: 100%; height: 100%">
                 <div id="mobile-contacts-list-search-label-container" style="display: flex; align-items: center; width: 20%;">
                     <h2 id="mobile-my-contacts-number" style="display: inline-flex; justify-content: center; align-items: center; width: 15px; height: 15px; background-color: navy; color: white; padding: 10px; border-radius: 50%; cursor: default; margin: 0px 0px 0px 5px;"></h2>

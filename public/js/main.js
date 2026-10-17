@@ -548,35 +548,7 @@ async function renderRecoverPassword() {
         event.preventDefault()
         recoverUserAccount()
     })
-}
-
-async function renderMobileRecoverPassword() {
-    const smallSidebar = document.querySelector("#small-sidebar");
-    const largeSidebar = document.querySelector("#large-sidebar");
-    smallSidebar.style.display = "none";
-    largeSidebar.style.display = "none";
-
-    const recoverUserPasswordPhoneNumberElement = document.querySelector("#mobile-recover-password-phone-number-element")
-    recoverUserPasswordPhoneNumberElement.addEventListener("keydown", disableNonNumericKeys)
-    recoverUserPasswordPhoneNumberElement.addEventListener("blur", function() {
-        formatPhoneNumberForData(recoverUserPasswordPhoneNumberElement)
-    });
-    recoverUserPasswordPhoneNumberElement.addEventListener("focus", function() {
-        resetPhoneNumberFormatOnFocus(recoverUserPasswordPhoneNumberElement)
-    });
-
-    const navigateToLoginFromRecoverPasswordButton = document.querySelector("#mobile-navigate-to-login-from-recover-password-button");
-    navigateToLoginFromRecoverPasswordButton.addEventListener("click", function(event) {
-        event.preventDefault()
-        window.location.href = `${rootUrl}/login`;
-    });
-
-    const recoverPasswordSendButton = document.querySelector("#mobile-recover-password-send-button");
-    recoverPasswordSendButton.addEventListener("click", async function(event) {
-        event.preventDefault()
-        mobileRecoverUserAccount()
-    })
-}
+};
 
 async function handleRecoverPasswordInput() {
     const allUsers = await getAllUsers();
@@ -610,6 +582,34 @@ async function handleRecoverPasswordInput() {
         newUserPasswordElement.value = matchingUserObject.password;
 
     return matchingUserObject
+};
+
+async function renderMobileRecoverPassword() {
+    const smallSidebar = document.querySelector("#small-sidebar");
+    const largeSidebar = document.querySelector("#large-sidebar");
+    smallSidebar.style.display = "none";
+    largeSidebar.style.display = "none";
+
+    const recoverUserPasswordPhoneNumberElement = document.querySelector("#mobile-recover-password-phone-number-element")
+    recoverUserPasswordPhoneNumberElement.addEventListener("keydown", disableNonNumericKeys)
+    recoverUserPasswordPhoneNumberElement.addEventListener("blur", function() {
+        formatPhoneNumberForData(recoverUserPasswordPhoneNumberElement)
+    });
+    recoverUserPasswordPhoneNumberElement.addEventListener("focus", function() {
+        resetPhoneNumberFormatOnFocus(recoverUserPasswordPhoneNumberElement)
+    });
+
+    const navigateToLoginFromRecoverPasswordButton = document.querySelector("#mobile-navigate-to-login-from-recover-password-button");
+    navigateToLoginFromRecoverPasswordButton.addEventListener("click", function(event) {
+        event.preventDefault()
+        window.location.href = `${rootUrl}/login`;
+    });
+
+    const recoverPasswordSendButton = document.querySelector("#mobile-recover-password-send-button");
+    recoverPasswordSendButton.addEventListener("click", async function(event) {
+        event.preventDefault()
+        mobileRecoverUserAccount()
+    })
 }
 
 async function mobileHandleRecoverPasswordInput() {
@@ -661,21 +661,21 @@ async function generateRandomPassword(length) {
     return password;
 };
 
-async function sendPasswordRecoveryEmail() {
-    const allUsers = await getAllUsers();
-    const sessionId = sessionStorage.getItem("user");
-    let matchingUser;
-    for (let i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].session_id === sessionId) {
-            matchingUser = allUsers[i]
-        }
-    }
-    const userId = matchingUser.user_id;
-    const user = await getUser(userId);
-    const recipient = user.emailaddress;
+// async function sendPasswordRecoveryEmail() {
+//     const allUsers = await getAllUsers();
+//     const sessionId = sessionStorage.getItem("user");
+//     let matchingUser;
+//     for (let i = 0; i < allUsers.length; i++) {
+//         if (allUsers[i].session_id === sessionId) {
+//             matchingUser = allUsers[i]
+//         }
+//     }
+//     const userId = matchingUser.user_id;
+//     const user = await getUser(userId);
+//     const recipient = user.emailaddress;
 
-    console.log(recipient)
-};
+//     console.log(recipient)
+// };
 
 const mobileListMenuIcon = document.querySelector("#mobile-list-menu-icon");
 const mobileCloseMenuIcon = document.querySelector("#mobile-close-list-menu-icon")
@@ -2031,10 +2031,10 @@ const allUsers = await getAllUsers();
     const userHeaderEmailElement = document.querySelector("#header-user-email");
     userHeaderEmailElement.innerHTML = user.emailaddress;
 
-    const userHeaderElement = document.querySelector("#user-name");
-    userHeaderElement.innerHTML = "My Account";
+    // const userHeaderElement = document.querySelector("#user-name");
+    // userHeaderElement.innerHTML = "My Account";
     // userHeaderElement.style.fontSize = "xx-large";
-    userHeaderElement.style.fontFamily = "Arial";
+    // userHeaderElement.style.fontFamily = "Arial";
     // userHeaderEmailElement.innerHTML = `${user.emailaddress}`;
 
     const userInfoFullNameElement = document.querySelector("#profile-full-name");
@@ -2102,51 +2102,38 @@ const allUsers = await getAllUsers();
     const userId = matchingUser.user_id;
     const user = await getUser(userId);
     const userContacts = await getUserContacts(userId);
-    console.log(user)
+    // console.log(user)
+    //code above correct
 
+    const userImage = await getAUserImage(userId);
     const userImageContainer = document.querySelector("#mobile-user-image-container");
-    // const userImage = new Image();
+    const userImageElement = document.querySelector("#mobile-user-image");
+    const imageString = `data:${userImage.contentType};base64,${userImage.image}`;
 
-    const userImage = document.querySelector("#mobile-user-image");
-    if (user.user_image !== null && user.user_image !== './images/user-5-svgrepo-com.svg') {
-        userImage.setAttribute("src", user.user_image)
-        userImage.style.borderRadius = "50%"
-    }
+    userImageElement.setAttribute("src", imageString)
+    userImageElement.style.borderRadius = "50%"
+    //code above correct - check html
     
-    // const userHeaderNameElement = document.querySelector("#mobile-header-user-name");
-    // userHeaderNameElement.innerHTML = `${user.firstname} ${user.lastname}`;
-    // const userHeaderEmailElement = document.querySelector("#mobile-header-user-email");
-    // userHeaderEmailElement.innerHTML = user.emailaddress;
+    const userHeaderNameElement = document.querySelector("#mobile-header-user-name");
+    userHeaderNameElement.innerHTML = `${user.firstname} ${user.lastname}`;
+    const userHeaderEmailElement = document.querySelector("#mobile-header-user-email");
+    userHeaderEmailElement.innerHTML = user.emailaddress;
 
-    const userHeaderElement = document.querySelector("#mobile-user-name");
-    userHeaderElement.innerHTML = `${user.firstname} ${user.lastname}`;
+    // const userHeaderElement = document.querySelector("#mobile-user-name");
+    // userHeaderElement.innerHTML = "My Account";
     // userHeaderElement.style.fontSize = "xx-large";
-    userHeaderElement.style.fontFamily = "Arial";
+    // userHeaderElement.style.fontFamily = "Arial";
     // userHeaderEmailElement.innerHTML = `${user.emailaddress}`;
 
-    requestAnimationFrame(() => {
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-        const mobileUserHeaderElement = document.querySelector("#mobile-user-header-container");
-        const mobileUserHeaderElementHeight = mobileUserHeaderElement.clientHeight;
-        console.log(mobileUserHeaderElementHeight)
-        const mobileUserImageCircleElement = document.querySelector("#mobile-user-image-circle");
-        const mobileUserFavoriteSquareElement = document.querySelector("#mobile-user-favorite-square")
-        const newWidth = (80 / 100) * mobileUserHeaderElementHeight
-        const newWidthStr = newWidth.toString() + "px"
-
-        mobileUserImageCircleElement.style.width = newWidthStr
-        mobileUserFavoriteSquareElement.style.width = newWidthStr
-
-        // const elOrg = contactOrganizationAndRoleElement;
-        // const elOrgHeight = elOrg.clientHeight;
-        // const elOrgText = elOrg.innerText;
-        // const ellipsis = "..."
-        // const elOrgTextSlice = elOrgText.slice(0, 22) + ellipsis
-        // if (elOrgHeight > 22) {
-        //     elOrg.innerHTML = elOrgTextSlice
-        // }
-    });
+    const topBar = document.querySelector("#topbar")
+    const mobileUserHeaderContainer = document.querySelector("#mobile-user-header-container");
+    const mobileUserAccountInformationHeaderLabelContainer = document.querySelector('#mobile-user-account-information-header-label-container');
+    const topBarHeight = topBar.getBoundingClientRect().height;
+    const mobileUserHeaderContainerHeight = mobileUserHeaderContainer.getBoundingClientRect().height;
+    const mobileUserAccountInformationHeaderLabelContainerHeaight = mobileUserAccountInformationHeaderLabelContainer.getBoundingClientRect().height;
+    const bufferHeight = `${topBarHeight + mobileUserHeaderContainerHeight + mobileUserAccountInformationHeaderLabelContainerHeaight + 15}px`
+    const mobileUserInformationContainer = document.querySelector("#mobile-user-information-container");
+    mobileUserInformationContainer.style.top = bufferHeight;
 
     const userInfoFullNameElement = document.querySelector("#mobile-profile-full-name");
     userInfoFullNameElement.value = `${user.firstname} ${user.lastname}`;
@@ -2167,8 +2154,8 @@ const allUsers = await getAllUsers();
 
     userPasswordElement.value = replaceWithAsterisks(user.user_password)
 
-
     console.log(user)
+    //code above is correct
 
     const navigateEditUserPageButton = document.querySelector("#mobile-navigate-edit-user-page-button");
     navigateEditUserPageButton.addEventListener("click", function(event) {
@@ -3997,18 +3984,20 @@ const allUsers = await getAllUsers();
 
 //match with desktop code
 async function renderMobileContactsListContent() {
-    const allUsers = await getAllUsers(); //correct
-    const sessionId = sessionStorage.getItem("user"); //correct
-    let matchingUser;//correct
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+
     for (let i = 0; i < allUsers.length; i++) {
         if (allUsers[i].session_id === sessionId) {
             matchingUser = allUsers[i]
         }
-    }
-    //code above correct
-    const userId = matchingUser.user_id; //correct
-    const user = await getUser(userId); //correct
-    const userContacts = await getUserContacts(userId); //correct
+    };
+
+    const userId = matchingUser.user_id;
+    const user = await getUser(userId);
+    const userContacts = await getUserContacts(userId);
+
     for (let i = 0; i < userContacts.length; i++) {
         const contactId = userContacts[i].contact_id
         const contactImage = await getAContactImage(userId, contactId);
@@ -4017,30 +4006,24 @@ async function renderMobileContactsListContent() {
         let contactEmail;
         if (contactEmailObj !== undefined) {
             contactEmail = contactEmailObj.emailaddress;
-        }
-        // console.log(contactEmail)
+        };
         const contactImageStr = `data:${contactImage.contentType};base64,${contactImage.image}`
         userContacts[i]["email"] = contactEmail;
         userContacts[i]["imageString"] = contactImageStr;
-    }
-    //code above correct
-    const userImage = await getAUserImage(userId); //correct
-    const imageString = `data:${userImage.contentType};base64,${userImage.image}` //correct
-    const contactsListUserImage = document.querySelector("#mobile-contacts-user-image"); //correct
-    // console.log(imageString)
-    // contactsListUserImage.setAttribute("src", imageString); //correct
-    // contactsListUserImage.style.borderRadius = "50%"; //correct
+    };
 
-    // const contactsUserHeaderNameContainer = document.querySelector("#mobile-user-header-name-container"); //correct
-    // contactsUserHeaderNameContainer.style.margin = "0px 0px 0px 10px" //correct
-    const contactsHeaderUserNameElement = document.querySelector("#mobile-contacts-list-header-user-name"); //correct
-    // contactsHeaderUserNameElement.style.margin = "0px"; //correct
-    // const contactsHeaderUserEmailAddressElement = document.querySelector("#mobile-contacts-list-header-user-email"); //correct
-    // contactsHeaderUserEmailAddressElement.style.margin = "0px 0px 16px 0px"; //correct
-    // const contactsUserNameElement = document.querySelector("#mobile-contacts-user-name"); //correct
-    // contactsUserNameElement.style.fontFamily = "Arial"; //correct
-    contactsHeaderUserNameElement.innerHTML = "Contacts"; //correct
-    // contactsHeaderUserEmailAddressElement.innerHTML = user.emailaddress; //correct
+    const userImage = await getAUserImage(userId);
+    const imageString = `data:${userImage.contentType};base64,${userImage.image}`;
+    const contactsListUserImage = document.querySelector("#mobile-contacts-user-image");
+
+    const contactsHeaderUserNameElement = document.querySelector("#mobile-contacts-list-header-user-name");
+    // contactsHeaderUserNameElement.style.margin = "0px";
+    // const contactsHeaderUserEmailAddressElement = document.querySelector("#mobile-contacts-list-header-user-email");
+    // contactsHeaderUserEmailAddressElement.style.margin = "0px 0px 16px 0px";
+    // const contactsUserNameElement = document.querySelector("#mobile-contacts-user-name");
+    // contactsUserNameElement.style.fontFamily = "Arial";
+    contactsHeaderUserNameElement.innerHTML = "Contacts";
+    // contactsHeaderUserEmailAddressElement.innerHTML = user.emailaddress;
 
     // const contactsUserEmailAddressElement = document.querySelector("#mobile-contacts-user-email");
     // contactsUserEmailAddressElement.style.margin = "0px";
@@ -4061,19 +4044,26 @@ async function renderMobileContactsListContent() {
     //do this for mobile list situations
     const topBar = document.querySelector("#topbar")
     const mobileContactsListUserHeaderContainer = document.querySelector("#mobile-contacts-list-user-header-container");
-    const mobileContactsListSearchElementsContainer = document.querySelector('#mobile-contacts-list-search-elements-container');
+    const mobileContactsListSearchElementsContainer = document.querySelector('#mobile-contacts-list-search-container');
     const topBarHeight = topBar.getBoundingClientRect().height;
     const mobileContactsListUserHeaderContainerHeight = mobileContactsListUserHeaderContainer.getBoundingClientRect().height;
     const mobileContactsListSearchElementsContainerHeight = mobileContactsListSearchElementsContainer.getBoundingClientRect().height;
-    const bufferHeight = `${topBarHeight + mobileContactsListUserHeaderContainerHeight + mobileContactsListSearchElementsContainerHeight + 16.58}px`
+    const headerBufferHeight = `${topBarHeight}px`
+    const searchBufferHeight = `${topBarHeight + mobileContactsListUserHeaderContainerHeight}px`
+    const listBufferHeight = `${topBarHeight + mobileContactsListUserHeaderContainerHeight + mobileContactsListSearchElementsContainerHeight}px`;
 
+    console.log(searchBufferHeight)
+    console.log(mobileContactsListSearchElementsContainerHeight)
+
+    // mobileContactsListUserHeaderContainer.style.top = headerBufferHeight;
+    mobileContactsListSearchElementsContainer.style.top = searchBufferHeight;
     const contactsListContainer = document.createElement("div"); //correct
     contactsListContainer.setAttribute("id", "my-mobile-contacts-list-container"); //correct
     contactsListContainer.style.visibility = "hidden"; //correct ... hiding list initially
     const numberOfContactsElement = document.querySelector("#mobile-my-contacts-number"); //correct
     numberOfContactsElement.innerHTML = userContacts.length; //correct
     contactsListContainer.style.position = "absolute"; //correct
-    contactsListContainer.style.top = bufferHeight //correct
+    contactsListContainer.style.top = listBufferHeight //correct
     // contactsListContainer.style.left'
     contactsListContainer.style.width = "100%"
     const contactsList = document.createElement("ul");
@@ -4132,7 +4122,7 @@ async function renderMobileContactsListContent() {
         contactListItem.style.borderTop = "1px solid gray"; //correct (2px s bl)
         contactListItem.style.borderBottom = "1px solid gray"; //correct (2px s bl)
         contactListItem.style.backgroundColor = "ghostwhite" //correct (#fcfcff)
-        contactListItem.style.marginTop = "1px"; //correct
+        // contactListItem.style.marginTop = "1px"; //correct
         // contactListItem.style.marginBottom = "2px"; //correct (1px)
         contactListItem.setAttribute("contactId", contact.contact_id) //correct
 
@@ -4367,7 +4357,7 @@ async function renderMobileContactsListContent() {
     const searchContactsAutocompleteList = document.querySelector("#mobile-contacts-autocomplete-list");
     searchContactsAutocompleteList.style.listStyle = "none";
     searchContactsAutocompleteList.style.margin = "0";
-    searchContactsAutocompleteList.style.marginTop = "1px"
+    // searchContactsAutocompleteList.style.marginTop = "1px"
     // searchContactsAutocompleteList.style.padding = "0";
     // const searchContactsAutocompleteList = document.createElement("div");
     // searchContactsAutocompleteList.setAttribute("id", "my-contacts-autocomplete-list");
@@ -4397,7 +4387,7 @@ function removeDuplicates(arr) {
                 contactsAutoCompleteListItem.style.borderTop = "1px solid grey"; //correct 1px s b
                 contactsAutoCompleteListItem.style.borderBottom = "1px solid grey"; //correct 2px s b
                 contactsAutoCompleteListItem.style.backgroundColor = "#fcfcff"
-                contactsAutoCompleteListItem.style.marginTop = "1px";
+                // contactsAutoCompleteListItem.style.marginTop = "1px";
                 // contactsAutoCompleteListItem.style.marginBottom = "1px"; //correct
                 contactsAutoCompleteListItem.setAttribute("contactId", contact.contact_id)
 
@@ -19296,7 +19286,9 @@ window.addEventListener("beforeunload", function () {
 });
 
 window.addEventListener("pagehide", function() {
+    const loggingInText = document.querySelector("#logging-in-text")
     if (window.location.href === `${rootUrl}/login`) {
+        loggingInText.style.display = "block"
         document.body.style.backgroundColor = "beige";
     };
     
@@ -19369,7 +19361,7 @@ if (navigationEntries.length > 0) {
   }
 }
 
-
+    const loggingInText = document.querySelector("#logging-in-text")
     if (window.location.href === `${rootUrl}/contacts` && previousPage === `${rootUrl}/login` && pageReloaded === false) {
         document.body.style.overflow = "";
         // document.body.style.visibility = "visible";
