@@ -2116,8 +2116,8 @@ const allUsers = await getAllUsers();
     
     const userHeaderNameElement = document.querySelector("#mobile-header-user-name");
     userHeaderNameElement.innerHTML = `${user.firstname} ${user.lastname}`;
-    const userHeaderEmailElement = document.querySelector("#mobile-header-user-email");
-    userHeaderEmailElement.innerHTML = user.emailaddress;
+    // const userHeaderEmailElement = document.querySelector("#mobile-header-user-email");
+    // userHeaderEmailElement.innerHTML = user.emailaddress;
 
     // const userHeaderElement = document.querySelector("#mobile-user-name");
     // userHeaderElement.innerHTML = "My Account";
@@ -2131,8 +2131,11 @@ const allUsers = await getAllUsers();
     const topBarHeight = topBar.getBoundingClientRect().height;
     const mobileUserHeaderContainerHeight = mobileUserHeaderContainer.getBoundingClientRect().height;
     const mobileUserAccountInformationHeaderLabelContainerHeaight = mobileUserAccountInformationHeaderLabelContainer.getBoundingClientRect().height;
+    const labelBufferHeight = `${topBarHeight + mobileUserHeaderContainerHeight}px`
     const bufferHeight = `${topBarHeight + mobileUserHeaderContainerHeight + mobileUserAccountInformationHeaderLabelContainerHeaight + 15}px`
     const mobileUserInformationContainer = document.querySelector("#mobile-user-information-container");
+    
+    mobileUserAccountInformationHeaderLabelContainer.style.top = labelBufferHeight;
     mobileUserInformationContainer.style.top = bufferHeight;
 
     const userInfoFullNameElement = document.querySelector("#mobile-profile-full-name");
