@@ -19648,5 +19648,6 @@ window.addEventListener('resize', () => {
       left: 0,
       behavior: 'auto' // 'auto' prevents smooth scrolling conflicts
     });
+    document.body.scrollTop = 0;
   });
 });
