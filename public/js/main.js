@@ -19638,7 +19638,7 @@ if ("virtualKeyboard" in navigator) {
 //   });
 
 if (window.visualViewport) {
-    window.addEventListener('pointerout', () => {
+    window.visualViewport.addEventListener('resize', () => {
         // requestAnimationFrame waits for the next browser repaint
     if (window.visualViewport.scale <= 1) {
             requestAnimationFrame(() => {
