@@ -19628,3 +19628,14 @@ mobileLogoutIcon.addEventListener("click", function() {
 if ("virtualKeyboard" in navigator) {
   navigator.virtualKeyboard.overlaysContent = true;
 };
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => {
+    // Check if the user has zoomed back to normal scale (1.0)
+    if (window.visualViewport.scale <= 1) {
+      // Force the page container back to the top left
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0; 
+    }
+  });
+}
