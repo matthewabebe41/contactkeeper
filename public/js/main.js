@@ -2130,13 +2130,18 @@ const allUsers = await getAllUsers();
     const mobileUserAccountInformationHeaderLabelContainer = document.querySelector('#mobile-user-account-information-header-label-container');
     const topBarHeight = topBar.getBoundingClientRect().height;
     const mobileUserHeaderContainerHeight = mobileUserHeaderContainer.getBoundingClientRect().height;
-    const mobileUserAccountInformationHeaderLabelContainerHeaight = mobileUserAccountInformationHeaderLabelContainer.getBoundingClientRect().height;
-    const labelBufferHeight = `${topBarHeight + mobileUserHeaderContainerHeight}px`
-    const bufferHeight = `${topBarHeight + mobileUserHeaderContainerHeight + mobileUserAccountInformationHeaderLabelContainerHeaight + 15}px`
+    const mobileUserAccountInformationHeaderLabelContainerHeight = mobileUserAccountInformationHeaderLabelContainer.getBoundingClientRect().height;
     const mobileUserInformationContainer = document.querySelector("#mobile-user-information-container");
-    
+    const mobileUserInformationContainerHeight = mobileUserInformationContainer.getBoundingClientRect().height;
+    const labelBufferHeight = `${topBarHeight + mobileUserHeaderContainerHeight}px`
+    const bufferHeight = `${topBarHeight + mobileUserHeaderContainerHeight + mobileUserAccountInformationHeaderLabelContainerHeight + 15}px`
+    const logoutEditButtonsContainerBufferHeight = `${topBarHeight + mobileUserHeaderContainerHeight + mobileUserAccountInformationHeaderLabelContainerHeight + mobileUserInformationContainerHeight + 45}px`
+    const logoutEditButtonsContainer = document.querySelector("#mobile-edit-user-button-container");
+
     mobileUserAccountInformationHeaderLabelContainer.style.top = labelBufferHeight;
     mobileUserInformationContainer.style.top = bufferHeight;
+    logoutEditButtonsContainer.style.top = logoutEditButtonsContainerBufferHeight;
+    console.log(logoutEditButtonsContainerBufferHeight)
 
     const userInfoFullNameElement = document.querySelector("#mobile-profile-full-name");
     userInfoFullNameElement.value = `${user.firstname} ${user.lastname}`;
