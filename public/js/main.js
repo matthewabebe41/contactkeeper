@@ -19647,11 +19647,9 @@ window.addEventListener("pointerout", function() {
     isPointerOut = true;
 })
 
-if (window.visualViewport) {
+if (window.visualViewport && window.visualViewport.scale < 1 && isPointerOut === true) {
     window.visualViewport.addEventListener('resize', () => {
-    if (window.visualViewport.scale <= 1 && isPointerOut === true) {
         window.scrollTo(0,0)
         document.body.scrollTop = 0;
-        }
     });
 }
