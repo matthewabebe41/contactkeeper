@@ -2810,6 +2810,7 @@ async function handleUpdateUserPhonenumberInput() {
 };
 
 async function renderMobileEditUserContent() {
+
 const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
     let matchingUser;
