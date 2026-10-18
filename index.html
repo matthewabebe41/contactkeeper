@@ -136,11 +136,11 @@
     </section>
 
     <section id="mobile-login-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none;">
-        <div style="position: absolute; display: flex; justify-content: center; align-items: center; flex-direction: column; width: 90%; top: 14%; left: 50%; transform: translate(-50%, -50%); border-radius: 2.5px;">
+        <div style="position: fixed; display: flex; justify-content: center; align-items: center; flex-direction: column; width: 90%; top: 21%; left: 50%; transform: translate(-50%, -50%); border-radius: 2.5px;">
             <!-- <h2 style="font-family: sans-serif; color: darkcyan; text-decoration: underline; text-underline-position: under;">Contactkeeper</h2> -->
            <h3 style="font-family: sans-serif; color: white; width: 82.5%;">Welcome, Please sign in to your account.</h3>
        </div>
-         <div id="mobile-login-container" style="position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 85%; height: 55%; top: 50%; left: 50%; border-radius: 10px; transform: translate(-50%, -50%);">
+         <div id="mobile-login-container" style="position: fixed; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 85%; height: 55%; top: 52.5%; left: 50%; border-radius: 10px; transform: translate(-50%, -50%);">
             <form id="mobile-login-user-form" style="display: flex; flex-direction: column; justify-content: space-around; width: 95%; height: 70%; background-color: rgba(211, 211, 211, 0.25); border-radius: 10px; padding: 10px 10px 10px; margin-bottom: 10px;">
                 <div id="mobile-login-input-container" style="display: flex; flex-direction: column; justify-content: space-between; height: 80%;">
                     <div>
@@ -168,7 +168,7 @@
                 </div> -->
             </form>
         </div>
-        <div id="mobile-navigate-to-register-button-container" style="position: absolute; display: flex; justify-content: center; width: 85%; top: 82.5%; left: 50%; transform: translate(-50%, -50%)">
+        <div id="mobile-navigate-to-register-button-container" style="position: fixed; display: flex; justify-content: center; width: 85%; top: 82.5%; left: 50%; transform: translate(-50%, -50%)">
             <button id="mobile-navigate-to-register-view-button" style="border: none; width: 95%; height: 30px; color: white; background-color: grey; border-radius: 10px; font-size: medium;">Register</button>
         </div>
     </section>
@@ -226,12 +226,12 @@
     </section>
 
     <section id="mobile-register-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none;">
-        <div style="position: fixed; display: flex; justify-content: center; align-items: center; flex-direction: column; width: 90%; top: 23.5%; left: 50%; transform: translate(-50%, -50%); border-radius: 2.5px;">
+        <div style="position: fixed; display: flex; justify-content: center; align-items: center; flex-direction: column; width: 90%; top: 21%; left: 50%; transform: translate(-50%, -50%); border-radius: 2.5px;">
             <!-- <h2 style="font-family: sans-serif; color: darkcyan; text-decoration: underline; text-underline-position: under;">Contactkeeper</h2> -->
            <h3 style="font-family: sans-serif; color: white; width: 82.5%;">Get started, Enter details to register your account.</h3>
        </div>
-        <div id="mobile-register-container" style="position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 85%; height: 52.5%; top: 50%; left: 50%; border-radius: 10px; background-color: rgba(211, 211, 211, 0.25); transform: translate(-50%, -50%);">
-            <form id="mobile-register-user-form" style="display: flex; flex-direction: column; justify-content: space-evenly; width: 95%; height: 100%;">
+        <div id="mobile-register-container" style="position: fixed; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 85%; height: 52.5%; top: 53.6%; left: 50%; border-radius: 10px; background-color: rgba(211, 211, 211, 0.25); transform: translate(-50%, -50%);">
+            <form id="mobile-register-user-form" style="display: flex; flex-direction: column; justify-content: space-evenly; width: 95%; height: 100%; padding: 10px 10px 10px;">
                <div id="mobile-register-name-container" style="display: flex; justify-content: space-between;">
                 <div style="display: flex; flex-direction: column; width: 45%;">
                     <label style="font-weight: bold; color: black; margin-bottom: 4px;">First Name</label>
@@ -317,11 +317,11 @@
     </section>
 
     <section id="mobile-recover-password-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none;">
-        <div style="position: fixed; display: flex; justify-content: center; align-items: center; width: 90%; top: 22%; left: 50%; background-color: gainsboro; transform: translate(-50%, -50%); padding: 5px; border-radius: 5px;">
+        <div style="position: fixed; display: flex; justify-content: center; align-items: center; width: 90%; top: 20%; left: 50%; background-color: gainsboro; transform: translate(-50%, -50%); padding: 5px; border-radius: 5px;">
             <p style="font-family: sans-serif; width: 350px;">Please enter your details and a temporary password will be given to you. You can use it to recover your account.</p>
         </div>
-        <div id="mobile-recover-password-container" style="position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 85%; height: 52.5%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(211, 211, 211, 0.25); border-radius: 10px;">
-            <form id="mobile-recover-password-form" style="display: flex; flex-direction: column; justify-content: space-evenly; height: 100%; width: 95%;">
+        <div id="mobile-recover-password-container" style="position: fixed; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 85%; height: 50%; top: 53.6%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(211, 211, 211, 0.25); border-radius: 10px;">
+            <form id="mobile-recover-password-form" style="display: flex; flex-direction: column; justify-content: space-evenly; height: 100%; width: 95%; padding: 10px 10px 10px;">
                 <div id="mobile-register-name-container" style="display: flex; justify-content: space-between;">
                     <div style="display: flex; flex-direction: column; width: 45%;">
                         <label style="font-weight: bold;">First Name</label>
@@ -349,7 +349,7 @@
                    </div>
             </form>
         </div>
-        <div id="mobile-navigate-to-login-from-recover-password-button" style="position: absolute; display: flex; justify-content: center; width: 85%; top: 82.5%; left: 50%; transform: translate(-50%, -50%);">
+        <div id="mobile-navigate-to-login-from-recover-password-button" style="position: fixed; display: flex; justify-content: center; width: 85%; top: 82.5%; left: 50%; transform: translate(-50%, -50%);">
             <button style="border: none; width: 95%; height: 30px; color: white; background-color: grey; border-radius: 10px; font-size: medium;">Return to Login</button>
         </div>     
     </section>

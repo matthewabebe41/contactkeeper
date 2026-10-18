@@ -116,31 +116,6 @@ async function renderMobileLoginContent() {
     event.preventDefault()
     window.location.href = `${rootUrl}/register`;
     });
-
-    // Track the maximum scroll position reached
-let maxScrollTop = window.scrollY || document.documentElement.scrollTop;
-
-function limitScrollUp(e) {
-  const currentScrollTop = window.scrollY || document.documentElement.scrollTop;
-
-  if (currentScrollTop < maxScrollTop) {
-    // The user tried to scroll UP, snap them back to the maximum reached position
-    window.scrollTo({
-      top: maxScrollTop,
-      behavior: 'auto' // 'auto' ensures an instant jump without jittering
-    });
-  } else {
-    // The user is scrolling DOWN, update the maximum position
-    maxScrollTop = currentScrollTop;
-  }
-}
-
-// Enable the restriction
-window.addEventListener('scroll', limitScrollUp);
-
-// To turn it off later, use:
-// window.removeEventListener('scroll', limitScrollUp);
-
 };
 
 async function handleMobileLoginInput() {
