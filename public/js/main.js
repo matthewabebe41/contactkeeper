@@ -19645,7 +19645,7 @@ if (window.visualViewport) {
                 window.scrollTo({
                     top: 0,
                     left: 0,
-                    behavior: 'instant' // 'auto' prevents smooth scrolling conflicts
+                    behavior: 'auto' // 'auto' prevents smooth scrolling conflicts
                 });
                 document.body.scrollTop = 0;
             });
