@@ -19637,19 +19637,19 @@ if ("virtualKeyboard" in navigator) {
 //     }
 //   });
 
-let isPointerOut;
+let isPointerUp;
 
-window.addEventListener("pointerover", function() {
-    isPointerOut = true;
+// window.addEventListener("pointerover", function() {
+//     isPointerUp = true;
+// })
+
+window.addEventListener("pointerup", function() {
+    isPointerUp = true;
 })
 
-window.addEventListener("pointerout", function() {
-    isPointerOut = true;
-})
-
-if (window.visualViewport && window.visualViewport.scale < 1 && isPointerOut === true) {
-    window.visualViewport.addEventListener('resize', () => {
+window.visualViewport.addEventListener('resize', () => {
+if (window.visualViewport && window.visualViewport.scale < 1 && isPointerUp === true) {
         window.scrollTo(0,0)
         document.body.scrollTop = 0;
-    });
-}
+    }
+});
