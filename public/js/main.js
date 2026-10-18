@@ -19632,7 +19632,6 @@ if ("virtualKeyboard" in navigator) {
 // if (window.visualViewport) {
 //   window.visualViewport.addEventListener('resize', () => {
 //     // Check if the user has zoomed back to normal scale (1.0)
-//     if (window.visualViewport.scale <= 1) {
 //       // Force the page container back to the top left
 //       window.scrollTo(0, 0);
 //       document.body.scrollTop = 0; 
@@ -19641,13 +19640,15 @@ if ("virtualKeyboard" in navigator) {
 // }
 
 window.addEventListener('resize', () => {
-  // requestAnimationFrame waits for the next browser repaint
+    // requestAnimationFrame waits for the next browser repaint
+if (window.visualViewport.scale <= 1) {
   requestAnimationFrame(() => {
       window.scrollTo({
           top: 0,
           left: 0,
-          behavior: 'auto' // 'auto' prevents smooth scrolling conflicts
+          behavior: 'instant' // 'auto' prevents smooth scrolling conflicts
         });
+        document.body.scrollTop = 0;
     });
-    document.body.scrollTop = 0;
+}
 });
