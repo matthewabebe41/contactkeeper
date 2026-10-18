@@ -19639,9 +19639,9 @@ if ("virtualKeyboard" in navigator) {
 //   });
 // }
 
-window.addEventListener('resize', () => {
+window.addEventListener('pointerout', () => {
     // requestAnimationFrame waits for the next browser repaint
-if (window.visualViewport.scale <= 1) {
+// if (window.visualViewport.scale <= 1) {
   requestAnimationFrame(() => {
       window.scrollTo({
           top: 0,
@@ -19650,5 +19650,5 @@ if (window.visualViewport.scale <= 1) {
         });
         document.body.scrollTop = 0;
     });
-}
+// }
 });
