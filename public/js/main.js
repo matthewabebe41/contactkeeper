@@ -4082,6 +4082,10 @@ async function renderMobileContactsListContent() {
     contactsList.style.padding = "0"
     contactsList.style.margin = "0px 0px 2px 0px"
 
+    window.visualViewport.addEventListener("resize", function() {
+        contactsListContainer.style.top = listBufferHeight
+    })
+
     // userContacts.sort(function(a, b) {
     //     const nameA = `${a.firstname} ${a.lastname}`
     //     const nameB = `${b.firstname} ${b.lastname}`;
@@ -19638,10 +19642,6 @@ if ("virtualKeyboard" in navigator) {
 //   });
 
 let isPointerUp;
-
-// window.addEventListener("pointerover", function() {
-//     isPointerUp = true;
-// })
 
 window.addEventListener("pointerup", function() {
     isPointerUp = true;
