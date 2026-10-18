@@ -601,16 +601,16 @@ async function renderMobileRecoverPassword() {
 
     const navigateToLoginFromRecoverPasswordButton = document.querySelector("#mobile-navigate-to-login-from-recover-password-button");
     navigateToLoginFromRecoverPasswordButton.addEventListener("click", function(event) {
-        event.preventDefault()
+        event.preventDefault();
         window.location.href = `${rootUrl}/login`;
     });
 
     const recoverPasswordSendButton = document.querySelector("#mobile-recover-password-send-button");
     recoverPasswordSendButton.addEventListener("click", async function(event) {
-        event.preventDefault()
-        mobileRecoverUserAccount()
-    })
-}
+        event.preventDefault();
+        mobileRecoverUserAccount();
+    });
+};
 
 async function mobileHandleRecoverPasswordInput() {
     const allUsers = await getAllUsers();
@@ -18216,7 +18216,6 @@ async function showPages() {
         imageString = `data:${userImage.contentType};base64,${userImage.image}`
     }
 
-
     const appName = document.querySelector("#app-name");
     appName.style.pointerEvents = "none";
     
@@ -18260,7 +18259,7 @@ async function showPages() {
     const mobileRecoverPasswordViewElement = document.querySelector("#mobile-recover-password-view");
     if (window.location.href === `${rootUrl}/recover-password` && clientwidth <= 1070) {
         mobileRecoverPasswordViewElement.style.display = "block";
-        await renderMobileRecoverPassword();;
+        await renderMobileRecoverPassword();
     } else {
         mobileRecoverPasswordViewElement.style.display = "none";
     }
@@ -19525,7 +19524,6 @@ if (navigationEntries.length > 0) {
         // this.setTimeout(function() {
         await showPages()
         document.body.style.backgroundColor = "darkslategrey";
-        document.body.style.overflow = "hidden";
         document.body.style.visibility = "visible";
         // console.log("show login")
         return
