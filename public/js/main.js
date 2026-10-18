@@ -1,3 +1,5 @@
+const { domainToUnicode } = require("node:url");
+
 const rootUrl = window.location.origin;
 
 async function renderLoginContent() {
@@ -19637,18 +19639,11 @@ if ("virtualKeyboard" in navigator) {
 //     }
 //   });
 
-if (window.visualViewport) {
+// if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', () => {
-        // requestAnimationFrame waits for the next browser repaint
-    if (window.visualViewport.scale <= 1) {
-            requestAnimationFrame(() => {
-                window.scrollTo({
-                    top: 0,
-                    left: 0,
-                    behavior: 'auto' // 'auto' prevents smooth scrolling conflicts
-                });
-                document.body.scrollTop = 0;
-            });
-        }
+    // if (window.visualViewport.scale <= 1) {
+        window.scrollTo(0,0)
+        document.body.scrollTop = 0;
+        // }
     });
-}
+// }
