@@ -19643,11 +19643,11 @@ if ("virtualKeyboard" in navigator) {
 window.addEventListener('resize', () => {
   // requestAnimationFrame waits for the next browser repaint
   requestAnimationFrame(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'auto' // 'auto' prevents smooth scrolling conflicts
+      window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'auto' // 'auto' prevents smooth scrolling conflicts
+        });
     });
     document.body.scrollTop = 0;
-  });
 });
