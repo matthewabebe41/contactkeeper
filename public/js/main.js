@@ -2195,7 +2195,7 @@ const allUsers = await getAllUsers();
             window.location.href = newURL
     });
 
-    document.body.style.overflow = "hidden"
+    // document.body.style.overflow = "hidden"
 };
 
 async function renderEditUserContent() {
@@ -4081,10 +4081,6 @@ async function renderMobileContactsListContent() {
     contactsList.style.listStyle = "none";
     contactsList.style.padding = "0"
     contactsList.style.margin = "0px 0px 2px 0px"
-
-    window.visualViewport.addEventListener("resize", function() {
-        contactsListContainer.style.top = listBufferHeight
-    })
 
     // userContacts.sort(function(a, b) {
     //     const nameA = `${a.firstname} ${a.lastname}`
