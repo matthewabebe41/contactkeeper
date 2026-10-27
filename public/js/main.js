@@ -2352,7 +2352,6 @@ const allUsers = await getAllUsers();
         if (editUserAddPhotoInputElement.files[0] !== undefined) {
             editUserAddPhotoButton.innerHTML = "Save Photo";
             editUserAddPhotoButtonReminder.style.display = "flex";
-            // handleEditUserImage()
             handleUploadImageInput()
         } else {
             alert("Please choose an image before inserting.")
@@ -2424,78 +2423,6 @@ const allUsers = await getAllUsers();
         editUserLastNameElement.value = userLastName;
         editUserEmailElement.value = userEmailAddress;
     });
-
-    //     editContactFirstNameElement.addEventListener("focus", async function() {
-    //     const contactEmailAddress = await getAContactEmailAddresses(user_id, contact_id);
-    //     const contactPhoneNumbers = await getAContactPhoneNumber(user_id, contact_id);
-    //     const contactAddresses = await getAContactAddress(user_id, contact_id);
-    //     const contactWebsites = await getAContactWebsite(user_id, contact_id);
-
-    //     const contactFirstName = contact.firstname;
-    //     const contactLastName = contact.lastname;
-    //     const contactGender = contact.gender;
-    //     const contactBirthday = contact.birthday;
-    //     const contactEmailSelectElement = document.querySelector("#select-edit-contact-email");
-    //     const contactEmailSelectElementSelectedIndex = contactEmailSelectElement.selectedIndex;
-    //     const contactEmailSelectedOptionElement = contactEmailSelectElement.options[contactEmailSelectElementSelectedIndex]
-    //     const contactEmailSelectedIndexId = Number(contactEmailSelectedOptionElement.getAttribute("id"))
-    //     let selectedEmail;
-    //     for (let i = 0; i < contactEmailAddress.length; i++) {
-    //         if (contactEmailAddress[i].emailid === contactEmailSelectedIndexId) {
-    //             selectedEmail = contactEmailAddress[i].emailaddress;
-    //         }
-    //     };
-    //     const contactPhoneNumberSelectElement = document.querySelector("#select-edit-contact-phonenumber");
-    //     const contactPhoneNumberSelectElementSelectedIndex = contactPhoneNumberSelectElement.selectedIndex;
-    //     const contactPhoneNumberSelectedOptionElement = contactPhoneNumberSelectElement.options[contactPhoneNumberSelectElementSelectedIndex];
-    //     const contactPhoneNumberSelectedIndexId = Number(contactPhoneNumberSelectedOptionElement.getAttribute("id"));
-    //     let selectedPhoneNumber;
-    //     for (let i = 0; i < contactPhoneNumbers.length; i++) {
-    //         if (contactPhoneNumbers[i].phonenumberid === contactPhoneNumberSelectedIndexId) {
-    //             selectedPhoneNumber = contactPhoneNumbers[i].phonenumber
-    //         }
-    //     };
-    //     const contactAddressSelectElement = document.querySelector("#select-edit-contact-address");
-    //     const contactAddressSelectElementSelectedIndex = contactAddressSelectElement.selectedIndex;
-    //     const contactAddressSelectedOptionElement = contactAddressSelectElement.options[contactAddressSelectElementSelectedIndex];
-    //     const contactAddressSelectedIndexId = Number(contactAddressSelectedOptionElement.getAttribute("id"));
-    //     let selectedAddress;
-    //     for (let i = 0; i < contactAddresses.length; i++) {
-    //         if (contactAddresses[i].addressid === contactAddressSelectedIndexId) {
-    //             selectedAddress = contactAddresses[i].address;
-    //         }
-    //     }
-    //     const contactOrganization = contact.organization;
-    //     const contactOrganizationRole = contact.organization_role;
-    //     const contactWebsiteSelectElement = document.querySelector("#select-edit-contact-website");
-    //     const contactWebsitesSelectedIndex = contactWebsiteSelectElement.selectedIndex;
-    //     const contactWebsitesSelectedOptionElement = contactWebsiteSelectElement.options[contactWebsitesSelectedIndex]
-    //     const contactWebsitesSelectedIndexId = Number(contactWebsitesSelectedOptionElement.getAttribute("id"));
-    //     let selectedWebsite;
-    //     for (let i = 0; i < contactWebsites.length; i++) {
-    //         // console.log(contactWebsites[i].websiteid)
-    //         // console.log(contactWebsitesSelectedIndexId)
-    //         if (contactWebsites[i].websiteid === contactWebsitesSelectedIndexId) {
-    //             selectedWebsite = contactWebsites[i].website
-    //         }
-    //     }
-    //     const contactNotes = contact.notes;
-    //     const editContactSelectGenderElement = document.querySelector("#edit-contact-select-gender");
-    //     editContactSelectGenderElement.style.display = "none";
-    //     editContactGenderElement.style.display = "block";
-
-    //     editContactLastNameElement.value = contactLastName;
-    //     editContactGenderElement.value = contactGender;
-    //     editContactBirthdayElement.value = contactBirthday;
-    //     editContactEmailAddressElement.value = selectedEmail;
-    //     editContactPhoneNumberElement.value = "";
-    //     editContactPhoneNumberElement.value = selectedPhoneNumber;
-    //     editContactAddressElement.value = selectedAddress;
-    //     editContactOrganizationElement.value = contactOrganization;
-    //     editContactRoleElement.value = contactOrganizationRole;
-    //     editContactSocialMediaElement.value = selectedWebsite;
-    //     editContactNotesElement.value = contactNotes;
-    // });
 
     const editUserFirstNameButton = document.querySelector("#update-user-firstname-button");
     editUserFirstNameButton.addEventListener("click", function(event) {
@@ -2685,6 +2612,63 @@ const allUsers = await getAllUsers();
     })
 };
 
+async function handleUploadImageInput() {
+
+    const newUserImageElement = document.querySelector("#edit-user-image");
+    let newUserImageFile;
+    let newUserImage;
+    const editUserAddPhotoInputElement = document.querySelector("#edit-user-add-photo")
+
+        newUserImageFile = editUserAddPhotoInputElement.files[0];
+        let reader = new FileReader()
+
+        console.log(newUserImageFile)
+
+        reader.onload = function () {
+            const base64string = reader.result.split(',')[1]
+            newUserImage = reader.result;
+            newUserImageElement.setAttribute("src", reader.result);
+            newUserImageElement.style.borderRadius = "50%"
+        };
+
+        if (newUserImageFile !== undefined) {
+            reader.readAsDataURL(newUserImageFile)
+        };
+
+    const editUserAddPhotoFormElement = document.querySelector("#edit-user-add-photo-form");
+    // const editUserAddPhotoInputElement = document.querySelector("#edit-user-add-photo");
+    // console.log(editUserAddPhotoFormElement)
+    let imageFile = editUserAddPhotoInputElement.files[0];
+
+    async function createIconImageFile() {
+    const editUserImageElement = document.querySelector("#edit-user-image")
+    const editUserImageUrl = editUserImageElement.getAttribute("src")
+    let editImageFile;
+        return fetch(editUserImageUrl)
+            .then(response => response.blob()) // Get the image as a Blob
+            .then(async (blob) => {
+            // Now 'blob' contains the image data as a Blob object
+            // You can then create a File object from the blob if necessary:
+            const filename = editUserImageUrl.substring(editUserImageUrl.lastIndexOf('/') + 1); // Extract filename from URL
+            editImageFile = new File([blob], filename, { type: blob.type });
+
+            console.log(editImageFile); // This is your image file object
+
+            return editImageFile
+        })
+    }
+
+    if (imageFile === undefined) {
+        imageFile = await createIconImageFile()
+    }
+        
+    console.log(imageFile)
+
+    // editUserAddPhotoInputElement.value = ""
+
+    return imageFile
+};
+
 async function handleUpdateUserFirstnameInput() {
     const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
@@ -2809,8 +2793,7 @@ async function handleUpdateUserPhonenumberInput() {
     return editUserPhonenumberObj
 };
 
-async function renderMobileEditUserContent() {
-
+async function handleEditUserPasswordInput() {
 const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
     let matchingUser;
@@ -2822,21 +2805,63 @@ const allUsers = await getAllUsers();
     const userId = matchingUser.user_id;
     const user = await getUser(userId);
 
-    const userImage = await getAUserImage(userId)
+    const editUserPasswordElement = document.querySelector("#edit-user-password");
+    const editUserConfirmPasswordElement = document.querySelector("#edit-user-confirm-password");
+    const editUserChangePasswordButton = document.querySelector("#edit-user-change-password-button");
+
+    if (editUserPasswordElement.value !== editUserConfirmPasswordElement.value && editUserChangePasswordButton.style.display === "none") {
+        alert("Your passwords do not match. Please try again.");
+        return
+    };
+
+    const editUserPasswordObject = {
+        firstname: user.firstname,
+        lastname: user.lastname,
+        emailaddress: user.emailaddress,
+        phonenumber: user.phonenumber,
+        password: editUserPasswordElement.value,
+        userImage: user.user_image
+    };
+
+    console.log(editUserPasswordObject)
+
+    return editUserPasswordObject
+}
+
+async function renderMobileEditUserContent() {
+
+const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        };
+    };
+    const userId = matchingUser.user_id;
+    const user = await getUser(userId);
+
+    const userImage = await getAUserImage(userId);
+
+    const userImageContainer = document.querySelector("#mobile-image-user-container");
 
     const editUserImage = document.querySelector("#mobile-edit-user-image");
     const imageString = `data:${userImage.contentType};base64,${userImage.image}`
-    console.log(userImage.contentType)
-    editUserImage.setAttribute("src", imageString)
-    editUserImage.style.borderRadius = "50%"
+    // console.log(userImage.contentType)
+
+    editUserImage.setAttribute("src", imageString);
+    editUserImage.style.borderRadius = "50%";
+    //code above is correct
 
     const editUserAddPhotoButton = document.querySelector("#mobile-edit-user-add-photo-button");
 
     const editUserRemovePhotoButton = document.querySelector("#mobile-edit-user-remove-photo-button");
     editUserRemovePhotoButton.addEventListener("click", function() {
+        // console.log("clicked")
         const editUserAddPhotoInputElement = document.querySelector("#mobile-edit-user-add-photo");
        
         let editUserImageSrcStr = editUserImage.getAttribute("src").toString();
+        if (editUserImageSrcStr !== "./images/user-5-svgrepo-com.svg") {
         let startIndex = editUserImageSrcStr.indexOf('d');
         let endIndex = editUserImageSrcStr.indexOf(',');
     
@@ -2846,11 +2871,13 @@ const allUsers = await getAllUsers();
             editUserImageSrcStr = part1 + part2;
         };
     
-        const decodedEditUserImage = atob(editUserImageSrcStr)
+        const decodedEditUserImage = atob(editUserImageSrcStr);
+
         const checkEditUserImageElement = document.querySelector("#check-edit-user-image");
         const checkEditUserImageUrl = checkEditUserImageElement.getAttribute("src");
+        const editUserAddPhotoButtonReminder = document.querySelector("#mobile-edit-user-add-photo-button-reminder")
 
-            fetch(checkEditUserImageUrl)
+        fetch(checkEditUserImageUrl)
         .then(response => response.blob()) // Get the image as a Blob
         .then(blob => {
             // Now 'blob' contains the image data as a Blob object
@@ -2863,7 +2890,7 @@ const allUsers = await getAllUsers();
             let reader = new FileReader()
 
             reader.onload = function () {
-                base64string = reader.result.split(',')[1]
+                const base64string = reader.result.split(',')[1]
                 // imageFile = reader.result;
                 // console.log(base64string)
                 // newUserImageInputElement.setAttribute("src", base64string);
@@ -2874,8 +2901,9 @@ const allUsers = await getAllUsers();
                 // console.log(decodedEditUserImage)
 
                 if (decodedDefaultUserImage !== decodedEditUserImage) {
-                      editUserAddPhotoButton.innerHTML = "Save Photo"
-                }
+                      editUserAddPhotoButton.innerHTML = "Save Photo";
+                      editUserAddPhotoButtonReminder.style.display = "flex"
+                };
 
             };
 
@@ -2885,9 +2913,14 @@ const allUsers = await getAllUsers();
         })
         .catch(error => console.error('Error fetching image:', error));
 
+        console.log(imageString)
+    };
+    //code above is correct
+
+    //check for unecessary conditions
         if (editUserImage.getAttribute("src") !== imageString && editUserAddPhotoInputElement.value !== "") {
             editUserAddPhotoInputElement.value = "";
-            editUserImage.setAttribute("src", imageString)
+            editUserImage.setAttribute("src", "./images/user-5-svgrepo-com.svg")
         } else if (editUserImage.getAttribute("src") === imageString && editUserAddPhotoInputElement.value === "") {
             editUserImage.setAttribute("src", "./images/user-5-svgrepo-com.svg")
         } else if (editUserImage.getAttribute("src") !== imageString && editUserAddPhotoInputElement.value === "") {
@@ -2900,22 +2933,24 @@ const allUsers = await getAllUsers();
             editUserImage.setAttribute("src", "./images/user-5-svgrepo-com.svg")
         } else if (editUserImage.getAttribute("src") !== "./images/user-5-svgrepo-com.svg" && editUserAddPhotoInputElement.value === "") {
             editUserImage.setAttribute("src", imageString);
-            editUserAddPhotoButton.innerHTML = "Change Photo"
+            editUserAddPhotoButton.innerHTML = "Change Photo";
+            editUserAddPhotoButtonReminder.style.display = "none";
         }
     });
+    //code above is correct
 
+    const editUserAddPhotoButtonReminder = document.querySelector("#mobile-edit-user-add-photo-button-reminder");
     if (userImage !== null && userImage !== undefined) {
-        editUserAddPhotoButton.innerHTML = "Change Photo"
+        editUserAddPhotoButton.innerHTML = "Change Photo";
+        editUserAddPhotoButtonReminder.style.display = "none";
     };
-
-    editUserAddPhotoButton.formAction = `${window.currentUrl}`
+    
+    editUserAddPhotoButton.formAction = `${window.currentUrl}`;
     editUserAddPhotoButton.addEventListener("click", function(event) {
         // event.preventDefault()
-      
         if (editUserAddPhotoButton.innerHTML === "Save Photo") {
             mobilePutNewUserImage()
-        }
-
+        } ;
     });
 
     const editUserAddPhotoInputContainerElement = document.querySelector("#mobile-edit-user-add-photo-input-container")
@@ -2925,6 +2960,7 @@ const allUsers = await getAllUsers();
             editUserAddPhotoInputContainerElement.style.display = "flex";
         }
     });
+    //code above is correct
 
     const closeEditUserAddPhotoIcon = document.querySelector("#mobile-close-edit-user-add-photo-icon");
     closeEditUserAddPhotoIcon.addEventListener("click", function(event) {
@@ -2934,9 +2970,11 @@ const allUsers = await getAllUsers();
         editUserAddPhotoInputElement.value = "";
         const editUserAddPhotoInputContainerElement = document.querySelector("#mobile-edit-user-add-photo-input-container")
         editUserAddPhotoInputContainerElement.style.display = "none";
-        editUserAddPhotoButton.innerHTML = "Change Photo"
-      
-    })
+        editUserAddPhotoButton.innerHTML = "Change Photo";
+        const editUserAddPhotoButtonReminder = document.querySelector("#mobile-edit-user-add-photo-button-reminder");
+        editUserAddPhotoButtonReminder.style.display = "none";      
+    });
+
     const editUserAddPhotoSaveButton = document.querySelector("#mobile-edit-user-add-photo-insert-button");
     editUserAddPhotoSaveButton.addEventListener("click", function() {
         // editUserAddPhotoInputContainerElement.style.display = "none";
@@ -2944,154 +2982,14 @@ const allUsers = await getAllUsers();
         console.log(editUserAddPhotoInputElement.files[0]);
         
         if (editUserAddPhotoInputElement.files[0] !== undefined) {
-            editUserAddPhotoButton.innerHTML = "Save Photo"
-            // handleEditUserImage()
+            editUserAddPhotoButton.innerHTML = "Save Photo";
+            editUserAddPhotoButtonReminder.style.display = "flex";
             mobileHandleUploadImageInput()
         } else {
-            alert("Please choose a file before inserting")
+            alert("Please choose a file before inserting.")
         }
-    })
-
-       requestAnimationFrame(() => {
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-        const mobileEditUserHeaderElement = document.querySelector("#mobile-edit-user-header-container");
-        const mobileEditUserHeaderElementHeight = mobileEditUserHeaderElement.clientHeight;
-        const mobileEditUserImageCircleElement = document.querySelector("#mobile-edit-user-image-circle");
-        const mobileEditUserFavoriteSquareElement = document.querySelector("#mobile-edit-user-favorite-square")
-        const newWidth = (80 / 100) * mobileEditUserHeaderElementHeight
-        const newWidthStr = newWidth.toString() + "px"
-
-        mobileEditUserImageCircleElement.style.width = newWidthStr
-        mobileEditUserFavoriteSquareElement.style.width = newWidthStr
-                
-        const mobileEditUserAddPhotoButtonContainerMarginLeft = mobileEditUserImageCircleElement.clientWidth + 5;
-        const mobileEditUserAddPhotoButtonContainerMarginLeftStr =  mobileEditUserAddPhotoButtonContainerMarginLeft.toString() + "px"
-        const mobileEditUserAddPhotoButtonContainer = document.querySelector("#mobile-edit-user-add-photo-button-container")
-        mobileEditUserAddPhotoButtonContainer.style.marginLeft = mobileEditUserAddPhotoButtonContainerMarginLeftStr;
-
-        console.log(screenWidth)
-        const mobileEditUserAddPhoto = document.querySelector("#mobile-edit-user-add-photo-form");
-        const mobileEditUserAddPhotoButtonsContainer = document.querySelector("#mobile-edit-user-add-photo-buttons-container")
-
-         if (screenWidth >= 340 && screenWidth < 375) {
-            mobileEditUserAddPhoto.style.width = "56%";
-            mobileEditUserAddPhotoButtonsContainer.style.width = "44%";
-        }
-        if (screenWidth >= 375 && screenWidth < 425) {
-            mobileEditUserAddPhoto.style.width = "60%";
-            mobileEditUserAddPhotoButtonsContainer.style.width = "40%";
-        }
-        // if (screenWidth >= 400 && screenWidth < 425) {
-        //     mobileEditUserAddPhoto.style.width = "61%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "39%";
-        // }
-        if (screenWidth >= 425 && screenWidth < 525) {
-            mobileEditUserAddPhoto.style.width = "60%";
-            mobileEditUserAddPhotoButtonsContainer.style.width = "40%";
-        }
-        // if (screenWidth >= 450 && screenWidth < 475) {
-        //     mobileEditUserAddPhoto.style.width = "63%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "37%";
-        // }
-        // if (screenWidth >= 475 && screenWidth < 500) {
-        //     mobileEditUserAddPhoto.style.width = "64%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "36%";
-        // }
-        // if (screenWidth >= 500 && screenWidth < 525) {
-        //     mobileEditUserAddPhoto.style.width = "65%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "35%";
-        // }
-        if (screenWidth >= 525 && screenWidth < 625) {
-            mobileEditUserAddPhoto.style.width = "65%";
-            mobileEditUserAddPhotoButtonsContainer.style.width = "35%";
-        }
-        // if (screenWidth >= 550 && screenWidth < 575) {
-        //     mobileEditUserAddPhoto.style.width = "67%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "33%";
-        // }
-        // if (screenWidth >= 575 && screenWidth < 600) {
-        //     mobileEditUserAddPhoto.style.width = "68%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "32%";
-        // }
-        // if (screenWidth >= 600 && screenWidth < 625) {
-        //     mobileEditUserAddPhoto.style.width = "69%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "31%";
-        // }
-        if (screenWidth >= 625 && screenWidth < 725) {
-            mobileEditUserAddPhoto.style.width = "70%";
-            mobileEditUserAddPhotoButtonsContainer.style.width = "30%";
-        }
-        // if (screenWidth >= 650 && screenWidth < 675) {
-        //     mobileEditUserAddPhoto.style.width = "71%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "29%";
-        // }
-        // if (screenWidth >= 675 && screenWidth < 700) {
-        //     mobileEditUserAddPhoto.style.width = "72%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "28%";
-        // }
-        // if (screenWidth >= 700 && screenWidth < 725) {
-        //     mobileEditUserAddPhoto.style.width = "73%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "27%";
-        // }
-        if (screenWidth >= 725 && screenWidth < 825) {
-            mobileEditUserAddPhoto.style.width = "75%";
-            mobileEditUserAddPhotoButtonsContainer.style.width = "25%";
-        }
-        // if (screenWidth >= 750 && screenWidth < 775) {
-        //     mobileEditUserAddPhoto.style.width = "70%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "30%";
-        // }
-        // if (screenWidth >= 775 && screenWidth < 800) {
-        //     mobileEditUserAddPhoto.style.width = "70%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "30%";
-        // }
-        // if (screenWidth >= 800 && screenWidth < 825) {
-        //     mobileEditUserAddPhoto.style.width = "70%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "30%";
-        // }
-        if (screenWidth >= 825 && screenWidth < 1070) {
-            mobileEditUserAddPhoto.style.width = "80%";
-            mobileEditUserAddPhotoButtonsContainer.style.width = "20%";
-        }
-        // if (screenWidth >= 850 && screenWidth < 875) {
-        //     mobileEditUserAddPhoto.style.width = "79%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "21%";
-        // }
-        // if (screenWidth >= 875 && screenWidth < 900) {
-        //     mobileEditUserAddPhoto.style.width = "80%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "20%";
-        // }
-        // if (screenWidth >= 900 && screenWidth < 925) {
-        //     mobileEditUserAddPhoto.style.width = "81%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "19%";
-        // }
-        // if (screenWidth >= 1000 && screenWidth < 1070) {
-        //     mobileEditUserAddPhoto.style.width = "85%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "15%";
-        // }
-        // if (screenWidth >= 950 && screenWidth < 975) {
-        //     mobileEditUserAddPhoto.style.width = "83%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "17%";
-        // }
-        // if (screenWidth >= 975 && screenWidth < 1000) {
-        //     mobileEditUserAddPhoto.style.width = "84%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "16%";
-        // }
-        // if (screenWidth >= 1000 && screenWidth < 1025) {
-        //     mobileEditUserAddPhoto.style.width = "80%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "20%";
-        // }
-        // if (screenWidth >= 1025 && screenWidth < 1050) {
-        //     mobileEditUserAddPhoto.style.width = "80%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "20%";
-        // }
-        // if (screenWidth >= 1050 && screenWidth < 1070) {
-        //     mobileEditUserAddPhoto.style.width = "80%";
-        //     mobileEditUserAddPhotoButtonsContainer.style.width = "20%";
-        // }
-        
     });
+    //code above is correct
 
     const editUserFirstNameElement = document.querySelector("#mobile-edit-user-firstname");
     const editUserLastNameElement = document.querySelector("#mobile-edit-user-lastname");
@@ -3107,6 +3005,75 @@ const allUsers = await getAllUsers();
     editUserPhoneElement.value = user.phonenumber;
     editUserPasswordElement.value = user.user_password;
 
+    editUserFirstNameElement.addEventListener("focus", async function() {
+        // console.log(user)
+
+        const userFirstName = user.firstname;
+        const userLastName = user.lastname;
+        const userEmailAddress = user.emailaddress;
+        const userPhonenumber = user.phonenumber;
+
+        editUserLastNameElement.value = userLastName;
+        editUserEmailElement.value = userEmailAddress;
+        editUserPhoneElement.value = userPhonenumber;
+    });
+
+    editUserLastNameElement.addEventListener("focus", async function() {
+        // console.log(user)
+
+        const userFirstName = user.firstname;
+        const userLastName = user.lastname;
+        const userEmailAddress = user.emailaddress;
+        const userPhonenumber = user.phonenumber;
+
+        editUserFirstNameElement.value = userFirstName;
+        editUserEmailElement.value = userEmailAddress;
+        editUserPhoneElement.value = userPhonenumber;
+    });
+
+editUserEmailElement.addEventListener("focus", async function() {
+        // console.log(user)
+
+        const userFirstName = user.firstname;
+        const userLastName = user.lastname;
+        const userEmailAddress = user.emailaddress;
+        const userPhonenumber = user.phonenumber;
+
+        editUserFirstNameElement.value = userFirstName;
+        editUserLastNameElement.value = userLastName;
+        editUserPhoneElement.value = userPhonenumber;
+    });
+
+    editUserPhoneElement.addEventListener("focus", async function() {
+        // console.log(user)
+
+        const userFirstName = user.firstname;
+        const userLastName = user.lastname;
+        const userEmailAddress = user.emailaddress;
+        const userPhonenumber = user.phonenumber;
+
+        editUserFirstNameElement.value = userFirstName;
+        editUserLastNameElement.value = userLastName;
+        editUserEmailElement.value = userEmailAddress;
+    });
+//code above is correct
+
+    const editUserFirstNameButton = document.querySelector("#mobile-update-user-firstname-button");
+    editUserFirstNameButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        
+        // handleUpdateUserFirstnameInput()
+        mobileUpdateUserFirstName()
+    })
+
+    const editUserLastNameButton = document.querySelector("#mobile-update-user-lastname-button");
+    editUserLastNameButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        // handleUpdateUserLastnameInput()
+        mobileUpdateUserLastName()
+    });
+
     // const newContactPhoneNumberElement = document.querySelector("#new-contact-phonenumber");
     // const phonenumber = newContactPhoneNumberElement.value
     // console.log(phonenumber)
@@ -3118,12 +3085,50 @@ const allUsers = await getAllUsers();
         resetPhoneNumberFormatOnFocus(editUserPhoneElement)
     });
 
+    const editUserEmailButton = document.querySelector("#mobile-update-user-email-button");
+    editUserEmailButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        // handleUpdateUserEmailInput()
+        mobileUpdateUserEmail()
+    });
+
+    const editUserPhonenumberButton = document.querySelector("#mobile-update-user-phonenumber-button");
+    editUserPhonenumberButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        // handleUpdateUserPhonenumberInput();
+        mobileUpdateUserPhonenumber()
+    });
+    //code above is correct
+
     const editUserInformationRowFive = document.querySelector("#mobile-edit-user-information-row-five");
     const editUserInformationRowSix = document.querySelector("#mobile-edit-user-information-row-six");
     const editUserChangePasswordButton = document.querySelector("#mobile-edit-user-change-password-button");
     const editUserHidePasswordButton = document.querySelector("#mobile-edit-user-hide-password-button");
     editUserChangePasswordButton.addEventListener("click", function(event) {
-        event.preventDefault()
+        event.preventDefault();
+
+        const userFirstName = user.firstname;
+        const userLastName = user.lastname;
+        const userEmailAddress = user.emailaddress;
+        const userPhonenumber = user.phonenumber;
+
+        editUserFirstNameElement.value = userFirstName;
+        editUserLastNameElement.value = userLastName;
+        editUserEmailElement.value = userEmailAddress;
+        editUserPhoneElement.value = userPhonenumber;
+
+        editUserFirstNameElement.readOnly = true;
+        editUserLastNameElement.readOnly = true;
+        editUserEmailElement.readOnly = true;
+        editUserPhoneElement.readOnly = true;
+
+        editUserFirstNameElement.setAttribute("title", "Close change password form to continue editing.")
+        editUserLastNameElement.setAttribute("title", "Close change password form to continue editing.")
+        editUserEmailElement.setAttribute("title", "Close change password form to continue editing.")
+        editUserPhoneElement.setAttribute("title", "Close change password form to continue editing.")
+
         editUserInformationRowFive.style.visibility = "visible";
         editUserInformationRowSix.style.visibility = "visible";
         editUserChangePasswordButton.style.display = "none";
@@ -3135,9 +3140,21 @@ const allUsers = await getAllUsers();
             editUserMatchingPasswordsContainer.children[0].style.color = "red"
         }
     });
+    //code above is correct
 
     editUserHidePasswordButton.addEventListener("click", function(event) {
         event.preventDefault()
+
+        editUserFirstNameElement.readOnly = false;
+        editUserLastNameElement.readOnly = false;
+        editUserEmailElement.readOnly = false;
+        editUserPhoneElement.readOnly = false;
+
+        editUserFirstNameElement.removeAttribute("title")
+        editUserLastNameElement.removeAttribute("title")
+        editUserEmailElement.removeAttribute("title")
+        editUserPhoneElement.removeAttribute("title")
+
         editUserInformationRowFive.style.visibility = "hidden";
         editUserInformationRowSix.style.visibility = "hidden";
         editUserPasswordElement.value = user.user_password;
@@ -3147,11 +3164,11 @@ const allUsers = await getAllUsers();
         editUserMatchingPasswordsContainer.children[0].style.visibility = "hidden"
     });
 
-    if (editUserPasswordElement.value !== editUserConfirmPasswordElement.value && editUserInformationRowFive.style.visibility !== "hidden") {
+   if (editUserPasswordElement.value !== editUserConfirmPasswordElement.value && editUserInformationRowFive.style.visibility !== "hidden") {
         editUserMatchingPasswordsContainer.children[0].style.visibility = "visible"
         editUserMatchingPasswordsContainer.children[0].innerHTML = "Passwords do not match"
         editUserMatchingPasswordsContainer.children[0].style.color = "red"
-    }
+    };
 
     editUserPasswordElement.addEventListener("input", function() {
         if (editUserPasswordElement.value.length === 0) {
@@ -3196,18 +3213,12 @@ const allUsers = await getAllUsers();
     //     }, false)
     // })
 
-    const submitEditUserButton = document.querySelector("#mobile-submit-edit-user-button");
-    submitEditUserButton.addEventListener("click", function(event) {
-        event.preventDefault()
-        mobileUpdateUser()
-    }, false)
-
     const updateUserPasswordButton = document.querySelector("#mobile-update-user-password-button");
     updateUserPasswordButton.addEventListener("click", function(event) {
         event.preventDefault()
         const editUserMatchingPasswordsContainer = document.querySelector("#mobile-edit-matching-passwords")
         editUserMatchingPasswordsContainer.style.visibility = "hidden"
-        mobileUpdateUserPassword()
+        mobileUpdateUserPassword();
     }, false)
 
     const deleteUserButton = document.querySelector("#mobile-delete-user-button");
@@ -3222,69 +3233,16 @@ const allUsers = await getAllUsers();
             // You might want to return from a function here to stop further execution
           }
 
-        deleteContacts();
-        deleteUser();
+        mobileDeleteAllUserGroups();
+        mobileDeleteAllUserContactGroupings();
+        mobileDeleteContacts();
+        mobileDeleteUserImage();
+        mobileDeleteUser();
+
+        document.body.style.overflow = "hidden"
+
     });
-
-    document.body.style.overflow = "hidden"
-};
-
-async function handleUploadImageInput() {
-
-    const newUserImageElement = document.querySelector("#edit-user-image");
-    let newUserImageFile;
-    let newUserImage;
-    const editUserAddPhotoInputElement = document.querySelector("#edit-user-add-photo")
-
-        newUserImageFile = editUserAddPhotoInputElement.files[0];
-        let reader = new FileReader()
-
-        console.log(newUserImageFile)
-
-        reader.onload = function () {
-            const base64string = reader.result.split(',')[1]
-            newUserImage = reader.result;
-            newUserImageElement.setAttribute("src", reader.result);
-            newUserImageElement.style.borderRadius = "50%"
-        };
-
-        if (newUserImageFile !== undefined) {
-            reader.readAsDataURL(newUserImageFile)
-        };
-
-    const editUserAddPhotoFormElement = document.querySelector("#edit-user-add-photo-form");
-    // const editUserAddPhotoInputElement = document.querySelector("#edit-user-add-photo");
-    // console.log(editUserAddPhotoFormElement)
-    let imageFile = editUserAddPhotoInputElement.files[0];
-
-    async function createIconImageFile() {
-    const editUserImageElement = document.querySelector("#edit-user-image")
-    const editUserImageUrl = editUserImageElement.getAttribute("src")
-    let editImageFile;
-        return fetch(editUserImageUrl)
-            .then(response => response.blob()) // Get the image as a Blob
-            .then(async (blob) => {
-            // Now 'blob' contains the image data as a Blob object
-            // You can then create a File object from the blob if necessary:
-            const filename = editUserImageUrl.substring(editUserImageUrl.lastIndexOf('/') + 1); // Extract filename from URL
-            editImageFile = new File([blob], filename, { type: blob.type });
-
-            console.log(editImageFile); // This is your image file object
-
-            return editImageFile
-        })
-    }
-
-    if (imageFile === undefined) {
-        imageFile = await createIconImageFile()
-    }
-        
-    console.log(imageFile)
-
-    // editUserAddPhotoInputElement.value = ""
-
-    return imageFile
-};
+}; //code above is correct
 
 async function mobileHandleUploadImageInput() {
     // let imageFile;
@@ -3302,7 +3260,7 @@ async function mobileHandleUploadImageInput() {
         console.log(newUserImageFile)
 
         reader.onload = function () {
-            base64string = reader.result.split(',')[1]
+            const base64string = reader.result.split(',')[1]
             newUserImage = reader.result;
             newUserImageElement.setAttribute("src", reader.result);
             newUserImageElement.style.borderRadius = "50%"
@@ -3346,56 +3304,8 @@ async function mobileHandleUploadImageInput() {
     return imageFile
 };
 
-async function handleMobileEditUserImage() {
-const allUsers = await getAllUsers();
-    const sessionId = sessionStorage.getItem("user");
-    let matchingUser;
-    for (let i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].session_id === sessionId) {
-            matchingUser = allUsers[i]
-        }
-    }
-    const userId = matchingUser.user_id;
-    const user = await getUser(userId);
-    const newUserImageElement = document.querySelector("#mobile-edit-user-image");
-    let newUserImageFile;
-    let newUserImage;
-    const editUserAddPhotoInputElement = document.querySelector("#mobile-edit-user-add-photo")
-
-        newUserImageFile = editUserAddPhotoInputElement.files[0];
-        let reader = new FileReader()
-
-        console.log(newUserImageFile)
-
-        reader.onload = function () {
-            base64string = reader.result.split(',')[1]
-            newUserImage = reader.result;
-            newUserImageElement.setAttribute("src", reader.result);
-            newUserImageElement.style.borderRadius = "50%"
-        };
-
-        if (newUserImageFile !== undefined) {
-            reader.readAsDataURL(newUserImageFile)
-        } else {
-            newUserImageElement.setAttribute("src", './images/user-5-svgrepo-com.svg')
-        }
-    
-        const editUserImageObject = {
-            firstname: user.firstname,
-            lastname: user.lastname,
-            emailaddress: user.emailaddress,
-            phonenumber: user.phonenumber,
-            password: user.user_password,
-            userImage: newUserImageElement.getAttribute("src")
-        };
-
-        console.log(editUserImageObject)
-
-        return editUserImageObject
-}
-
-async function handleEditUserInput(event) {
-const allUsers = await getAllUsers();
+async function mobileHandleUpdateUserFirstnameInput() {
+    const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
     let matchingUser;
     for (let i = 0; i < allUsers.length; i++) {
@@ -3406,41 +3316,119 @@ const allUsers = await getAllUsers();
     const userId = matchingUser.user_id;
     const user = await getUser(userId);
 
-    const editUserImageElement = document.querySelector("#edit-user-image")
-    const editUserFirstNameElement = document.querySelector("#edit-user-firstname");
-    const editUserLastNameElement = document.querySelector("#edit-user-lastname");
-    const editUserEmailAddressElement = document.querySelector("#edit-user-email");
-    const editUserPhoneNumberElement = document.querySelector("#edit-user-phonenumber");
-    const editUserPasswordElement = document.querySelector("#edit-user-password");
-    const editUserConfirmPasswordElement = document.querySelector("#edit-user-confirm-password");
-    const editUserChangePasswordButton = document.querySelector("#edit-user-change-password-button");
+    // console.log(user)
 
-    // if (editUserPasswordElement.value !== editUserConfirmPasswordElement.value && editUserChangePasswordButton.style.display === "none") {
-    //     alert("Your passwords do not match. Please try again.");
-    //     return
-    // };
+    const editUserFirstNameElement = document.querySelector("#mobile-edit-user-firstname");
+    const editUserFirstNameValue = editUserFirstNameElement.value;
 
-    const editUserMatchingPasswordsContainer = document.querySelector("#edit-matching-passwords")
-    editUserMatchingPasswordsContainer.style.visibility = "hidden"
-
-    const editUserObject = {
-        firstname: editUserFirstNameElement.value,
-        lastname: editUserLastNameElement.value,
-        emailaddress: editUserEmailAddressElement.value,
-        phonenumber: editUserPhoneNumberElement.value,
-        password: editUserPasswordElement.value,
-        // userImage: editUserImageElement.getAttribute("src")
-        userImage: null
+     const editUserFirstNameObj = {
+        userId: userId,
+        sessionId: user.session_id,
+        emailaddress: user.emailaddress,
+        firstname: editUserFirstNameValue,
+        lastname: user.lastname,
+        phonenumber: user.phonenumber,
+        password: user.user_password
     };
 
-    // if (editUserObject.userImage === "./images/user-5-svgrepo-com.svg") {
-    //     editUserObject.setAttribute("src", null)
-    // }
+    console.log(editUserFirstNameObj)
 
-    return editUserObject;
+    return editUserFirstNameObj
 };
 
-async function handleMobileEditUserInput() {
+async function mobileHandleUpdateUserLastnameInput() {
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const userId = matchingUser.user_id;
+    const user = await getUser(userId);
+
+    // console.log(user)
+
+    const editUserLastNameElement = document.querySelector("#mobile-edit-user-lastname");
+    const editUserLastNameValue = editUserLastNameElement.value;
+
+     const editUserLastNameObj = {
+        userId: userId,
+        sessionId: user.session_id,
+        emailaddress: user.emailaddress,
+        firstname: user.firstname,
+        lastname: editUserLastNameValue,
+        phonenumber: user.phonenumber,
+        password: user.user_password
+    };
+
+    console.log(editUserLastNameObj)
+
+    return editUserLastNameObj
+};
+
+async function mobileHandleUpdateUserEmailInput() {
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const userId = matchingUser.user_id;
+    const user = await getUser(userId);
+
+    const editUserEmailElement = document.querySelector("#mobile-edit-user-email");
+    const editUserEmailValue = editUserEmailElement.value;
+
+    const editUserEmailObj = {
+        userId: userId,
+        sessionId: user.session_id,
+        emailaddress: editUserEmailValue,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        phonenumber: user.phonenumber,
+        password: user.user_password
+    };
+
+    console.log(editUserEmailObj)
+
+    return editUserEmailObj
+};
+
+async function mobileHandleUpdateUserPhonenumberInput() {
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const userId = matchingUser.user_id;
+    const user = await getUser(userId);
+
+    const editUserPhonenumberElement = document.querySelector("#mobile-edit-user-phonenumber");
+    const editUserPhonenumberValue = editUserPhonenumberElement.value;
+
+    const editUserPhonenumberObj = {
+        userId: userId,
+        sessionId: user.session_id,
+        emailaddress: user.emailaddress,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        phonenumber: editUserPhonenumberValue,
+        password: user.user_password
+    };
+
+    console.log(editUserPhonenumberObj)
+
+    return editUserPhonenumberObj
+};
+
+async function mobileHandleEditUserPasswordInput() {
 const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
     let matchingUser;
@@ -3452,54 +3440,9 @@ const allUsers = await getAllUsers();
     const userId = matchingUser.user_id;
     const user = await getUser(userId);
 
-    const editUserImageElement = document.querySelector("#mobile-edit-user-image")
-    const editUserFirstNameElement = document.querySelector("#mobile-edit-user-firstname");
-    const editUserLastNameElement = document.querySelector("#mobile-edit-user-lastname");
-    const editUserEmailAddressElement = document.querySelector("#mobile-edit-user-email");
-    const editUserPhoneNumberElement = document.querySelector("#mobile-edit-user-phonenumber");
     const editUserPasswordElement = document.querySelector("#mobile-edit-user-password");
     const editUserConfirmPasswordElement = document.querySelector("#mobile-edit-user-confirm-password");
     const editUserChangePasswordButton = document.querySelector("#mobile-edit-user-change-password-button");
-
-    // if (editUserPasswordElement.value !== editUserConfirmPasswordElement.value && editUserChangePasswordButton.style.display === "none") {
-    //     alert("Your passwords do not match. Please try again.");
-    //     return
-    // };
-
-    const editUserMatchingPasswordsContainer = document.querySelector("#mobile-edit-matching-passwords")
-    editUserMatchingPasswordsContainer.style.visibility = "hidden"
-
-    const editUserObject = {
-        firstname: editUserFirstNameElement.value,
-        lastname: editUserLastNameElement.value,
-        emailaddress: editUserEmailAddressElement.value,
-        phonenumber: editUserPhoneNumberElement.value,
-        password: editUserPasswordElement.value,
-        userImage: editUserImageElement.getAttribute("src")
-    };
-
-    // if (editUserObject.userImage === "./images/user-5-svgrepo-com.svg") {
-    //     editUserObject.setAttribute("src", null)
-    // }
-
-    return editUserObject;
-}
-
-async function handleEditUserPasswordInput() {
-const allUsers = await getAllUsers();
-    const sessionId = sessionStorage.getItem("user");
-    let matchingUser;
-    for (let i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].session_id === sessionId) {
-            matchingUser = allUsers[i]
-        }
-    }
-    const userId = matchingUser.user_id;
-    const user = await getUser(userId);
-
-    const editUserPasswordElement = document.querySelector("#edit-user-password");
-    const editUserConfirmPasswordElement = document.querySelector("#edit-user-confirm-password");
-    const editUserChangePasswordButton = document.querySelector("#edit-user-change-password-button");
 
     if (editUserPasswordElement.value !== editUserConfirmPasswordElement.value && editUserChangePasswordButton.style.display === "none") {
         alert("Your passwords do not match. Please try again.");
@@ -3512,7 +3455,7 @@ const allUsers = await getAllUsers();
         emailaddress: user.emailaddress,
         phonenumber: user.phonenumber,
         password: editUserPasswordElement.value,
-        userImage: user.user_image
+        // userImage: user.user_image
     };
 
     console.log(editUserPasswordObject)
@@ -15063,8 +15006,7 @@ async function mobilePostNewUserImage() {
         // .catch(error => console.error('Error fetching image:', error));
 };
 
-async function updateUser(event) {
-    const url = window.location.href;
+async function putNewUserImage() {
     const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
     let matchingUser;
@@ -15074,71 +15016,109 @@ async function updateUser(event) {
         }
     }
     const user_id = matchingUser.user_id;
-    const user = await getUser(user_id)
-    const editUserObject = await handleEditUserInput();
+    const imageFile = await handleUploadImageInput();
+    console.log(imageFile)
 
-    const editUserChangePasswordButton = document.querySelector("#edit-user-change-password-button");
-    console.log(editUserObject)
-    if (user.firstname === editUserObject.firstname && user.lastname === editUserObject.lastname && user.emailaddress === editUserObject.emailaddress && user.phonenumber === editUserObject.phonenumber && user.user_image === editUserObject.userImage && editUserChangePasswordButton.style.display !== "none") {
-        // event.preventDefault()
-        window.location.reload()
-        return
+        //   if (imageFile) {
+            const formData = new FormData();
+            formData.append('id', user_id)
+            formData.append('editUserAddPhoto', imageFile); // 'image' matches the input name
+
+            try {
+                const response = await fetch(`/user_images/${user_id}`, {
+                    method: 'PUT',
+                    body: formData,
+                });
+                const result = await response.json();
+                console.log(result);
+            } catch (error) {
+                console.error('Error uploading image:', error);
+            }
+        // }
+
+         const editUserAddPhotoInputElement = document.querySelector("#edit-user-add-photo");
+         editUserAddPhotoInputElement.value = ""
+
+         alert("Updated your profile picture.")
+         window.location.reload()
+};
+
+async function mobilePutNewUserImage() {
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
     }
+    const user_id = matchingUser.user_id;
+    const imageFile = await mobileHandleUploadImageInput();
+    console.log(imageFile)
 
-    const session_id = sessionId;
-    const firstname = editUserObject.firstname;
-    const lastname = editUserObject.lastname;
-    const emailaddress = editUserObject.emailaddress;
-    const phonenumber = editUserObject.phonenumber;
-    const password = user.user_password;
-    const user_image = editUserObject.userImage;
+        //   if (imageFile) {
+            const formData = new FormData();
+            formData.append('id', user_id)
+            formData.append('editUserAddPhoto', imageFile); // 'image' matches the input name
 
-    const body = { firstname, lastname, emailaddress, phonenumber, password, user_image, session_id };
+            try {
+                const response = await fetch(`/user_images/${user_id}`, {
+                    method: 'PUT',
+                    body: formData,
+                });
+                const result = await response.json();
+                console.log(result);
+            } catch (error) {
+                console.error('Error uploading image:', error);
+            }
+        // }
+
+         const editUserAddPhotoInputElement = document.querySelector("#mobile-edit-user-add-photo");
+         editUserAddPhotoInputElement.value = ""
+
+         alert("Updated your profile picture.")
+         window.location.reload()
+};
+
+async function deleteUserImage() {
+const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
     try {
-        const response = await fetch(`/users/${user_id}`, {
-            method: "PUT",
+        const response = await fetch(`/user_images/${user_id}`, {
+            method: "DELETE",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
         });
         console.log(response)
     } catch (error) {
         console.error(error)
     }
-    
-    if (user.firstname === editUserObject.firstname && user.lastname === editUserObject.lastname && user.emailaddress === editUserObject.emailaddress && user.phonenumber === editUserObject.phonenumber && user.user_image === editUserObject.userImage) {
-        window.location.href = url
-    } else {
-        function saveDataToURL(url, data) {
-            const urlObject = new URL(url);
-            const params = new URLSearchParams(urlObject.search);
-        
-            for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                    params.set(key, data[key]);
-                }
-            }
-            urlObject.search = params.toString();
-            return urlObject.toString();
-        }
-                
-        const myURL = `${rootUrl}/user`
-        const myData = {
-            name: `${user.firstname} ${user.lastname}`,
-            // age: 30,
-            // city: "New York"
-        };
-        
-        let newURL = saveDataToURL(myURL, myData);
-    
-        if (newURL.charAt(newURL.length - 1) === '+') {
-            console.log(newURL)
-            let editedurl = newURL.slice(0, -1)
-            newURL = editedurl
-        }
+};
 
-        alert("Updated your information.")
-    
-        window.location.href = newURL;
+async function mobileDeleteUserImage() {
+const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    try {
+        const response = await fetch(`/user_images/${user_id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
     }
 };
 
@@ -15215,6 +15195,80 @@ async function updateUserFirstName() {
         window.location.href = newURL;
 };
 
+async function mobileUpdateUserFirstName() {
+    const url = window.location.href;
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const user = await getUser(user_id)
+
+    const editUserFirstNameObj = await mobileHandleUpdateUserFirstnameInput()
+
+    const userId = editUserFirstNameObj.userId;
+    const firstname = editUserFirstNameObj.firstname;
+    const lastname = editUserFirstNameObj.lastname;
+    const emailaddress = editUserFirstNameObj.emailaddress;
+    const phonenumber = editUserFirstNameObj.phonenumber;
+    const password = editUserFirstNameObj.password;
+    const session_id = editUserFirstNameObj.sessionId;
+
+    if (user.firstname === editUserFirstNameObj.firstname) {
+        alert("Input matches stored name. Please make a change before saving.")
+        return
+    }
+
+    const body = { firstname, lastname, emailaddress, phonenumber, password, session_id };
+    try {
+        const response = await fetch(`/users/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+        function saveDataToURL(url, data) {
+            const urlObject = new URL(url);
+            const params = new URLSearchParams(urlObject.search);
+        
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    params.set(key, data[key]);
+                }
+            }
+            urlObject.search = params.toString();
+            return urlObject.toString();
+        }
+                
+        const myURL = `${rootUrl}/user`
+        const myData = {
+            name: `${firstname} ${lastname}`,
+            // age: 30,
+            // city: "New York"
+        };
+        
+        let newURL = saveDataToURL(myURL, myData);
+    
+        if (newURL.charAt(newURL.length - 1) === '+') {
+            console.log(newURL)
+            let editedurl = newURL.slice(0, -1)
+            newURL = editedurl
+        }
+
+        alert("Updated your first name.")
+    
+        window.location.href = newURL;
+};
+
+
 async function updateUserLastName() {
     const url = window.location.href;
     const allUsers = await getAllUsers();
@@ -15229,6 +15283,80 @@ async function updateUserLastName() {
     const user = await getUser(user_id)
 
     const editUserLastNameObj = await handleUpdateUserLastnameInput()
+
+    const userId = editUserLastNameObj.userId;
+    const firstname = editUserLastNameObj.firstname;
+    const lastname = editUserLastNameObj.lastname;
+    const emailaddress = editUserLastNameObj.emailaddress;
+    const phonenumber = editUserLastNameObj.phonenumber;
+    const password = editUserLastNameObj.password;
+    const session_id = editUserLastNameObj.sessionId;
+
+    if (user.lastname === editUserLastNameObj.lastname) {
+        alert("Input matches stored name. Please make a change before saving.")
+        return
+    }
+
+    const body = { firstname, lastname, emailaddress, phonenumber, password, session_id };
+    try {
+        const response = await fetch(`/users/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    function saveDataToURL(url, data) {
+            const urlObject = new URL(url);
+            const params = new URLSearchParams(urlObject.search);
+        
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    params.set(key, data[key]);
+                }
+            }
+            urlObject.search = params.toString();
+            return urlObject.toString();
+        }
+                
+        const myURL = `${rootUrl}/user`
+        const myData = {
+            name: `${firstname} ${lastname}`,
+            // age: 30,
+            // city: "New York"
+        };
+        
+        let newURL = saveDataToURL(myURL, myData);
+    
+        if (newURL.charAt(newURL.length - 1) === '+') {
+            console.log(newURL)
+            let editedurl = newURL.slice(0, -1)
+            newURL = editedurl
+        }
+
+        alert("Updated your last name.")
+        window.location.href = newURL;
+        // window.history.replaceState(null, "", newURL)
+        // window.location.reload(true)
+};
+
+async function mobileUpdateUserLastName() {
+    const url = window.location.href;
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const user = await getUser(user_id)
+
+    const editUserLastNameObj = await mobileHandleUpdateUserLastnameInput()
 
     const userId = editUserLastNameObj.userId;
     const firstname = editUserLastNameObj.firstname;
@@ -15362,6 +15490,79 @@ async function updateUserEmail() {
         window.location.href = newURL;
 };
 
+async function mobileUpdateUserEmail() {
+    const url = window.location.href;
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    const user = await getUser(user_id)
+
+    const editUserEmailObj = await mobileHandleUpdateUserEmailInput()
+
+    const userId = editUserEmailObj.userId;
+    const firstname = editUserEmailObj.firstname;
+    const lastname = editUserEmailObj.lastname;
+    const emailaddress = editUserEmailObj.emailaddress;
+    const phonenumber = editUserEmailObj.phonenumber;
+    const password = editUserEmailObj.password;
+    const session_id = editUserEmailObj.sessionId;
+
+    if (user.emailaddress === editUserEmailObj.emailaddress) {
+        alert("Input matches stored email address. Please make a change before saving.")
+        return
+    }
+
+    const body = { firstname, lastname, emailaddress, phonenumber, password, session_id };
+    try {
+        const response = await fetch(`/users/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    function saveDataToURL(url, data) {
+            const urlObject = new URL(url);
+            const params = new URLSearchParams(urlObject.search);
+        
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    params.set(key, data[key]);
+                }
+            }
+            urlObject.search = params.toString();
+            return urlObject.toString();
+        }
+                
+        const myURL = `${rootUrl}/user`
+        const myData = {
+            name: `${firstname} ${lastname}`,
+            // age: 30,
+            // city: "New York"
+        };
+        
+        let newURL = saveDataToURL(myURL, myData);
+    
+        if (newURL.charAt(newURL.length - 1) === '+') {
+            console.log(newURL)
+            let editedurl = newURL.slice(0, -1)
+            newURL = editedurl
+        }
+
+        alert("Updated your email address.")
+    
+        window.location.href = newURL;
+};
+
 async function updateUserPhonenumber() {
     const url = window.location.href;
     const allUsers = await getAllUsers();
@@ -15415,7 +15616,7 @@ async function updateUserPhonenumber() {
         window.location.href = myURL;
 };
 
-async function mobileUpdateUser() {
+async function mobileUpdateUserPhonenumber() {
     const url = window.location.href;
     const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
@@ -15427,104 +15628,25 @@ async function mobileUpdateUser() {
     }
     const user_id = matchingUser.user_id;
     const user = await getUser(user_id)
-    const editUserObject = await handleMobileEditUserInput();
 
-    const editUserChangePasswordButton = document.querySelector("#mobile-edit-user-change-password-button");
-    console.log(editUserObject)
-    if (user.firstname === editUserObject.firstname && user.lastname === editUserObject.lastname && user.emailaddress === editUserObject.emailaddress && user.phonenumber === editUserObject.phonenumber && user.user_image === editUserObject.userImage && editUserChangePasswordButton.style.display !== "none") {
-        // event.preventDefault()
-        window.location.reload()
+    const editUserPhonenumberObj = await mobileHandleUpdateUserPhonenumberInput()
+
+    const userId = editUserPhonenumberObj.userId;
+    const firstname = editUserPhonenumberObj.firstname;
+    const lastname = editUserPhonenumberObj.lastname;
+    const emailaddress = editUserPhonenumberObj.emailaddress;
+    const phonenumber = editUserPhonenumberObj.phonenumber;
+    const password = editUserPhonenumberObj.password;
+    const session_id = editUserPhonenumberObj.sessionId;
+
+    if (user.phonenumber === editUserPhonenumberObj.phonenumber) {
+        alert("Input matches stored phone number. Please make a change before saving.")
         return
     }
 
-    const session_id = sessionId;
-    const firstname = editUserObject.firstname;
-    const lastname = editUserObject.lastname;
-    const emailaddress = editUserObject.emailaddress;
-    const phonenumber = editUserObject.phonenumber;
-    const password = user.user_password;
-    const user_image = editUserObject.userImage;
-
-    const body = { firstname, lastname, emailaddress, phonenumber, password, user_image, session_id };
+    const body = { firstname, lastname, emailaddress, phonenumber, password, session_id };
     try {
-        const response = await fetch(`/users/${user_id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-        });
-        console.log(response)
-    } catch (error) {
-        console.error(error)
-    }
-    
-    if (user.firstname === editUserObject.firstname && user.lastname === editUserObject.lastname && user.emailaddress === editUserObject.emailaddress && user.phonenumber === editUserObject.phonenumber && user.user_image === editUserObject.userImage) {
-        window.location.href = url
-    } else {
-        function saveDataToURL(url, data) {
-            const urlObject = new URL(url);
-            const params = new URLSearchParams(urlObject.search);
-        
-            for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                    params.set(key, data[key]);
-                }
-            }
-            urlObject.search = params.toString();
-            return urlObject.toString();
-        }
-                
-        const myURL = `${rootUrl}/user`
-        const myData = {
-            name: `${user.firstname} ${user.lastname}`,
-            // age: 30,
-            // city: "New York"
-        };
-        
-        let newURL = saveDataToURL(myURL, myData);
-    
-        if (newURL.charAt(newURL.length - 1) === '+') {
-            console.log(newURL)
-            let editedurl = newURL.slice(0, -1)
-            newURL = editedurl
-        }
-    
-        window.location.href = newURL;
-    }
-}
-
-async function updateUserImage(event) {
-    const url = window.location.href;
-    const allUsers = await getAllUsers();
-    const sessionId = sessionStorage.getItem("user");
-    let matchingUser;
-    for (let i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].session_id === sessionId) {
-            matchingUser = allUsers[i]
-        }
-    }
-    const user_id = matchingUser.user_id;
-    const user = await getUser(user_id)
-    const editUserImageObject = await handleEditUserImage();
-
-    const editUserChangePasswordButton = document.querySelector("#edit-user-change-password-button");
-
-    // if (user.firstname === editUserObject.firstname && user.lastname === editUserObject.lastname && user.emailaddress === editUserObject.emailaddress && user.phonenumber === editUserObject.phonenumber && user.user_image === editUserObject.userImage && editUserChangePasswordButton.style.display !== "none") {
-    //     // event.preventDefault()
-    //     window.location.reload()
-    //     return
-    // }
-
-    const session_id = sessionId;
-    const firstname = editUserImageObject.firstname;
-    const lastname = editUserImageObject.lastname;
-    const emailaddress = editUserImageObject.emailaddress;
-    const phonenumber = editUserImageObject.phonenumber;
-    const password = editUserImageObject.password;
-    const user_image = editUserImageObject.userImage;
-
-    const body = { firstname, lastname, emailaddress, phonenumber, password, user_image, session_id };
-    try {
-        const response = await fetch(`/users/${user_id}`, {
+        const response = await fetch(`/users/${userId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
@@ -15534,152 +15656,17 @@ async function updateUserImage(event) {
         console.error(error)
     }
 
+    const myURL = `${rootUrl}/user?user_id=${userId}&name=${firstname}+${lastname}`
     
-   alert("Updated your profile picture.")
-//    window.location.reload()
-
-};
-
-async function putNewUserImage() {
-    const allUsers = await getAllUsers();
-    const sessionId = sessionStorage.getItem("user");
-    let matchingUser;
-    for (let i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].session_id === sessionId) {
-            matchingUser = allUsers[i]
+        if (myURL.charAt(myURL.length - 1) === '+') {
+            console.log(myURL)
+            let editedurl = myURL.slice(0, -1)
+            myURL = editedurl
         }
-    }
-    const user_id = matchingUser.user_id;
-    const imageFile = await handleUploadImageInput();
-    console.log(imageFile)
 
-        //   if (imageFile) {
-            const formData = new FormData();
-            formData.append('id', user_id)
-            formData.append('editUserAddPhoto', imageFile); // 'image' matches the input name
-
-            try {
-                const response = await fetch(`/user_images/${user_id}`, {
-                    method: 'PUT',
-                    body: formData,
-                });
-                const result = await response.json();
-                console.log(result);
-            } catch (error) {
-                console.error('Error uploading image:', error);
-            }
-        // }
-
-         const editUserAddPhotoInputElement = document.querySelector("#edit-user-add-photo");
-         editUserAddPhotoInputElement.value = ""
-
-         alert("Updated your profile picture.")
-         window.location.reload()
-};
-
-async function mobilePutNewUserImage() {
-    const allUsers = await getAllUsers();
-    const sessionId = sessionStorage.getItem("user");
-    let matchingUser;
-    for (let i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].session_id === sessionId) {
-            matchingUser = allUsers[i]
-        }
-    }
-    const user_id = matchingUser.user_id;
-    const imageFile = await mobileHandleUploadImageInput();
-    console.log(imageFile)
-
-        //   if (imageFile) {
-            const formData = new FormData();
-            formData.append('id', user_id)
-            formData.append('editUserAddPhoto', imageFile); // 'image' matches the input name
-
-            try {
-                const response = await fetch(`/user_images/${user_id}`, {
-                    method: 'PUT',
-                    body: formData,
-                });
-                const result = await response.json();
-                console.log(result);
-            } catch (error) {
-                console.error('Error uploading image:', error);
-            }
-        // }
-
-         const editUserAddPhotoInputElement = document.querySelector("#mobile-edit-user-add-photo");
-         editUserAddPhotoInputElement.value = ""
-
-         alert("Updated your profile picture.")
-         window.location.reload()
-};
-
-async function deleteUserImage() {
-const allUsers = await getAllUsers();
-    const sessionId = sessionStorage.getItem("user");
-    let matchingUser;
-    for (let i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].session_id === sessionId) {
-            matchingUser = allUsers[i]
-        }
-    }
-    const user_id = matchingUser.user_id;
-    try {
-        const response = await fetch(`/user_images/${user_id}`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-        });
-        console.log(response)
-    } catch (error) {
-        console.error(error)
-    }
-};
-
-async function mobileUpdateUserImage() {
-     const url = window.location.href;
-     const allUsers = await getAllUsers();
-    const sessionId = sessionStorage.getItem("user");
-    let matchingUser;
-    for (let i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].session_id === sessionId) {
-            matchingUser = allUsers[i]
-        }
-    }
-    const user_id = matchingUser.user_id;
-    const user = await getUser(user_id)
-    const editUserImageObject = await handleMobileEditUserImage();
-
-    const editUserChangePasswordButton = document.querySelector("#edit-user-change-password-button");
-
-    // if (user.firstname === editUserObject.firstname && user.lastname === editUserObject.lastname && user.emailaddress === editUserObject.emailaddress && user.phonenumber === editUserObject.phonenumber && user.user_image === editUserObject.userImage && editUserChangePasswordButton.style.display !== "none") {
-    //     // event.preventDefault()
-    //     window.location.reload()
-    //     return
-    // }
-
-    const session_id = sessionId;
-    const firstname = editUserImageObject.firstname;
-    const lastname = editUserImageObject.lastname;
-    const emailaddress = editUserImageObject.emailaddress;
-    const phonenumber = editUserImageObject.phonenumber;
-    const password = editUserImageObject.password;
-    const user_image = editUserImageObject.userImage;
-
-    const body = { firstname, lastname, emailaddress, phonenumber, password, user_image, session_id };
-    try {
-        const response = await fetch(`/users/${user_id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-        });
-        console.log(response)
-    } catch (error) {
-        console.error(error)
-    }
-
+        alert("Updated your phone number.")
     
-//    alert("Updated your profile picture.")
-   window.location.reload()
+        window.location.href = myURL;
 };
 
 async function recoverUserAccount() {
@@ -15824,7 +15811,7 @@ async function mobileUpdateUserPassword() {
     }
     const user_id = matchingUser.user_id;
     const user = await getUser(user_id)
-    const editUserPasswordObject = await handleMobileEditUserInput();
+    const editUserPasswordObject = await mobileHandleEditUserPasswordInput();
 
     const editUserChangePasswordButton = document.querySelector("#mobile-edit-user-change-password-button");
 
@@ -15840,9 +15827,9 @@ async function mobileUpdateUserPassword() {
     const emailaddress = user.emailaddress;
     const phonenumber = user.phonenumber;
     const password = editUserPasswordObject.password;
-    const user_image = user.user_image;
+    // const user_image = user.user_image;
 
-    const body = { firstname, lastname, emailaddress, phonenumber, password, user_image, session_id };
+    const body = { firstname, lastname, emailaddress, phonenumber, password, session_id };
     try {
         const response = await fetch(`/users/${user_id}`, {
             method: "PUT",
@@ -15861,6 +15848,32 @@ async function mobileUpdateUserPassword() {
 }
 
 async function deleteUser() {
+await deleteAllUserGroups()
+const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    try {
+        const response = await fetch(`/users/${user_id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    sessionStorage.clear();
+
+    window.location.href = `${rootUrl}/login`
+};
+
+async function mobileDeleteUser() {
 await deleteAllUserGroups()
 const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
@@ -17592,6 +17605,28 @@ const allUsers = await getAllUsers();
     localStorage.clear()
 };
 
+async function mobileDeleteContacts() {
+const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+    try {
+        const response = await fetch(`/contacts/${user_id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    localStorage.clear()
+};
 
 async function getUserGroups(user_id) {
     try {
@@ -17785,6 +17820,30 @@ async function deleteAllUserGroups() {
     }
 
     localStorage.clear()
+};
+
+async function mobileDeleteAllUserGroups() {
+    const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+
+    try {
+        const response = await fetch(`/groups/${user_id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+
+    localStorage.clear()
 }
 
 async function getUserContactGroupings(user_id) {
@@ -17795,7 +17854,8 @@ async function getUserContactGroupings(user_id) {
     } catch (err) {
     console.error(err.message);
     }
-}
+};
+
 
 async function postNewContactGrouping() {
     const newContactGroupings = await handleManageContactGroupsInput();
@@ -17968,6 +18028,28 @@ async function mobileDeleteAContactGrouping() {
 };
 
 async function deleteAllUserContactGroupings() {
+const allUsers = await getAllUsers();
+    const sessionId = sessionStorage.getItem("user");
+    let matchingUser;
+    for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].session_id === sessionId) {
+            matchingUser = allUsers[i]
+        }
+    }
+    const user_id = matchingUser.user_id;
+
+    try {
+        const response = await fetch(`/contactGroups/${user_id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        });
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+};
+
+async function mobileDeleteAllUserContactGroupings() {
 const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
     let matchingUser;
