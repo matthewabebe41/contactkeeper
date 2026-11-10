@@ -7785,7 +7785,7 @@ const allUsers = await getAllUsers();
         const mobileEditContactAddPhotoButtonContainerMarginLeft = mobileEditContactImageCircleElement.clientWidth + 5;
         const  mobileEditContactAddPhotoButtonContainerMarginLeftStr =  mobileEditContactAddPhotoButtonContainerMarginLeft.toString() + "px"
         const mobileEditContactAddPhotoButtonContainer = document.querySelector("#mobile-edit-contact-add-photo-button-container")
-        mobileEditContactAddPhotoButtonContainer.style.marginLeft = mobileEditContactAddPhotoButtonContainerMarginLeftStr;
+        // mobileEditContactAddPhotoButtonContainer.style.marginLeft = mobileEditContactAddPhotoButtonContainerMarginLeftStr;
     });
 
     const editContactFirstNameElement = document.querySelector("#mobile-edit-contact-firstname");
@@ -7876,7 +7876,7 @@ const allUsers = await getAllUsers();
     const deleteContactButton = document.querySelector("#mobile-delete-contact-button");
     deleteContactButton.addEventListener("click", deleteContact, false);
 
-    document.body.style.overflow = "hidden"
+    // document.body.style.overflow = "hidden"
 };
 
 async function handleEditContactEmailLabelInput() {
@@ -13547,7 +13547,6 @@ async function mobileHandleManageContactGroupsInput(event) {
     return { uniqueAddGroupsArr, uniqueRemoveGroupsArr, userContactGroupings, addGroupsArr }
 };
 
-
 async function renderNewContactContent() {
 const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
@@ -13930,9 +13929,23 @@ const allUsers = await getAllUsers();
         
         const mobileNewContactAddPhotoButtonContainerMarginLeft = mobileNewContactImageCircleElement.clientWidth + 5;
         const mobileNewContactAddPhotoButtonContainerMarginLeftStr =  mobileNewContactAddPhotoButtonContainerMarginLeft.toString() + "px"
-        const mobileNewContactAddPhotoButtonContainer = document.querySelector("#mobile-new-contact-add-photo-button-container")
-        mobileNewContactAddPhotoButtonContainer.style.marginLeft = mobileNewContactAddPhotoButtonContainerMarginLeftStr;
+        // const mobileNewContactAddPhotoButtonContainer = document.querySelector("#mobile-new-contact-add-photo-button-container")
+        // mobileNewContactAddPhotoButtonContainer.style.marginLeft = mobileNewContactAddPhotoButtonContainerMarginLeftStr;
     });
+
+    //  //do this for mobile list situations
+    // const topBar = document.querySelector("#topbar")
+    // const mobileContactsListUserHeaderContainer = document.querySelector("#mobile-contacts-list-user-header-container");
+    // const mobileContactsListSearchElementsContainer = document.querySelector('#mobile-contacts-list-search-container');
+    // const topBarHeight = topBar.getBoundingClientRect().height;
+    // const mobileContactsListUserHeaderContainerHeight = mobileContactsListUserHeaderContainer.getBoundingClientRect().height;
+    // const mobileContactsListSearchElementsContainerHeight = mobileContactsListSearchElementsContainer.getBoundingClientRect().height;
+    // const headerBufferHeight = `${topBarHeight}px`
+    // const searchBufferHeight = `${topBarHeight + mobileContactsListUserHeaderContainerHeight}px`
+    // const listBufferHeight = `${topBarHeight + mobileContactsListUserHeaderContainerHeight + mobileContactsListSearchElementsContainerHeight}px`;
+
+    // console.log(searchBufferHeight)
+    // console.log(mobileContactsListSearchElementsContainerHeight)
 
     const newContactImage = document.querySelector("#mobile-new-contact-image");
     const newContactRemovePhotoButton = document.querySelector("#mobile-new-contact-remove-photo-button");
@@ -14099,7 +14112,7 @@ const allUsers = await getAllUsers();
     })
     const newContactImageElement = document.querySelector("#mobile-new-contact-image");
 
-    document.body.style.overflow = "hidden"
+    // document.body.style.overflow = "hidden"
 }
 
 async function handleNewContactImage() {

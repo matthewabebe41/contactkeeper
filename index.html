@@ -1352,14 +1352,11 @@
     </div>     
     </section>
 
-    <section id="mobile-edit-contact-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none; overflow: hidden;">
+    <section id="mobile-edit-contact-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none;">
         <div id="mobile-edit-contact-header-container" style="position: absolute; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 15%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
             <div id="mobile-edit-contact-image-container" style="display: flex; align-items: center; width: 20%; height: 100%; padding: 5px;">
                 <div id="mobile-edit-contact-image-circle" style="position: relative; display: flex; justify-content: center; align-items: center; width: 100%; aspect-ratio: 1; border: 0.5px solid grey; border-radius: 50%; box-shadow: 2px 2px 2px; background-color: gainsboro; z-index: 1;">
                     <img id="mobile-edit-contact-image" src="./images/user-2-svgrepo-com.svg" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <div id="mobile-edit-contact-add-photo-button-container" style="position: absolute; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; height: 100%;">
-                    <button id="mobile-edit-contact-add-photo-button" style="width: 105px; height: 20px; margin-bottom: 6%; z-index: 1;">Add photo</button>
                 </div>
             </div>
             <div id="mobile-edit-contact-header-label-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 54.5%; height: 100%;">
@@ -1371,6 +1368,9 @@
                 </div>
             </div>
         </div>
+        <div id="mobile-edit-contact-add-photo-button-container" style="position: absolute; display: flex; align-items: center; width: 100%; top: 16.75%;">
+            <button id="mobile-edit-contact-add-photo-button" style="width: 105px; height: 20px; margin-left: 5px; z-index: 1;">Add photo</button>
+        </div>
         <div id="mobile-edit-contact-add-photo-input-container" style="position: absolute; align-items: center; width: 100%; height: 33px; top: 15.25%; z-index: 2; background-color: grey; display: none;">
             <div style="display: flex; justify-content: flex-end; width: 100%;">
                 <input id="mobile-edit-contact-add-photo" type="file" style="width: 225px;">
@@ -1379,91 +1379,183 @@
                 <img id="mobile-close-edit-contact-add-photo-icon" src="./images/close-svgrepo-com.svg" style="width: 20px;">
             </div>
         </div>
-        <div id="mobile-edit-contact-infomration-container" style="position: absolute; display: flex; flex-direction: column; align-items: center; width: 100%; height: 66.5%; top: 15.5%;">
-            <!-- <div style="position: absolute; display: flex; align-items: center; width: 177px; top: 1%; left: 96%;">
-                <div style="position: absolute; display: flex; justify-content: flex-end; width: 100%;">
-                    <button id="add-to-favorites-button" style="background-color: green; color: white;">Add to favorites</button>
-                </div>
-            </div> -->
+
+        <div id="mobile-edit-contact-infomration-container" style="position: absolute; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; top: 20%;">
             <div style="display: flex; flex-direction: column; justify-content: space-evenly; width: 96%; height: 100%;">
-            <div id="mobile-edit-contact-information-row-one" style="display: flex; justify-content: space-between; width: 100%;">
-                <div id="mobile-edit-contact-first-name-container" style="display: flex; flex-direction: column; width: 45%;">
+            <div id="mobile-edit-contact-information-row-one" style="display: flex; width: 100%;">
+                <div id="mobile-edit-contact-first-name-container" style="display: flex; flex-direction: column; width: 100%;">
                     <label style="font-weight: bold;">First Name</label>
-                    <input id="mobile-edit-contact-firstname"  autocomplete="off" placeholder="First Name" style="font-size: 16px; border: 1px solid grey;">
-                </div>
-                <div id="mobile-edit-contact-last-name-container" style="display: flex; flex-direction: column; width: 45%;">
-                    <label style="font-weight: bold;">Last Name</label>
-                    <input id="mobile-edit-contact-lastname" autocomplete="off" placeholder="Last Name" style="font-size: 16px; border: 1px solid grey;">
+                    <div style="display: flex; width: 100%;">
+                        <input id="mobile-edit-contact-firstname"  autocomplete="off" placeholder="First Name" style="font-size: 16px; border: 1px solid grey;">
+                        <button style="margin-left: 10px;">Update</button>
+                    </div>
                 </div>
             </div>
-            <div id="mobile-edit-contact-information-row-two" style="display: flex; justify-content: space-between; width: 100%;">
-                <div id="mobile-edit-contact-gender-container" style="display: flex; flex-direction: column; width: 45%;">
-                    <label style="font-weight: bold;">Gender</label>
-                    <select id="mobile-edit-contact-select-gender" style="display: none;"></select>
-                    <input id="mobile-edit-contact-gender" autocomplete="off" placeholder="Gender Identity" style="font-size: 16px; border: 1px solid grey;">
+            <div id="mobile-edit-contact-information-row-two" style="display: flex; width: 100%;">
+                <div id="mobile-edit-contact-last-name-container" style="display: flex; flex-direction: column; width: 100%;">
+                    <label style="font-weight: bold;">Last Name</label>
+                    <div style="display: flex; width: 100%;">
+                        <input id="mobile-edit-contact-lastname"  autocomplete="off" placeholder="Last Name" style="font-size: 16px; border: 1px solid grey;">
+                        <button style="margin-left: 10px;">Update</button>
+                    </div>
                 </div>
-                <div id="mobile-edit-contact-last-name-container" style="display: flex; flex-direction: column; width: 45%; ">
+            </div>
+            <div id="mobile-edit-contact-information-row-three" style="display: flex; width: 100%;">
+                <div id="mobile-edit-contact-gender-container" style="display: flex; flex-direction: column; width: 100%;">
+                    <label style="font-weight: bold;">Gender</label>
+                    <div style="display: flex; width: 100%;">
+                        <select id="mobile-edit-contact-select-gender" style="display: none;"></select>
+                        <input id="mobile-edit-contact-gender" autocomplete="off" placeholder="Gender Identity" style="font-size: 16px; border: 1px solid grey;">
+                        <button style="margin-left: 10px;">Update</button>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-edit-contact-information-row-four" style="display: flex; width: 100%;">
+                <div id="mobile-edit-contact-birthday-container" style="display: flex; flex-direction: column; width: 100%;">
                     <label style="font-weight: bold;">Birthday</label>
-                    <input id="mobile-edit-contact-birthday" type="date" autocomplete="off" minlength="8" maxlength="8" placeholder="MMDDYYY" style="font-size: 16px; border: 1px solid grey;">
+                    <div style="display: flex; width: 100%;">
+                        <input id="mobile-edit-contact-birthday" type="date" autocomplete="off" minlength="8" maxlength="8" placeholder="MMDDYYY" style="font-size: 16px; border: 1px solid grey;">
+                        <button style="margin-left: 10px;">Update</button>
+                    </div>
                 </div>
             </div>
             <div id="mobile-edit-contact-information-row-five" style="display: flex; width: 100%;">
-                <div id="mobile-edit-contact-address-container" style="width: 100%;">
+                <div id="mobile-edit-contact-emailaddress-container" style="width: 100%;">
                     <div style="display: flex; align-items: flex-end;">
                         <div style="display: flex; flex-direction: column; width: 100%;">
-                            <label style="font-weight: bold;">Email</label>
-                            <input id="mobile-edit-contact-emailaddress" autocomplete="off" placeholder="example@domain.com" style="font-size: 16px; border: 1px solid grey;">
+                            <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <div style="display: flex; align-items: flex-end; width: 70px;">
+                                    <label style="font-weight: bold;">Email</label>
+                                </div>
+                                <div style="display: flex; width: 35%; margin-bottom: 2px; margin-left: 12px;">
+                                    <select id="select-edit-contact-email" style="width: 100px; height: 19px; margin-top: 1px; border: 1px solid grey;"></select>
+                                    <!-- <button id="create-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: #00d92f;">New</button>
+                                    <button id="update-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: lightblue;">Edit</button>
+                                    <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
+                                    <img id="edit-email-label-icon" src="./images/edit-svgrepo-com.svg" style="width: 20px;">
+                                </div>
+                                <button style="font-size: x-small; height: 19px;">Update</button>
+                                <button style="font-size: x-small; height: 19px;">New</button>
+                                <button style="font-size: x-small; height: 19px;">Remove</button>
+                                </div>
+                            <!-- <label style="font-weight: bold;">Email</label> -->
+                            <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <input id="mobile-edit-contact-emailaddress" autocomplete="off" placeholder="example@domain.com" style="width: 65%; font-size: 16px; border: 1px solid grey; box-sizing: border-box;">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div id="mobile-edit-contact-information-row-six" style="display: flex; justify-content: space-between; width: 100%;">
-                <div id="mobile-edit-contact-organization-container" style="display: flex; flex-direction: column; width: 100%;">
-                    <label style="font-weight: bold;">Phone</label>
-                    <input id="mobile-edit-contact-phonenumber" autocomplete="off" minlength="10" maxlength="13" placeholder="Enter at least 10 digits" style="font-size: 16px; border: 1px solid grey;">
+                <div id="mobile-edit-contact-phonenumber-container" style="width: 100%;">
+                    <div style="display: flex; align-items: flex-end;">
+                        <div style="display: flex; flex-direction: column; width: 100%;">
+                            <div style="display: flex; justify-content: space-between; width: 100%;">
+                                <div style="display: flex; align-items: flex-end; width: 70px;">
+                                    <label style="font-weight: bold;">Phone</label>
+                                </div>
+                                <div style="display: flex; width: 35%; margin-bottom: 2px; margin-left: 12px;">
+                                    <select id="select-edit-contact-phonenumber" style="width: 100px; height: 19px; margin-top: 1px; border: 1px solid grey;"></select>
+                                    <!-- <button id="create-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: #00d92f;">New</button>
+                                    <button id="update-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: lightblue;">Edit</button>
+                                    <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
+                                    <img id="edit-phonenumber-label-icon" src="./images/edit-svgrepo-com.svg" style="width: 20px;">
+                                </div>
+                                <button style="font-size: x-small; height: 19px;">Update</button>
+                                <button style="font-size: x-small; height: 19px;">New</button>
+                                <button style="font-size: x-small; height: 19px;">Remove</button>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; width: 100%;">
+                                <input id="mobile-edit-contact-phonenumber" autocomplete="off" minlength="10" maxlength="13" placeholder="Enter at least 10 digits" style="width: 65%; font-size: 16px; border: 1px solid grey; box-sizing: border-box;">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>  
-            <div id="mobile-edit-contact-information-row-five" style="display: flex; width: 100%;">
+            <div id="mobile-edit-contact-information-row-seven" style="display: flex; justify-content: space-between; width: 100%;">
                 <div id="mobile-edit-contact-address-container" style="width: 100%;">
                     <div style="display: flex; align-items: flex-end;">
                         <div style="display: flex; flex-direction: column; width: 100%;">
-                            <label style="font-weight: bold;">Address</label>
-                            <input id="mobile-edit-contact-address" autocomplete="off" maxlength="60" placeholder="Building / Street City, State, Postal Code" style="font-size: 16px; border: 1px solid grey;">
+                            <div style="display: flex; justify-content: space-between; width: 100%;">
+                                <div style="display: flex; align-items: flex-end; width: 70px;">
+                                    <label style="font-weight: bold;">Address</label>
+                                </div>
+                                 <div style="display: flex; width: 35%; margin-bottom: 2px; margin-left: 12px;">
+                                    <select id="select-edit-contact-address" style="width: 100px; height: 19px; margin-top: 1px; border: 1px solid grey;"></select>
+                                    <!-- <button id="create-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: #00d92f;">New</button>
+                                    <button id="update-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: lightblue;">Edit</button>
+                                    <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
+                                    <img id="edit-address-label-icon" src="./images/edit-svgrepo-com.svg" style="width: 20px;">
+                                </div>
+                                <button style="font-size: x-small; height: 19px;">Update</button>
+                                <button style="font-size: x-small; height: 19px;">New</button>
+                                <button style="font-size: x-small; height: 19px;">Remove</button>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; width: 100%;">
+                                <input id="mobile-edit-contact-address" autocomplete="off" maxlength="60" placeholder="Building / Street City, State, Postal Code" style="width: 65%; font-size: 16px; border: 1px solid grey; box-sizing: border-box;">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="mobile-edit-contact-information-row-one" style="display: flex; justify-content: space-between; width: 100%;">
-                <div id="mobile-edit-contact-first-name-container" style="display: flex; flex-direction: column; width: 45%;">
+            <div id="mobile-edit-contact-information-row-eight" style="display: flex; justify-content: space-between; width: 100%;">
+                <div id="mobile-edit-contact-organization-container" style="display: flex; flex-direction: column; width: 100%;">
                     <label style="font-weight: bold;">Organization</label>
-                    <input id="mobile-edit-contact-organization" autocomplete="off" placeholder="First Name" style="font-size: 16px; border: 1px solid grey;">
-                </div>
-                <div id="mobile-edit-contact-last-name-container" style="display: flex; flex-direction: column; width: 45%;">
-                    <label style="font-weight: bold;">Role</label>
-                    <input id="mobile-edit-contact-role" autocomplete="off" placeholder="Last Name" style="font-size: 16px; border: 1px solid grey;">
+                    <div style="display: flex; width: 100%;">
+                        <input id="mobile-edit-contact-organization" autocomplete="off" placeholder="First Name" style="font-size: 16px; border: 1px solid grey;">
+                        <button style="margin-left: 10px;">Update</button>
+                    </div>
                 </div>
             </div>
-            <div id="mobile-edit-contact-information-row-five" style="display: flex; width: 100%;">
-                <div id="mobile-edit-contact-address-container" style="width: 100%;">
+            <div id="mobile-edit-contact-information-row-nine" style="display: flex; width: 100%;">
+                <div id="mobile-edit-contact-role-container" style="display: flex; flex-direction: column; width: 100%;">
+                    <label style="font-weight: bold;">Role</label>
+                    <div style="display: flex; width: 100%;">
+                        <input id="mobile-edit-contact-role"  autocomplete="off" placeholder="Role" style="font-size: 16px; border: 1px solid grey;">
+                        <button style="margin-left: 10px;">Update</button>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-edit-contact-information-row-ten" style="display: flex; justify-content: space-between; width: 100%;">
+                <div id="mobile-edit-contact-social-media-container" style="width: 100%;">
                     <div style="display: flex; align-items: flex-end;">
                         <div style="display: flex; flex-direction: column; width: 100%;">
-                            <label style="font-weight: bold;">Social Media</label>
-                            <input id="mobile-edit-contact-social-media" autocomplete="off" placeholder="www.examplesite.com/username" style="font-size: 16px; border: 1px solid grey;">
+                            <div style="display: flex; justify-content: space-between; width: 100%;">
+                                <div style="display: flex; align-items: flex-end; width: 70px;">
+                                    <label style="font-weight: bold;">Website</label>
+                                </div>
+                                <div style="display: flex; width: 35%; margin-bottom: 2px; margin-left: 12px;">
+                                    <select id="select-edit-contact-social-media" style="width: 100px; height: 19px; margin-top: 1px; border: 1px solid grey;"></select>
+                                    <!-- <button id="create-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: #00d92f;">New</button>
+                                    <button id="update-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: lightblue;">Edit</button>
+                                    <button id="remove-contact-emailaddress" style="display: flex; align-items: center; height: 19px; background-color: indianred;">Remove</button> -->
+                                    <img id="edit-social-media-label-icon" src="./images/edit-svgrepo-com.svg" style="width: 20px;">
+                                </div>
+                                <button style="font-size: x-small; height: 19px;">Update</button>
+                                <button style="font-size: x-small; height: 19px;">New</button>
+                                <button style="font-size: x-small; height: 19px;">Remove</button>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; width: 100%;">
+                                <input id="mobile-edit-contact-social-media" autocomplete="off" placeholder="www.examplesite.com/username" style="width: 65%; font-size: 16px; border: 1px solid grey; box-sizing: border-box;">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="mobile-edit-contact-notes-container" style="position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 6.5%; top: 84%;">
+    <div id="mobile-edit-contact-notes-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; margin-bottom: 2%;">
         <div id="mobile-edit-contact-notes-label-container" style="display: flex; justify-content: flex-start; width: 96%;">
             <label style="font-weight: bold;">Notes</label>
         </div>
         <div style="display: flex; justify-content: flex-start; width: 96%;">
-             <textarea id="mobile-edit-contact-notes" maxlength="195" style="width: 100%; height: 100%; font-family: sans-serif; font-size: 16px; border: 1px solid grey; resize: none;"></textarea>
+             <textarea id="mobile-edit-contact-notes" maxlength="195" style="width: 79.11%; height: 100%; font-family: sans-serif; font-size: 16px; border: 1px solid grey; resize: none; box-sizing: border-box;"></textarea>
+             <div id="mobile-edit-contact-notes-button" style="display: flex; height: 100%; align-items: flex-end;">
+                 <button style="margin-left: 10px;">Update</button>
+             </div>
         </div>
     </div>
-    <div id="mobile-edit-contact-button-container" style="position: absolute; display: flex; justify-content: center; align-items: center; width: 100%; top: 96.75%;">
+    </div>
+    <div id="mobile-edit-contact-button-container" style="position: absolute; display: none; justify-content: center; align-items: center; width: 100%; top: 96.75%;">
         <div style="position: absolute; display: flex; justify-content: space-between; width: 96%;">
             <button id="mobile-delete-contact-button">Remove</button>
             <button id="mobile-edit-contact-button">Update</button>
@@ -1993,14 +2085,11 @@
             </div> 
     </section>
 
-    <section id="mobile-new-contact-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none; overflow: hidden;">
+    <section id="mobile-new-contact-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none;">
         <div id="mobile-new-contact-header-container" style="position: absolute; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 15%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
             <div id="mobile-new-contact-image-container" style="display: flex; align-items: center; width: 20%; height: 100%; padding: 5px;">
                 <div id="mobile-new-contact-image-circle" style="position: relative; display: flex; justify-content: center; align-items: center; width: 100%; aspect-ratio: 1; border: 0.5px solid grey; border-radius: 50%; box-shadow: 2px 2px 2px; background-color: gainsboro; object-fit: cover; z-index: 1;">
                     <img id="mobile-new-contact-image" src="./images/user-2-svgrepo-com.svg" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <div id="mobile-new-contact-add-photo-button-container" style="position: absolute; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; height: 100%;">
-                    <button id="mobile-new-contact-add-photo-button" style="width: 105px; height: 20px; margin-bottom: 6%; z-index: 1;">Add photo</button>
                 </div>
             </div>
             <div id="mobile-new-contact-header-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 54.5%; height: 100%;">
@@ -2012,6 +2101,10 @@
                 </div>
             </div>
         </div>
+        <div id="mobile-add-contact-add-photo-button-container" style="position: absolute; display: flex; justify-content: space-between; align-items: center; width: 100%; top: 16.75%;">
+            <button id="mobile-new-contact-add-photo-button" style="width: 105px; height: 20px; margin-left: 5px; z-index: 1;">Add photo</button>
+            <button id="mobile-create-new-contact-button" style="margin-right: 5px;">Create</button>
+        </div>
         <div id="mobile-new-contact-add-photo-input-container" style="position: absolute; align-items: center; width: 100%; height: 33px; top: 15.25%; z-index: 2; background-color: grey; display: none;">
             <div style="display: flex; justify-content: flex-end; width: 100%;">
                 <input id="mobile-new-contact-add-photo" type="file" style="width: 225px;">
@@ -2020,96 +2113,190 @@
                 <img id="mobile-close-new-contact-add-photo-icon" src="./images/close-svgrepo-com.svg" style="width: 20px;">
             </div>
         </div>
-        <div id="mobile-new-contact-infomration-container" style="position: absolute; display: flex; flex-direction: column; align-items: center; width: 100%; height: 66.5%; top: 15.5%;">
+        <div id="mobile-new-contact-infomration-container" style="position: absolute; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; top: 20%;">
             <div style="display: flex; flex-direction: column; justify-content: space-evenly; width: 96%; height: 100%;">
-            <div id="mobile-new-contact-information-row-one" style="display: flex; justify-content: space-between; width: 100%;">
-                <div id="mobile-new-contact-first-name-container" style="display: flex; flex-direction: column; width: 45%;">
+            <div id="mobile-new-contact-information-row-one" style="display: flex; width: 100%;">
+                <div id="mobile-new-contact-first-name-container" style="display: flex; flex-direction: column; width: 100%;">
                     <label style="font-weight: bold;">First Name</label>
-                    <input id="mobile-new-contact-firstname" autocomplete="off" placeholder="First Name" style="font-size: 16px; border: 1px solid grey">
-                </div>
-                <div id="mobile-new-contact-last-name-container" style="display: flex; flex-direction: column; width: 45%;">
-                    <label style="font-weight: bold;">Last Name</label>
-                    <input id="mobile-new-contact-lastname" autocomplete="off" placeholder="Last Name" style="font-size: 16px; border: 1px solid grey">
+                    <div style="display: flex; width: 100%;">
+                        <input id="mobile-new-contact-firstname" autocomplete="off" placeholder="First Name" style="font-size: 16px; border: 1px solid grey">
+                        <button style="margin-left: 10px; visibility: hidden;">Update</button>
+                    </div>
                 </div>
             </div>
-            <div id="mobile-new-contact-information-row-two" style="display: flex; justify-content: space-between; width: 100%;">
+            <div id="mobile-new-contact-information-row-two" style="display: flex; width: 100%;">
+                <div id="mobile-new-contact-last-name-container" style="display: flex; flex-direction: column; width: 100%;">
+                    <label style="font-weight: bold;">Last Name</label>
+                    <div style="display: flex; width: 100%;">
+                        <input id="mobile-new-contact-lastname" autocomplete="off" placeholder="Last Name" style="font-size: 16px; border: 1px solid grey">
+                        <button style="margin-left: 10px; visibility: hidden;">Update</button>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-new-contact-information-row-three" style="display: flex; justify-content: space-between; width: 100%;">
                 <div id="mobile-new-contact-gender-container" style="display: flex; flex-direction: column; width: 45%;">
                     <label style="font-weight: bold;">Gender</label>
-                    <select id="mobile-new-contact-select-gender" style="font-size: 16px; display: none;"></select>
-                    <input id="mobile-new-contact-gender" readonly autocomplete="off" placeholder="Gender Identity" style="font-size: 16px; border: 1px solid grey">
+                    <div style="display: flex; width: 100%;">
+                        <select id="mobile-new-contact-select-gender" style="font-size: 16px; display: none;"></select>
+                        <input id="mobile-new-contact-gender" readonly autocomplete="off" placeholder="Gender Identity" style="font-size: 16px; border: 1px solid grey">
+                        <button style="margin-left: 10px; visibility: hidden;">Update</button>
+                    </div>
                 </div>
-                <div id="mobile-new-contact-last-name-container" style="display: flex; flex-direction: column; width: 45%;">
+            </div>
+            <div id="mobile-new-contact-information-row-four" style="display: flex; width: 100%;">
+                <div id="mobile-new-contact-birthday-container" style="display: flex; flex-direction: column; width: 100%;">
                     <label style="font-weight: bold;">Birthday</label>
-                    <input id="mobile-new-contact-birthday" type="date" autocomplete="off" minlength="8" maxlength="8" placeholder="MMDDYYY" style="font-size: 16px; border: 1px solid grey">
+                    <div style="display: flex; width: 100%;">
+                        <input id="mobile-new-contact-birthday" type="date" autocomplete="off" minlength="8" maxlength="8" placeholder="MMDDYYY" style="font-size: 16px; border: 1px solid grey">
+                        <button style="margin-left: 10px; visibility: hidden;">Update</button>
+                    </div>
                 </div>
             </div>
             <div id="mobile-new-contact-information-row-five" style="display: flex; width: 100%;">
-                <div id="mobile-new-contact-address-container" style="width: 100%;">
-                    <div style="display: flex; align-items: flex-end;">
-                        <div style="display: flex; flex-direction: column; width: 100%;">
-                            <label style="font-weight: bold;">Email</label>
+                <div id="mobile-new-contact-emailaddress-container" style="width: 100%;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div style="display: flex; flex-direction: column; width: 65%;">
+                            <div style="display: flex; align-items: flex-end;">
+                                <div style="width: 70px;">
+                                    <label style="font-weight: bold;">Email</label>
+                                </div>
+                                <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                                    <select style="width: 100px; height: 19px; margin-top: 1px; visibility: hidden;"></select>
+                                </div>
+                            </div>
                             <input id="mobile-new-contact-email" autocomplete="off" placeholder="example@domain.com" style="font-size: 16px; border: 1px solid grey">
                         </div>
+                        <div style="display: flex; flex-direction: column; width: 30%;">
+                            <label style="font-weight: bold;">Select a label</label>
+                            <select id="mobile-new-contact-select-emailaddress" style="border: 1px solid grey;">
+                                <option value="Primary">Primary</option>
+                                <option value="Home">Home</option>
+                                <option value="Work">Work</option>
+                                <option value="School">School</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div id="mobile-new-contact-information-row-six" style="display: flex; justify-content: space-between; width: 100%;">
-                <div id="mobile-new-contact-organization-container" style="display: flex; flex-direction: column; width: 100%;">
-                    <label style="font-weight: bold;">Phone</label>
-                    <input id="mobile-new-contact-phonenumber" autocomplete="off" minlength="10" maxlength="13" placeholder="Enter at least 10 digits" style="font-size: 16px; border: 1px solid grey">
+            <div id="mobile-new-contact-information-row-six" style="display: flex; width: 100%;">
+                <div id="mobile-new-contact-phonenumber-container" style="width: 100%;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div style="display: flex; flex-direction: column; width: 65%;">
+                            <div style="display: flex; align-items: flex-end;">
+                                <div style="width: 70px;">
+                                    <label style="font-weight: bold;">Phone</label>
+                                </div>
+                                <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                                    <select style="width: 100px; height: 19px; margin-top: 1px; visibility: hidden;"></select>
+                                </div>
+                            </div>
+                            <input id="mobile-new-contact-phonenumber" autocomplete="off" minlength="10" maxlength="13" placeholder="Enter at least 10 digits" style="font-size: 16px; border: 1px solid grey">
+                        </div>
+                        <div style="display: flex; flex-direction: column; width: 30%;">
+                            <label style="font-weight: bold;">Select a label</label>
+                            <select id="mobile-new-contact-select-phonenumber" style="border: 1px solid grey;">
+                                <option value="Mobile">Mobile</option>
+                                <option value="Work">Work</option>
+                                <option value="School">School</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>  
-            <div id="mobile-new-contact-information-row-five" style="display: flex; width: 100%;">
+            </div>
+            <div id="mobile-new-contact-information-row-seven" style="display: flex; width: 100%;">
                 <div id="mobile-new-contact-address-container" style="width: 100%;">
-                    <div style="display: flex; align-items: flex-end;">
-                        <div style="display: flex; flex-direction: column; width: 100%;">
-                            <label style="font-weight: bold;">Address</label>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div style="display: flex; flex-direction: column; width: 65%;">
+                            <div style="display: flex; align-items: flex-end;">
+                                <div style="width: 70px;">
+                                    <label style="font-weight: bold;">Address</label>
+                                </div>
+                                <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                                    <select style="width: 100px; height: 19px; margin-top: 1px; visibility: hidden;"></select>
+                                </div>
+                            </div>
                             <input id="mobile-new-contact-address" autocomplete="off" maxlength="60" placeholder="Building / Street City, State, Postal Code" style="font-size: 16px; border: 1px solid grey">
                         </div>
+                        <div style="display: flex; flex-direction: column; width: 30%;">
+                            <label style="font-weight: bold;">Select a label</label>
+                            <select id="mobile-new-contact-select-address" style="border: 1px solid grey;">
+                                <option value="Home">Home</option>
+                                <option value="Work">Work</option>
+                                <option value="School">School</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div id="mobile-new-contact-information-row-one" style="display: flex; justify-content: space-between; width: 100%;">
-                <div id="mobile-new-contact-first-name-container" style="display: flex; flex-direction: column; width: 45%;">
+            <div id="mobile-new-contact-information-row-eight" style="display: flex; justify-content: space-between; width: 100%;">
+                <div id="mobile-new-contact-organization-container" style="display: flex; flex-direction: column; width: 100%;">
                     <label style="font-weight: bold;">Organization</label>
-                    <input id="mobile-new-contact-organization" autocomplete="off" placeholder="Organization Name" style="font-size: 16px; border: 1px solid grey">
-                </div>
-                <div id="new-contact-last-name-container" style="display: flex; flex-direction: column; width: 45%;">
-                    <label style="font-weight: bold;">Role</label>
-                    <input id="mobile-new-contact-role" autocomplete="off" placeholder="Role Name" style="font-size: 16px; border: 1px solid grey">
+                    <div style="display: flex; width: 100%;">
+                        <input id="mobile-new-contact-organization" autocomplete="off" placeholder="Organization Name" style="font-size: 16px; border: 1px solid grey">
+                        <button style="margin-left: 10px; visibility: hidden;">Update</button>
+                    </div>
                 </div>
             </div>
-            <div id="mobile-new-contact-information-row-five" style="display: flex; width: 100%;">
-                <div id="mobile-new-contact-address-container" style="width: 100%;">
-                    <div style="display: flex; align-items: flex-end;">
-                        <div style="display: flex; flex-direction: column; width: 100%;">
-                            <label style="font-weight: bold;">Social Media</label>
+            <div id="mobile-new-contact-information-row-nine" style="display: flex; justify-content: space-between; width: 100%;">
+                <div id="mobile-new-contact-role-container" style="display: flex; flex-direction: column; width: 100%;">
+                    <label style="font-weight: bold;">Role</label>
+                    <div style="display: flex; width: 100%;">
+                        <input id="mobile-new-contact-role" autocomplete="off" placeholder="Role Name" style="font-size: 16px; border: 1px solid grey">
+                        <button style="margin-left: 10px; visibility: hidden;">Update</button>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-new-contact-information-row-ten" style="display: flex; width: 100%;">
+                <div id="mobile-new-contact-social-media-container" style="width: 100%;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div style="display: flex; flex-direction: column; width: 65%;">
+                            <div style="display: flex; align-items: flex-end;">
+                                <div style="width: 70px">
+                                    <labe style="font-weight: bold;">Website</label>
+                                </div>
+                                <div style="display: flex; width: 35%; justify-content: space-between; margin-bottom: 2px; margin-left: 12px;">
+                                    <select style="width: 100px; height: 19px; margin-top: 1px; visibility: hidden;"></select>
+                                </div>
+                            </div>
                             <input id="mobile-new-contact-social-media" autocomplete="off" placeholder="www.examplesite.com/username" style="font-size: 16px; border: 1px solid grey">
+                        </div>
+                        <div style="display: flex; flex-direction: column; width: 30%;">
+                            <label style="font-weight: bold;">Select a label</label>
+                            <select id="mobile-new-contact-select-social-media" style="border: 1px solid grey;">
+                                <option value="Personal">Personal</option>
+                                <option value="Business">Business</option>
+                                <option value="Blog">Blog</option>
+                                <option value="Custom">Custom</option>
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="mobile-new-contact-notes-container" style="position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 6.5%; top: 84%;">
-        <div id="mobile-notes-label-container" style="display: flex; justify-content: flex-start; width: 96%;">
-            <label style="font-weight: bold;">Notes</label>
+        <div id="mobile-new-contact-notes-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; margin-bottom: 2%;">
+            <div id="mobile-notes-label-container" style="display: flex; justify-content: flex-start; width: 96%;">
+                <label style="font-weight: bold;">Notes</label>
+            </div>
+            <div style="display: flex; justify-content: flex-start; width: 96%;">
+                 <textarea id="mobile-new-contact-notes" maxlength="195" style="width: 79.11%; height: 100%; font-family: sans-serif; font-size: 16px; border: 1px solid grey; resize: none; box-sizing: border-box;"></textarea>
+                 <div id="mobile-new-contact-notes-button" style="display: flex; height: 100%; align-items: flex-end;">
+                    <button style="margin-left: 10px; visibility: hidden;">Update</button>
+                 </div>
+            </div>
         </div>
-        <div style="display: flex; justify-content: flex-start; width: 96%;">
-             <textarea id="mobile-new-contact-notes" maxlength="195" style="width: 100%; height: 100%; font-family: sans-serif; font-size: 16px; border: 1px solid grey; resize: none;"></textarea>
-        </div>
     </div>
-    <div id="mobile-new-contact-button-container" style="position: absolute; display: flex; justify-content: center; align-items: center; width: 100%; top: 96.75%;">
-        <div style="position: absolute; display: flex; justify-content: flex-end; width: 96%;">
+    <!-- <div id="mobile-new-contact-button-container" style="position: absolute; display: none; justify-content: center; align-items: center; width: 100%; top: 96.75%;"> -->
+        <!-- <div style="position: absolute; display: flex; justify-content: flex-end; width: 96%;"> -->
             <!-- <button id="delete-contact-button" style="background-color: red;">Delete Account</button> -->
-            <button id="mobile-create-new-contact-button">Create</button>
-        </div>
-    </div>     
+            <!-- <button id="mobile-create-new-contact-button">Create</button> -->
+        <!-- </div> -->
+    <!-- </div> -->
     </section>
 
-    <div id="404-page-not-logged-in" style="display: none;">
-        
-    </div>
+    <div id="404-page-not-logged-in" style="display: none;"></div>
     
     <script type="module" src="./js/main.js" defer></script>
 </body>
