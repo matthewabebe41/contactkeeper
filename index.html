@@ -2087,30 +2087,50 @@
 
     <section id="mobile-new-contact-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none;">
         <div id="mobile-new-contact-header-container" style="position: absolute; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 15%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
-            <div id="mobile-new-contact-image-container" style="display: flex; align-items: center; width: 20%; height: 100%; padding: 5px;">
-                <div id="mobile-new-contact-image-circle" style="position: relative; display: flex; justify-content: center; align-items: center; width: 100%; aspect-ratio: 1; border: 0.5px solid grey; border-radius: 50%; box-shadow: 2px 2px 2px; background-color: gainsboro; object-fit: cover; z-index: 1;">
+            <div id="mobile-new-contact-image-container" style="display: flex; flex: 0 0 25%; align-items: center; min-width: 0; width: 25%; height: 100%; padding: 5px; box-sizing: border-box;">
+                <div id="mobile-new-contact-image-circle" style="position: relative; display: flex; justify-content: center; align-items: center; width: 88%; aspect-ratio: 1; border: 0.5px solid grey; border-radius: 50%; box-shadow: 2px 2px 2px; background-color: gainsboro; z-index: 1;">
                     <img id="mobile-new-contact-image" src="./images/user-2-svgrepo-com.svg" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
             </div>
-            <div id="mobile-new-contact-header-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 54.5%; height: 100%;">
+            <div id="mobile-new-contact-header-text-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 54.5%; height: 100%;">
                 <h2 style="font-family: Arial;">Create contact.</h2>
             </div>
-             <div id="mobile-new-contact-favorite-icon-container" style="display: flex; justify-content: flex-end; width: 20%; height: 100%; padding: 5px;">
-                <div id="mobile-new-contact-favorite-square" style="position: relative; display: flex; justify-content: center; align-items: center; width: 100%;">
-                    <img id="mobile-new-contact-favorite-icon" src="./images/star-gold-svgrepo-com.svg" style="width: 100%; display: none;">
+            <div id="mobile-new-contact-header-spacing-container" style="display: flex; flex: 0 0 25%; min-width: 0; width: 25%; height: 100%; box-sizing: border-box;">
+                <div style="display: flex; justify-content: flex-end; align-items: flex-end; width: 100%; height: 100%;">
+                    <button id="mobile-create-new-contact-button" style="margin-right: 5px; margin-bottom: 10px;">Create</button>
                 </div>
             </div>
         </div>
-        <div id="mobile-add-contact-add-photo-button-container" style="position: absolute; display: flex; justify-content: space-between; align-items: center; width: 100%; top: 16.75%;">
-            <button id="mobile-new-contact-add-photo-button" style="width: 105px; height: 20px; margin-left: 5px; z-index: 1;">Add photo</button>
-            <button id="mobile-create-new-contact-button" style="margin-right: 5px;">Create</button>
+        <div id="mobile-new-contact-add-photo-input-container" style="position: absolute; align-items: center; width: 100%; height: 33px; top: 20.2%; z-index: 2; background-color: grey; border: 1px solid black; box-shadow: 2px 2px 2px; display: none;">
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+                <form id="mobile-new-contact-add-photo-form" name="mobileNewContactAddPhotoForm" action="/user_images" method="PUT" enctype="multipart/form-data">
+                    <input id="mobile-new-contact-add-photo" name="newContactAddPhoto" type="file" accept="image/*" style="width: 100%; margin-left: 4px;">
+                </form>
+                  <div id="mobile-new-contact-photo-buttons-container" style="display: flex; justify-content: space-between; align-items: center; width: 50%;">
+                    <button id="mobile-new-contact-add-photo-insert-button" style="height: 20px; background-color: lightgoldenrodyellow;">Insert</button>
+                    <button id="mobile-new-contact-remove-photo-button" style="height: 20px; background-color: indianred; z-index: 1;">Remove</button>
+                    <!-- <img id="check-edit-user-image" src="./images/user-5-svgrepo-com.svg" style="display: none;"> -->
+                    <!-- <button id="mobile-edit-user-save-photo" style="height: 20px; background-color: aliceblue;">Save</button> -->
+                    <img id="mobile-close-new-contact-add-photo-icon" src="./images/close-svgrepo-com.svg" style="width: 20px; height: 18px; background-color: red; border: 1px solid black; margin-right: 5px;">
+                </div>
+            </div>
         </div>
-        <div id="mobile-new-contact-add-photo-input-container" style="position: absolute; align-items: center; width: 100%; height: 33px; top: 15.25%; z-index: 2; background-color: grey; display: none;">
-            <div style="display: flex; justify-content: flex-end; width: 100%;">
-                <input id="mobile-new-contact-add-photo" type="file" style="width: 225px;">
-                <button id="mobile-new-contact-add-photo-insert-button">Insert</button>
-                <button id="mobile-new-contact-remove-photo-button" style="height: 20px; margin-left: 5px; background-color: indianred; z-index: 1;">Remove</button>
-                <img id="mobile-close-new-contact-add-photo-icon" src="./images/close-svgrepo-com.svg" style="width: 20px;">
+        <div id="mobile-new-contact-add-photo-input-container" style="position: absolute; align-items: center; width: 100%; height: 33px; top: 20.2%; z-index: 2; background-color: grey; border: 1px solid black; box-shadow: 2px 2px 2px; display: none;">
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+                <form id="mobile-new-contact-add-photo-form" name="mobileNewContactAddPhotoForm" action="/contact_images" method="POST" enctype="multipart/form-data">
+                    <input id="mobile-new-contact-add-photo" name="newContactAddPhoto" type="file" accept="image/*" style="width: 100%; margin-left: 4px;">
+                </form>
+                <div id="mobile-new-contact-add-photo-buttons-container" style="display: flex; justify-content: space-between; align-items: center; width: 50%;">
+                    <button id="mobile-new-contact-add-photo-insert-button" style="height: 20px; background-color: lightgoldenrodyellow;">Insert</button>
+                    <button id="mobile-new-contact-remove-photo-button" style="height: 20px; background-color: indianred; z-index: 1;">Remove</button>
+                    <img id="mobile-close-new-contact-add-photo-icon" src="./images/close-svgrepo-com.svg" style="width: 20px; height: 18px; background-color: red; border: 1px solid black; margin-right: 5px;">
+                </div>
+            </div>
+        </div>
+        <div id="mobile-new-contact-add-photo-button-container" style="position: absolute; display: flex; align-items: center; width: 100%; top: 16.75%;">
+            <button id="mobile-new-contact-add-photo-button" style="height: 20px; margin-left: 5px; z-index: 1;">Add Photo</button>
+            <div id="edit-user-add-photo-button-reminder" style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; height: 100%; margin-left: 5px;">
+                <p style="font-size: smaller; display: flex; align-items: center; height: 20px; margin: 0 0 0 0px; z-index: 1;">Click "Create" to save new contact's picture.</p>
             </div>
         </div>
         <div id="mobile-new-contact-infomration-container" style="position: absolute; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; top: 20%;">
@@ -2169,11 +2189,11 @@
                         <div style="display: flex; flex-direction: column; width: 30%;">
                             <label style="font-weight: bold;">Select a label</label>
                             <select id="mobile-new-contact-select-emailaddress" style="border: 1px solid grey;">
-                                <option value="Primary">Primary</option>
+                                <!-- <option value="Primary">Primary</option>
                                 <option value="Home">Home</option>
                                 <option value="Work">Work</option>
                                 <option value="School">School</option>
-                                <option value="Custom">Custom</option>
+                                <option value="Custom">Custom</option> -->
                             </select>
                         </div>
                     </div>
@@ -2196,10 +2216,10 @@
                         <div style="display: flex; flex-direction: column; width: 30%;">
                             <label style="font-weight: bold;">Select a label</label>
                             <select id="mobile-new-contact-select-phonenumber" style="border: 1px solid grey;">
-                                <option value="Mobile">Mobile</option>
+                                <!-- <option value="Mobile">Mobile</option>
                                 <option value="Work">Work</option>
                                 <option value="School">School</option>
-                                <option value="Custom">Custom</option>
+                                <option value="Custom">Custom</option> -->
                             </select>
                         </div>
                     </div>
@@ -2222,10 +2242,10 @@
                         <div style="display: flex; flex-direction: column; width: 30%;">
                             <label style="font-weight: bold;">Select a label</label>
                             <select id="mobile-new-contact-select-address" style="border: 1px solid grey;">
-                                <option value="Home">Home</option>
+                                <!-- <option value="Home">Home</option>
                                 <option value="Work">Work</option>
                                 <option value="School">School</option>
-                                <option value="Custom">Custom</option>
+                                <option value="Custom">Custom</option> -->
                             </select>
                         </div>
                     </div>
@@ -2265,11 +2285,11 @@
                         </div>
                         <div style="display: flex; flex-direction: column; width: 30%;">
                             <label style="font-weight: bold;">Select a label</label>
-                            <select id="mobile-new-contact-select-social-media" style="border: 1px solid grey;">
-                                <option value="Personal">Personal</option>
-                                <option value="Business">Business</option>
-                                <option value="Blog">Blog</option>
-                                <option value="Custom">Custom</option>
+                            <select id="mobile-new-contact-select-website" style="border: 1px solid grey;">
+                                <!-- <option value="Personal">Personal</option> -->
+                                <!-- <option value="Business">Business</option> -->
+                                <!-- <option value="Blog">Blog</option> -->
+                                <!-- <option value="Custom">Custom</option> -->
                             </select>
                         </div>
                     </div>
@@ -2294,6 +2314,58 @@
             <!-- <button id="mobile-create-new-contact-button">Create</button> -->
         <!-- </div> -->
     <!-- </div> -->
+          <div id="mobile-create-new-contact-email-custom-label-modal" style="position: absolute; flex-direction: column; width: 60%; height: 30%; background-color: lightgrey; border: 1px solid black; box-shadow: 2px 2px 2px; top: 40%; left: 50%; transform: translate(-50%, -50%); padding: 10px; z-index: 1; display: none;">
+                <div id="mobile-create-new-contact-email-custom-label-modal-header-container" style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: 20%; background-color: grey; border-radius: 2px;">
+                    <h4 style="margin: 0 0 0 5px; pointer-events: none;">Enter a custom email address label</h4>
+                    <img id="mobile-close-create-new-contact-email-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px; background-color: red; margin: 0px 5px 0px 0px;">
+                </div>
+                <div id="mobile-create-new-contact-email-custom-label-modal-input-container" style="display: flex; flex-direction: column; justify-content: center; height: 40%; margin-top: 10%; padding: 3px;">
+                    <label>Add label here.</label>
+                    <input id="mobile-create-new-contact-emailaddress-label-input">
+                    <div id="mobile-create-new-contact-email-custom-label-modal-button-container" style="display: flex; justify-content: flex-end; width: 100%; margin-top: 4%;">
+                        <button id="mobile-create-new-contact-email-label-button">Done</button>
+                    </div>
+                </div>
+            </div>
+      <div id="mobile-create-new-contact-phonenumber-custom-label-modal" style="position: absolute; flex-direction: column; width: 60%; height: 30%; background-color: lightgrey; border: 1px solid black; box-shadow: 2px 2px 2px; top: 40%; left: 50%; transform: translate(-50%, -50%); padding: 10px; z-index: 1; display: none;">
+                <div id="mobile-create-new-contact-phonenumber-custom-label-modal-header-container" style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: 20%; background-color: grey; border-radius: 2px;">
+                    <h4 style="margin: 0 0 0 5px; pointer-events: none;">Enter a custom phone number label<h4>
+                    <img id="mobile-close-create-new-contact-phonenumber-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px; background-color: red; margin: 0 5px 0 0;">
+                </div>        
+                <div id="mobile-create-new-contact-phonenumber-custom-label-modal-input-container" style="display: flex; flex-direction: column; justify-content: center; height: 40%; margin-top: 10%; padding: 3px;">
+                    <label>Add label here.</label>
+                    <input id="mobile-create-new-contact-phone-label-input">
+                    <div id="mobile-create-new-contact-phonenumber-custom-label-modal-button-container" style="display: flex; justify-content: flex-end; width: 100%; margin-top: 4%;">
+                        <button id="mobile-create-new-contact-phonenumber-label-button">Done</button>
+                    </div>
+                </div>
+            </div>
+      <div id="mobile-create-new-contact-address-custom-label-modal" style="position: absolute; flex-direction: column; width: 60%; height: 30%; background-color: lightgrey; border: 1px solid black; box-shadow: 2px 2px 2xp; top: 40%; left: 50%; transform: translate(-50%, -50%); padding: 10px; z-index: 1; display: none;">
+                <div id="mobile-create-new-contact-address-custom-label-modal-header-container" style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: 20%; background-color: grey; border-radius: 2px;">
+                    <h4 style="margin: 0 0 0 5px; pointer-events: none;">Enter a custom address label</h4>
+                    <img id="mobile-close-create-new-contact-address-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px; background-color: red; margin: 0 5px 0 0;">
+                </div>
+                <div id="mobile-create-new-contact-address-custom-label-modal-input-container" style="display: flex; flex-direction: column; justify-content: center; height: 40%; margin-top: 10%; padding: 3px;">
+                    <label>Add label here.</label>
+                    <input id="mobile-create-new-contact-physaddress-label-input">
+                    <div id="mobile-create-new-contact-address-custom-label-modal-button-container" style="display: flex; justify-content: flex-end; width: 100%; margin-top: 4%;">
+                        <button id="mobile-create-new-contact-address-label-button">Done</button>
+                    </div>
+                </div>
+            </div>
+      <div id="mobile-create-new-contact-website-custom-label-modal" style="position: absolute; flex-direction: column; width: 60%; height: 30%; background-color: lightgrey; border: 1px solid black; box-shadow: 2px 2px 2px; top: 40%; left: 50%; transform: translate(-50%, -50%); padding: 10px; z-index: 1; display: none;">
+                <div id="mobile-create-new-contact-website-custom-label-modal-header-container" style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: 20%; background-color: grey; border-radius: 2px;">
+                    <h4 style="margin: 0 0 0 5px; pointer-events: none;">Enter a custom website label</h4>
+                    <img id="mobile-close-create-new-contact-website-label-modal" src="./images/close-md-svgrepo-com.svg" style="width: 20px; background-color: red; margin: 0 5px 0 0;">
+                </div>
+                <div id="mobile-create-new-contact-website-custom-label-modal-input-container" style="display: flex; flex-direction: column; justify-content: center; height: 40%; margin-top: 10%; padding: 3px;">
+                    <label>Add label here.</label>
+                    <input id="mobile-create-new-contact-site-label-input">
+                    <div id="mobile-create-new-contact-website-custom-label-modal-button-container" style="display: flex; justify-content: flex-end; width: 100%; margin-top: 4%;">
+                        <button id="mobile-create-new-contact-website-label-button">Done</button>
+                    </div>
+                </div>
+            </div> 
     </section>
 
     <div id="404-page-not-logged-in" style="display: none;"></div>
