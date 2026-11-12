@@ -16171,7 +16171,7 @@ async function putContactImage() {
 };
 
 async function postNewContactEmailAddress() {
-    const newContactObj = await handleMobileNewContactInput();
+    const newContactObj = await handleNewContactInput();
 
     const user_id = newContactObj.userId;
     const contact_id = newContactObj.contactId;
@@ -16197,7 +16197,7 @@ async function postNewContactEmailAddress() {
 };
 
 async function mobilePostNewContactEmailAddress() {
-    const newContactObj = await handleNewContactInput();
+    const newContactObj = await handleMobileNewContactInput();
 
     const user_id = newContactObj.userId;
     const contact_id = newContactObj.contactId;
@@ -16223,7 +16223,7 @@ async function mobilePostNewContactEmailAddress() {
 };
 
 async function postNewContactPhoneNumber() {
-    const newContactObj = await handleMobileNewContactInput();
+    const newContactObj = await handleNewContactInput();
 
     const user_id = newContactObj.userId;
     const contact_id = newContactObj.contactId;
@@ -16249,7 +16249,7 @@ async function postNewContactPhoneNumber() {
 };
 
 async function mobilePostNewContactPhoneNumber() {
-    const newContactObj = await handleNewContactInput();
+    const newContactObj = await handleMobileNewContactInput();
 
     const user_id = newContactObj.userId;
     const contact_id = newContactObj.contactId;
@@ -16275,7 +16275,7 @@ async function mobilePostNewContactPhoneNumber() {
 };
 
 async function postNewContactAddress() {
-    const newContactObj = await handleMobileNewContactInput();
+    const newContactObj = await handleNewContactInput();
 
     const user_id = newContactObj.userId;
     const contact_id = newContactObj.contactId;
@@ -16301,7 +16301,7 @@ async function postNewContactAddress() {
 };
 
 async function mobilePostNewContactAddress() {
-    const newContactObj = await handleNewContactInput();
+    const newContactObj = await handleMobileNewContactInput();
 
     const user_id = newContactObj.userId;
     const contact_id = newContactObj.contactId;
@@ -16745,7 +16745,7 @@ async function deleteContactAddresses() {
 };
 
 async function postNewContactWebsite() {
-    const newContactObj = await handleMobileNewContactInput();
+    const newContactObj = await handleNewContactInput();
     console.log(newContactObj)
 
     const user_id = newContactObj.userId;
@@ -16772,7 +16772,7 @@ async function postNewContactWebsite() {
 };
 
 async function mobilePostNewContactWebsite() {
-    const newContactObj = await handleNewContactInput();
+    const newContactObj = await handleMobileNewContactInput();
     console.log(newContactObj)
 
     const user_id = newContactObj.userId;
