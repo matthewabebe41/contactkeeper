@@ -12677,95 +12677,6 @@ async function renderCreateGroupsContent() {
     createGroupButton.addEventListener("click", postNewUserGroup)
 };
 
-async function renderMobileCreateGroupsContent() {
-    const groupsSelectionList = document.querySelector("#mobile-groups-selection-list");
-    const groupsSelectionListChildren = groupsSelectionList.children;
-    const groupsSelectionListArr = Array.from(groupsSelectionListChildren);
-    // console.log(groupsSelectionListArr)
-
-    groupsSelectionListArr.forEach(item => {
-        item.addEventListener("mouseover", function() {
-            item.style.backgroundColor = "lightgreen"
-        });
-
-        item.addEventListener("mouseout", function() {
-            if (!item.classList.contains("active"))
-            item.style.backgroundColor = "ghostwhite"
-        });
-
-        item.addEventListener("click", function(event) {
-        const clickedItem = event.target
-    
-        const customGroupInputContainer = document.querySelector("#mobile-custom-group-input-container");
-        customGroupInputContainer.classList.remove("active");
-        customGroupInputContainer.classList.add("inactive");
-        customGroupInputContainer.style.backgroundColor = "ghostwhite"
-
-        groupsSelectionListArr.forEach(item => {
-            const itemInputElement = item.children[1]
-            console.log(itemInputElement)
-            if (item !== event.target && itemInputElement !== event.target) {
-                item.classList.remove("active");
-                item.classList.add("inactive")
-                item.style.backgroundColor = "ghostwhite"
-                itemInputElement.checked = false
-            }
-            if (itemInputElement.checked === true) {
-                item.classList.remove("inactive");
-                item.classList.add("active")
-                item.style.backgroundColor = "lightgreen"
-            }
-        })
-
-        const clickedInputElement = clickedItem.children[1];
-        // console.log(clickedInputElement)
-
-        if (clickedItem.classList.contains("inactive")) {
-                clickedItem.classList.remove("inactive")
-                clickedItem.classList.add("active")
-                clickedItem.style.backgroundColor = "lightgreen"
-                clickedInputElement.checked = true
-            } else if(clickedItem.classList.contains("active")) {
-                clickedItem.classList.remove("active")
-                clickedItem.classList.add("inactive")
-                clickedItem.style.backgroundColor = "ghostwhite"
-                clickedInputElement.checked = false
-            }
-        })
-    });
-
-    const customGroupInputContainer = document.querySelector("#mobile-custom-group-input-container");
-    const customGroupInputElement = document.querySelector("#mobile-custom-group-input-element");
-    customGroupInputElement.addEventListener("focus", function() {
-        customGroupInputContainer.classList.remove("inactive")
-        customGroupInputContainer.classList.add("active")
-        customGroupInputContainer.style.backgroundColor = "lightgreen";
-    });
-    customGroupInputElement.addEventListener("blur", function(event) {
-        const createGroupButton = document.querySelector("#mobile-create-group-button")
-        if (event.relatedTarget !== createGroupButton) {
-            customGroupInputContainer.classList.remove("active")
-            customGroupInputContainer.classList.add("inactive")
-            customGroupInputContainer.style.backgroundColor = "ghostwhite";
-        }
-    })
-
-    const createGroupButton = document.querySelector("#mobile-create-group-button")
-    document.addEventListener("click", function(event) {
-        console.log(event.target.tagName)
-        if (event.target.tagName !== "DIV" && event.target.classList.contains("mobileGroupNameInput") === false && event.target !== createGroupButton) {
-            groupsSelectionListArr.forEach(item => {
-                item.classList.remove("active");
-                item.classList.add("inactive")
-                item.style.backgroundColor = "ghostwhite"
-                item.children[1].checked = false;
-            })
-        };
-    });
-
-    createGroupButton.addEventListener("click", mobilePostNewUserGroup)
-}
-
 async function handleCreateGroupInput() {
     const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
@@ -12852,6 +12763,97 @@ async function handleCreateGroupInput() {
     return newGroupObject;
 };
 
+async function renderMobileCreateGroupsContent() {
+    const groupsSelectionList = document.querySelector("#mobile-groups-selection-list");
+    const groupsSelectionListChildren = groupsSelectionList.children;
+    const groupsSelectionListArr = Array.from(groupsSelectionListChildren);
+    // console.log(groupsSelectionListArr)
+
+    groupsSelectionListArr.forEach(item => {
+        item.addEventListener("mouseover", function() {
+            item.style.backgroundColor = "lightgreen"
+        });
+
+        item.addEventListener("mouseout", function() {
+            if (!item.classList.contains("active"))
+            item.style.backgroundColor = "ghostwhite"
+        });
+
+        item.addEventListener("click", function(event) {
+        const clickedItem = event.target
+    
+        const customGroupInputContainer = document.querySelector("#mobile-custom-group-input-container");
+        customGroupInputContainer.classList.remove("active");
+        customGroupInputContainer.classList.add("inactive");
+        customGroupInputContainer.style.backgroundColor = "ghostwhite"
+
+        groupsSelectionListArr.forEach(item => {
+            const itemInputElement = item.children[1]
+            console.log(itemInputElement)
+            if (item !== event.target && itemInputElement !== event.target) {
+                item.classList.remove("active");
+                item.classList.add("inactive")
+                item.style.backgroundColor = "ghostwhite"
+                itemInputElement.checked = false
+            }
+            if (itemInputElement.checked === true) {
+                item.classList.remove("inactive");
+                item.classList.add("active")
+                item.style.backgroundColor = "lightgreen"
+            }
+        })
+
+        const clickedInputElement = clickedItem.children[1];
+        // console.log(clickedInputElement)
+
+        if (clickedItem.classList.contains("inactive")) {
+                clickedItem.classList.remove("inactive")
+                clickedItem.classList.add("active")
+                clickedItem.style.backgroundColor = "lightgreen"
+                clickedInputElement.checked = true
+            } else if(clickedItem.classList.contains("active")) {
+                clickedItem.classList.remove("active")
+                clickedItem.classList.add("inactive")
+                clickedItem.style.backgroundColor = "ghostwhite"
+                clickedInputElement.checked = false
+            }
+        })
+    });
+    // code above is correct
+
+    const customGroupInputContainer = document.querySelector("#mobile-custom-group-input-container");
+    const customGroupInputElement = document.querySelector("#mobile-custom-group-input-element");
+    customGroupInputElement.addEventListener("focus", function() {
+        customGroupInputContainer.classList.remove("inactive")
+        customGroupInputContainer.classList.add("active")
+        customGroupInputContainer.style.backgroundColor = "lightgreen";
+    });
+    customGroupInputElement.addEventListener("blur", function(event) {
+        const createGroupButton = document.querySelector("#mobile-create-group-button")
+        if (event.relatedTarget !== createGroupButton) {
+            customGroupInputContainer.classList.remove("active")
+            customGroupInputContainer.classList.add("inactive")
+            customGroupInputElement.value = ""
+            customGroupInputContainer.style.backgroundColor = "ghostwhite";
+        }
+    })
+
+    const createGroupButton = document.querySelector("#mobile-create-group-button")
+    document.addEventListener("click", function(event) {
+        console.log(event.target.tagName)
+        if (event.target.tagName !== "DIV" && event.target.classList.contains("mobileGroupNameInput") === false && event.target !== createGroupButton) {
+            groupsSelectionListArr.forEach(item => {
+                item.classList.remove("active");
+                item.classList.add("inactive")
+                item.style.backgroundColor = "ghostwhite"
+                item.children[1].checked = false;
+            })
+        };
+    });
+
+    createGroupButton.addEventListener("click", mobilePostNewUserGroup)
+}
+
 async function mobileHandleCreateGroupInput() {
     const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
@@ -12862,21 +12864,21 @@ async function mobileHandleCreateGroupInput() {
         }
     }
     const userId = matchingUser.user_id;
-    console.log(userId)
+    // console.log(userId)
 
     const userGroups = await getUserGroups(userId)
 
     const groupsSelectionList = document.querySelector("#mobile-groups-selection-list");
     const groupsSelectionListChildren = groupsSelectionList.children;
     const groupsSelectionListArr = Array.from(groupsSelectionListChildren);
-    console.log(groupsSelectionListArr)
+    // console.log(groupsSelectionListArr)
     const customGroupInputContainer = document.querySelector("#mobile-custom-group-input-container");
     const customGroupInputElement = document.querySelector("#mobile-custom-group-input-element");
 
     // console.log(groupsSelectionListArr)
     let activeElement;
     groupsSelectionListArr.forEach(item => {
-        console.log(item)
+        // console.log(item)
         if (item.classList.contains("active")) {
             activeElement = item;
         }
@@ -12886,8 +12888,8 @@ async function mobileHandleCreateGroupInput() {
         activeElement = customGroupInputElement;
     }
 
-    console.log(activeElement)
-    console.log(userGroups)
+    // console.log(activeElement)
+    // console.log(userGroups)
 
     let groupIdsArr = []
     for (let i = 0; i < userGroups.length; i++) {
@@ -12901,14 +12903,14 @@ async function mobileHandleCreateGroupInput() {
         }
     }
 
-    console.log(maxId)
+    // console.log(maxId)
     if (maxId === -Infinity) {
         maxId = 0
     }
 
     let groupName;
-    console.log(activeElement)
-    console.log(groupName)
+    // console.log(activeElement)
+    // console.log(groupName)
 
     if (activeElement === undefined) {
         alert("Please select a group or enter a custom group name before creating a group.")
@@ -12927,7 +12929,7 @@ async function mobileHandleCreateGroupInput() {
         groupName: groupName
     };
 
-    console.log(newGroupObject)
+    // console.log(newGroupObject)
     if (newGroupObject.groupName === '') {
         alert("Please select a group or enter a custom group name before creating a group.")
         return
@@ -13584,9 +13586,9 @@ const allUsers = await getAllUsers();
     const newContactAddPhotoSaveButton = document.querySelector("#new-contact-add-photo-insert-button");
     newContactAddPhotoSaveButton.addEventListener("click", function() {
         // newContactAddPhotoInputContainerElement.style.display = "none";
-        newContactAddPhotoButton.innerHTML = "Change Photo"
         if (newContactAddPhotoInputElement.files[0] !== undefined) {
             handleNewContactImage();
+            newContactAddPhotoButton.innerHTML = "Change Photo"
         } else {
             alert("Please choose an image before inserting.")
         }
