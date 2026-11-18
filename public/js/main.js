@@ -12254,8 +12254,9 @@ async function renderGroupContactsListContent() {
 
 
 async function renderMobileGroupContactsListContent() {
-   const allUsers = await getAllUsers();
+    const allUsers = await getAllUsers();
     const sessionId = sessionStorage.getItem("user");
+    const currentUrl = window.location.href.toString();
     let matchingUser;
     for (let i = 0; i < allUsers.length; i++) {
         if (allUsers[i].session_id === sessionId) {
@@ -12264,8 +12265,24 @@ async function renderMobileGroupContactsListContent() {
     }
     const userId = matchingUser.user_id;
     const user = await getUser(userId);
+    //code above is correct
 
-    const currentUrl = window.location.href.toString();
+    const userContacts = await getUserContacts(userId); //correct
+    // const allUserContacts = await getUserContacts(userId); //fine
+    for (let i = 0; i < userContacts.length; i++) { //correct
+        const contactId = userContacts[i].contact_id //correct
+        const contactImage = await getAContactImage(userId, contactId); //correct
+        const contactEmailAddresses = await getAContactEmailAddresses(userId, contactId) //correct
+        const contactEmailObj = contactEmailAddresses[0]; //correct
+        let contactEmail; //correct
+        if (contactEmailObj !== undefined) { //correct
+            contactEmail = contactEmailObj.emailaddress; //correct
+        } //correct
+        // console.log(contactEmail)
+        const contactImageStr = `data:${contactImage.contentType};base64,${contactImage.image}` //correct
+        userContacts[i]["email"] = contactEmail; //correct
+        userContacts[i]["imageString"] = contactImageStr; //correct
+    }; //correct
 
     const userGroupContacts = await getUserContactGroupings(userId);
     const groupIdUrl = currentUrl.split("group_")[1];
@@ -12280,156 +12297,162 @@ async function renderMobileGroupContactsListContent() {
         }
     };
 
-    const userImage = await getAUserImage(userId);
-    const imageString = `data:${userImage.contentType};base64,${userImage.image}`
-    const groupsContactsListUserImage = document.querySelector("#mobile-group-contacts-list-user-image");
-    groupsContactsListUserImage.setAttribute("src", imageString);
-    groupsContactsListUserImage.style.borderRadius = "50%";
-    
-    // const userId = matchingUser.user_id;
-    // const userContacts = await getUserContacts(userId);
-
-    // const groupContactsListListUserImage = document.querySelector("#mobile-group-contacts-list-user-image");
-    // if (user.user_image !== null && user.user_image !== './images/user-5-svgrepo-com.svg') {
-    //     groupContactsListListUserImage.setAttribute("src", user.user_image);
-    //     groupContactsListListUserImage.style.borderRadius = "50%"
-    // }
-
-    // const favoritesHeaderUserName = document.querySelector("#mobile-favorites-header-user-name");
-    // favoritesHeaderUserName.innerHTML = `${user.firstname} ${user.lastname}`;
-    // const favaoritesHeaderUserEmail = document.querySelector("#mobile-favorites-header-user-email");
-    // favaoritesHeaderUserEmail.innerHTML = user.emailaddress;
-
-    const mobileGroupContactsListUserNameElement = document.querySelector("#mobile-group-contacts-list-user-name");
-    const mobileGroupContactsListUserEmailAddressElement = document.querySelector("#mobile-group-contacts-list-user-email")
-    mobileGroupContactsListUserNameElement.innerHTML = `${user.firstname} ${user.lastname}`;
-    mobileGroupContactsListUserNameElement.style.fontFamily = "Arial";
-    // favoriteContactsUserNameElement.style.fontSize = "xx-large"
-    // favoriteContactsUserEmailAddressElement.innerHTML = `${user.emailaddress}`
-
-       requestAnimationFrame(() => {
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-        const mobileGroupContactsListHeaderElement = document.querySelector("#mobile-group-contacts-list-header-user-container");
-        const mobileGroupContactsListHeaderElementHeight = mobileGroupContactsListHeaderElement.clientHeight;
-        const mobileGroupContactsListImageCircleElement = document.querySelector("#mobile-group-contacts-list-header-user-image-circle");
-        const mobileGroupContactsListSquareElement = document.querySelector("#mobile-group-contacts-list-header-user-favorite-square")
-        const derivedHeight = screenHeight * 13.6160714;
-        const newWidth = (80 / 100) * derivedHeight
-        const newWidthStr = newWidth.toString() + "px"
-        console.log(screenHeight)
-        mobileGroupContactsListImageCircleElement.style.width = newWidthStr
-        mobileGroupContactsListSquareElement.style.width = newWidthStr
-    });
-
-    const allUserContacts = await getUserContacts(userId);
-
     const finalGroupContacts = []
     groupContacts.forEach(contact => {
         // console.log(allUserContacts)
-        for (let i = 0; i < allUserContacts.length; i++) {
-            if (allUserContacts[i].contact_id === contact.contact_id) {
-                finalGroupContacts.push(allUserContacts[i])
-            }
-        }
-    })
+        for (let i = 0; i < userContacts.length; i++) {
+            if (userContacts[i].contact_id === contact.contact_id) {
+                finalGroupContacts.push(userContacts[i])
+            };
+        };
+    });
 
-    console.log(finalGroupContacts)
+    // console.log(finalGroupContacts)
 
-    finalGroupContacts.sort(function(a, b) {
-        if (a.firstname < b.firstname) {
-            return -1;
-        }
-        if (a.firstname < b.firstname) {
-            return 1;
-        }
-        
-        var aFirstChar = a.firstname.charAt(0);
-        var bFirstChar = b.firstname.charAt(0);
-        if (aFirstChar > bFirstChar) {
-          return 1;
-        } else if (aFirstChar < bFirstChar) {
-          return -1;
-        } else {
-          var aLastChar = a.lastname.charAt(0);
-          var bLastChar = b.lastname.charAt(0);
-          if (aLastChar === "") {
-            aLastChar = "z"
-          }
-          if (bLastChar === "") {
-            bLastChar = "z"
-          }
-          if (aLastChar > bLastChar) {
-            return 1;
-          } else if (aLastChar < bLastChar) {
-            return -1;
-          } else {
-            return 0;
-          }    
-        }
-      });
+    const userImage = await getAUserImage(userId);
+    const imageString = `data:${userImage.contentType};base64,${userImage.image}`
+    // const groupsContactsListUserImage = document.querySelector("#mobile-group-contacts-list-user-image");
+    // groupsContactsListUserImage.setAttribute("src", imageString);
+    // groupsContactsListUserImage.style.borderRadius = "50%";
 
-    const groupContactsListContainer = document.createElement("div");
-    const groupContactsListContactsHeaderContainer = document.createElement("div");
-    groupContactsListContactsHeaderContainer.style.display = "flex";
-    // groupContactsListContactsHeaderContainer.style.justifyContent = "space-between"
-    groupContactsListContactsHeaderContainer.style.alignItems = "center"
-    // groupContactsListContactsHeaderContainer.style.width = "25%";
-    groupContactsListContactsHeaderContainer.style.backgroundColor = "ghostwhite"
-    // groupContactsListContactsHeaderContainer.style.marginBottom = "5px"
-    groupContactsListContactsHeaderContainer.style.padding = "5px"
-    const myGroupContactsHeaderElement = document.createElement("h2");
-    myGroupContactsHeaderElement.innerHTML = `${group.groupname} Contacts`;
-    // myGroupContactsHeaderElement.style.width = "140px"
-    myGroupContactsHeaderElement.style.margin = "0"
-    myGroupContactsHeaderElement.style.marginLeft = "5px"
-    // myGroupContactsHeaderElement.style.marginRight = "10px"
-    const numberOfGroupContactsElement = document.createElement("h2");
-    numberOfGroupContactsElement.innerHTML = finalGroupContacts.length;
-    numberOfGroupContactsElement.style.display = "inline-flex";
-    numberOfGroupContactsElement.style.justifyContent = "center";
-    numberOfGroupContactsElement.style.alignItems = "center";
-    numberOfGroupContactsElement.style.width = "15px";
-    numberOfGroupContactsElement.style.height = "15px";
-    numberOfGroupContactsElement.style.backgroundColor = "navy";
-    numberOfGroupContactsElement.style.color = "white"
-    numberOfGroupContactsElement.style.padding = "10px";
-    numberOfGroupContactsElement.style.borderRadius = "50%";
-    numberOfGroupContactsElement.style.margin = "0"
-    groupContactsListContainer.style.position = "absolute";
-    groupContactsListContainer.style.top = "23.2%"
-    // groupContactsListContainer.style.left = "31.5%"
+    //affirm above code is correct by perfect consistency between each contacts grouping and all group lists
+
+    const mobileGroupContactsListHeaderText = document.querySelector("#mobile-group-contacts-list-header-text");
+    mobileGroupContactsListHeaderText.innerHTML = group.groupname;
+    const groupsContactsListUserHeaderNameContainer = document.querySelector("#mobile-groups-contacts-list-user-header-name-container");//correct
+    // groupContactsUserHeaderNameContainer.style.margin = "0px 0px 0px 10px"//correct
+    // const groupsContactsListHeaderUserNameElement = document.querySelector("#mobile-groups-contacts-list-header-user-name");//correct
+    // groupsContactsListHeaderUserNameElement.style.margin = "0px";//correct
+    // const groupsContactsListHeaderUserEmailAddressElement = document.querySelector("#mobile-groups-contacts-list-header-user-email");//correct
+    // groupsContactsHeaderUserEmailAddressElement.style.margin = "0px 0px 16px 0px";//correct
+    
+    // const groupsContactsListUserNameElement = document.querySelector("#mobile-groups-contacts-list-user-name");//correct
+    // groupsContactsListUserNameElement.style.fontFamily = "Arial";//correct
+    // groupsContactsListUserNameElement.innerHTML = `${group.groupname} Contacts`
+    // contactsUserEmailAddressElement.innerHTML = `${user.emailaddress}`//correct
+
+    // groupsContactsListHeaderUserNameElement.innerHTML = `${matchingUser.firstname} ${matchingUser.lastname}`;//correct
+    // groupsContactsListHeaderUserEmailAddressElement.innerHTML = matchingUser.emailaddress;//correct
+    // groupsContactsListUserNameElement.style.margin = "0px";//unsure
+    // const groupsContactsListUserEmailAddressElement = document.querySelector("#groups-contacts-list-user-email");
+    // groupsContactsListUserEmailAddressElement.style.margin = "0px";
+
+    // groupsContactsListUserNameElement.innerHTML = `${group.groupname} Contacts`;
+    // contactsUserNameElement.style.fontSize = "xx-large"
+
+    const groupContactsListContainer = document.createElement("div");//correct
+    groupContactsListContainer.setAttribute("id", "mobile-group-contacts-list-container");//correct
+    groupContactsListContainer.style.visibility = "hidden";//correct
+
+    // const groupContactLabelElement = document.querySelector("#my-group-contacts-label");
+    // groupContactLabelElement.innerHTML = "Contacts";
+    const numberOfGroupContactsElement = document.querySelector("#mobile-my-group-contacts-number");//correct
+    numberOfGroupContactsElement.innerHTML = finalGroupContacts.length;//correct
+
+    groupContactsListContainer.style.position = "absolute";//correct
+    groupContactsListContainer.style.top = "38.5%";//correct
+    // groupContactsListContainer.style.left = "31.5%";//correct
+    groupContactsListContainer.style.width = "100%";//correct
+    const groupContactsList = document.createElement("ul");//correct
+    groupContactsList.setAttribute("id", "group-contacts-list");//correct
+    groupContactsList.style.listStyle = "none";//correct
+    groupContactsList.style.padding = "0";//correct
+    groupContactsList.style.margin = "0";//correct
+
+     //do this for mobile list situations
+    const topBar = document.querySelector("#topbar")
+    const mobileContactsListUserHeaderContainer = document.querySelector("#mobile-group-contacts-list-header-user-container");
+    const mobileContactsListSearchElementsContainer = document.querySelector('#mobile-group-contacts-list-search-container');
+    const topBarHeight = topBar.getBoundingClientRect().height;
+    const mobileContactsListUserHeaderContainerHeight = mobileContactsListUserHeaderContainer.getBoundingClientRect().height;
+    const mobileContactsListSearchElementsContainerHeight = mobileContactsListSearchElementsContainer.getBoundingClientRect().height;
+    const headerBufferHeight = `${topBarHeight}px`
+    const searchBufferHeight = `${topBarHeight + mobileContactsListUserHeaderContainerHeight}px`
+    const listBufferHeight = `${topBarHeight + mobileContactsListUserHeaderContainerHeight + mobileContactsListSearchElementsContainerHeight}px`;
+
+    console.log(searchBufferHeight)
+    console.log(mobileContactsListSearchElementsContainerHeight)
+
+    // mobileContactsListUserHeaderContainer.style.top = headerBufferHeight;
+    mobileContactsListSearchElementsContainer.style.top = searchBufferHeight;
+    // const contactsListContainer = document.createElement("div"); //correct
+    // groupContactsListContainer.setAttribute("id", "my-mobile-group-contacts-list-container"); //correct
+    groupContactsListContainer.style.visibility = "hidden"; //correct ... hiding list initially
+    // const numberOfGroupContactsElement = document.querySelector("#mobile-my-group-contacts-number"); //correct
+    // numberOfGroupContactsElement.innerHTML = userContacts.length; //correct
+    groupContactsListContainer.style.position = "absolute"; //correct
+    groupContactsListContainer.style.top = listBufferHeight //correct
+    // groupContactsListContainer.style.left'
     groupContactsListContainer.style.width = "100%"
-    const groupContactsList = document.createElement("ul");
+    // const contactsList = document.createElement("ul");
+    groupContactsList.setAttribute("id", "group-contacts-list");
     groupContactsList.style.position = "relative";
     groupContactsList.style.listStyle = "none";
     groupContactsList.style.padding = "0"
     groupContactsList.style.margin = "0px 0px 2px 0px"
-    finalGroupContacts.forEach(async (contact) => {
-        const groupContactListItem = document.createElement("div");
-        groupContactListItem.style.display = "flex";
-        groupContactListItem.style.flexDirection = "row";
-        groupContactListItem.style.justifyContent = "space-between";
-        groupContactListItem.style.height = "80px"
-        groupContactListItem.style.borderTop = "1px solid gray";
-        groupContactListItem.style.borderBottom = "1px solid gray";
-        groupContactListItem.style.backgroundColor = "ghostwhite"
-        groupContactListItem.style.marginTop = "1px";
-        // groupContactListItem.style.marginBottom = "2px";
-        groupContactListItem.setAttribute("contactId", contact.contact_id)
 
-        groupContactListItem.addEventListener("mouseover", function() {
-            groupContactListItem.style.backgroundColor = "lightgreen";
+    // finalGroupContacts.sort(function(a, b) {
+    //     if (a.firstname < b.firstname) {
+    //         return -1;
+    //     }
+    //     if (a.firstname < b.firstname) {
+    //         return 1;
+    //     }
+        
+    //     var aFirstChar = a.firstname.charAt(0);
+    //     var bFirstChar = b.firstname.charAt(0);
+    //     if (aFirstChar > bFirstChar) {
+    //       return 1;
+    //     } else if (aFirstChar < bFirstChar) {
+    //       return -1;
+    //     } else {
+    //       var aLastChar = a.lastname.charAt(0);
+    //       var bLastChar = b.lastname.charAt(0);
+    //       if (aLastChar === "") {
+    //         aLastChar = "z"
+    //       }
+    //       if (bLastChar === "") {
+    //         bLastChar = "z"
+    //       }
+    //       if (aLastChar > bLastChar) {
+    //         return 1;
+    //       } else if (aLastChar < bLastChar) {
+    //         return -1;
+    //       } else {
+    //         return 0;
+    //       }    
+    //     }
+    //   });
+
+    finalGroupContacts.sort(function(a, b) { //correct
+        const nameA = `${a.firstname} ${a.lastname}`; //correct
+        const nameB = `${b.firstname} ${b.lastname}`; //correct
+        return nameA.localeCompare(nameB); //correct
+    }); //correct
+
+        finalGroupContacts.forEach(contact => { //correct
+        const groupContactListItem = document.createElement("div"); //correct
+        groupContactListItem.style.display = "flex"; //correct
+        groupContactListItem.style.flexDirection = "row"; //correct
+        groupContactListItem.style.justifyContent = "space-between";
+        groupContactListItem.style.height = "80px"; //correct
+        groupContactListItem.style.borderTop = "1px solid grey"; //correct
+        groupContactListItem.style.borderBottom = "1px solid grey"; //correct
+        groupContactListItem.style.backgroundColor = "ghostwhite"; //correct
+        // groupContactListItem.style.marginTop = "1px"; //correct
+        // groupContactListItem.style.marginBottom = "1px"; //correct
+        groupContactListItem.setAttribute("contactId", contact.contact_id) //correct
+
+        //code through click event is correct
+        groupContactListItem.addEventListener("mouseover", function() { //correct
+            groupContactListItem.style.backgroundColor = "lightgreen"; //correct
         });
 
-        groupContactListItem.addEventListener("mouseout", function() {
-            groupContactListItem.style.backgroundColor = "ghostwhite";
+        groupContactListItem.addEventListener("mouseout", function() { //correct
+            groupContactListItem.style.backgroundColor = "#fcfcff"; //correct
         });
 
         groupContactListItem.addEventListener("click", function(event) {
-            
-            if (!event.target.classList.contains("contact-favorite-icon")) {
-                // groupContactListItem.style.backgroundColor = "green";
                 
                 function saveDataToURL(url, data) {
                     const urlObject = new URL(url);
@@ -12455,139 +12478,372 @@ async function renderMobileGroupContactsListContent() {
                 console.log(newURL);
                 // Expected output: "https://example.com/page?name=John+Doe&age=30&city=New+York"
                 window.location.href = newURL
-            }
-        })
+        });
+
 
         const groupContactListItemImageContainer = document.createElement("div");
         groupContactListItemImageContainer.style.display = "flex";
         groupContactListItemImageContainer.style.alignItems = "center";
-        groupContactListItemImageContainer.style.width = "20%"
-        groupContactListItemImageContainer.style.padding = "5px"
+        // groupContactListItemImageContainer.style.padding = "10px"; // wait on this
+        groupContactListItemImageContainer.style.width = "20%" //doesn't have a width
+        groupContactListItemImageContainer.style.padding = "5px" //current padding
         const groupContactListItemImage = document.createElement("img");
-        groupContactListItemImage.style.width = "60px";
-        groupContactListItemImage.style.height = "60px";
+        groupContactListItemImage.style.width = "60px"; //57px
+        groupContactListItemImage.style.height = "60px"; //57px
         groupContactListItemImage.style.border = "0.5px solid grey";
         groupContactListItemImage.style.borderRadius = "50%";
         groupContactListItemImage.style.backgroundColor = "gainsboro"
+        groupContactListItemImage.style.border = "1px solid black"
         groupContactListItemImage.style.objectFit = "cover";
-
+        groupContactListItemImage.setAttribute("src", contact.imageString);
         const contact_id = contact.contact_id;
-        const contactImage = await getAContactImage(userId, contact_id)
-        const imageString = `data:${contactImage.contentType};base64,${contactImage.image}`
-        groupContactListItemImage.setAttribute("src", imageString);
-        groupContactListItemImage.style.borderRadius = "50%";
-
         // contactListItem.innerHTML = `${contact.firstname} ${contact.lastname}`;
         const groupContactListNameContainer = document.createElement("div");
+        groupContactListNameContainer.style.position = "relative";
         groupContactListNameContainer.style.display = "flex";
         groupContactListNameContainer.style.flexDirection = "column"
-        groupContactListNameContainer.style.justifyContent = "center";
+        groupContactListNameContainer.style.justifyContent = "space-around";
         groupContactListNameContainer.style.alignItems = "center";
-        groupContactListNameContainer.style.width = "54.5%"
-        const groupContactListNameElement = document.createElement("h3");
-        groupContactListNameElement.style.margin = "0";
-        groupContactListNameElement.innerHTML = `${contact.firstname} ${contact.lastname}`;
-        const groupContactListEmailElement = document.createElement("p");
-        groupContactListEmailElement.style.fontStyle = "italic"
-        groupContactListEmailElement.style.margin = "0"
+        groupContactListNameContainer.style.minWidth = "0";
+        groupContactListNameContainer.style.width = "100%";
+        const groupContactListNameElementContainer = document.createElement("div"); //correct
+        groupContactListNameElementContainer.style.display = "flex"; //correct
+        groupContactListNameElementContainer.style.justifyContent = "center"; //correct
+        groupContactListNameElementContainer.style.minWidth = "0"; //correct
+        groupContactListNameElementContainer.style.width = "100%"; //correct
+        const groupContactListNameElement = document.createElement("h3"); //correct
+        groupContactListNameElement.style.whiteSpace = "nowrap"; //correct
+        groupContactListNameElement.style.overflow = "hidden"; //correct
+        groupContactListNameElement.style.textOverflow = "ellipsis"; //correct
+        groupContactListNameElement.style.cursor = "default"; //correct
+        groupContactListNameElement.style.margin = "0"; //correct
+        groupContactListNameElement.innerHTML = `${contact.firstname} ${contact.lastname}`; //correct
+        const groupContactListEmailElementContainer = document.createElement("div"); //correct
+        groupContactListEmailElementContainer.style.display = "flex"; //correct
+        groupContactListEmailElementContainer.style.justifyContent = "center"; //correct
+        groupContactListEmailElementContainer.style.minWidth = "0"; //correct
+        groupContactListEmailElementContainer.style.width = "100%"; //correct
+        const groupContactListEmailElement = document.createElement("p"); //correct
+        groupContactListEmailElement.style.fontStyle = "italic"; //correct
+        groupContactListEmailElement.style.fontSize = "small"; //correct
+        groupContactListEmailElement.style.whiteSpace = "nowrap"; //correct
+        groupContactListEmailElement.style.overflow = "hidden"; //correct
+        groupContactListEmailElement.style.textOverflow = "ellipsis"; //correct
+        groupContactListEmailElement.style.cursor = "default"; //correct
+        groupContactListEmailElement.style.margin = "0"; //correct
+        const contactEmail = contact.email; //correct
+        groupContactListEmailElement.innerHTML = contactEmail; //correct
+        if (groupContactListEmailElement.innerHTML === "undefined") { //correct
+            groupContactListEmailElement.style.visibility = "hidden"; //correct
+        }; //correct       
+        const groupContactListOrganizationAndRoleElementContainer = document.createElement("div"); //correct
+        groupContactListOrganizationAndRoleElementContainer.style.display = "flex"; //correct
+        groupContactListOrganizationAndRoleElementContainer.style.justifyContent = "center"; //correct
+        groupContactListOrganizationAndRoleElementContainer.style.minWidth = "0"; //correct
+        groupContactListOrganizationAndRoleElementContainer.style.width = "100%"; //correct
+        const groupContactListOrganizationAndRoleElement = document.createElement("p"); //correct
+        groupContactListOrganizationAndRoleElement.style.fontWeight = "bolder"; //correct
+        groupContactListOrganizationAndRoleElement.style.fontSize = "smaller"; //correct
+        groupContactListOrganizationAndRoleElement.style.whiteSpace = "nowrap"; //correct
+        groupContactListOrganizationAndRoleElement.style.overflow = "hidden"; //correct
+        groupContactListOrganizationAndRoleElement.style.textOverflow = "ellipsis"; //correct
+        groupContactListOrganizationAndRoleElement.style.cursor = "default"; //correct
+        groupContactListOrganizationAndRoleElement.style.margin = "0"; //correct
+
+        if (contact.organization !== null && contact.organization !== "" && contact.organization_role !== null && contact.organization_role !== "") { //correct
+            groupContactListOrganizationAndRoleElement.innerHTML = `${contact.organization} || ${contact.organization_role}` //correct
+        } else if (contact.organization !== null && contact.organization !== "" || contact.organization_role === null && contact.organization_role === "") { //correct
+            groupContactListOrganizationAndRoleElement.innerHTML = `${contact.organization}` //correct
+        } else if (contact.organization === null && contact.organization === "" || contact.organization_role !== null && contact.organization_role !== "") { //correct
+            groupContactListOrganizationAndRoleElement.innerHTML = `${contact.organization_role}` //correct
+        } else { //correct
+            groupContactListOrganizationAndRoleElement.innerHTML = "text"; //correct
+            groupContactListOrganizationAndRoleElement.style.visibility = "hidden"; //correct
+        } //correct
+
+        const contactListFavoritesStarIconContainer = document.createElement("div"); //correct
+        contactListFavoritesStarIconContainer.style.display = "flex"; //correct
+        contactListFavoritesStarIconContainer.style.justifyContent = "center"; //correct
+        contactListFavoritesStarIconContainer.style.alignItems = "center"; //correct
+        contactListFavoritesStarIconContainer.style.padding = "10px"; //correct
+        const contactListFavoriteStarImg = document.createElement("img"); //correct
+        contactListFavoriteStarImg.classList.add("contact-favorite-icon"); //correct
+        contactListFavoriteStarImg.style.width = "60px"; //correct
         
-        console.log(contact)
-        if (contact.emailaddress !== null && contact.emailaddress !== "") {
-            groupContactListEmailElement.innerHTML = contact.emailaddress;
-        } else {
-            groupContactListEmailElement.innerHTML = "text";
-            groupContactListEmailElement.style.visibility = "hidden";
-        }
-
-        console.log(contact)
-
-        const groupContactListOrganizationAndRoleElement = document.createElement("p");
-        groupContactListOrganizationAndRoleElement.style.fontWeight = "bolder";
-        groupContactListOrganizationAndRoleElement.style.margin = "0";
-    
-        if (contact.organization !== null && contact.organization !== "" && contact.organization_role !== null && contact.organization_role !== "") {
-            groupContactListOrganizationAndRoleElement.innerHTML = `${contact.organization} || ${contact.organization_role}`
-        } else if (contact.organization !== null && contact.organization !== "" || contact.organization_role === null && contact.organization_role === "") {
-            groupContactListOrganizationAndRoleElement.innerHTML = `${contact.organization}`
-        } else if (contact.organization === null && contact.organization === "" || contact.organization_role !== null && contact.organization_role !== "") {
-            groupContactListOrganizationAndRoleElement.innerHTML = `${contact.organization_role}`
-        } else {
-            groupContactListOrganizationAndRoleElement.innerHTML = "text"
-            groupContactListOrganizationAndRoleElement.style.visibility = "hidden"
-        }
-
-    requestAnimationFrame(() => {     
-    const ellipsis = "..."
-    const groupContactListItemNameElementText = groupContactListNameElement.textContent;
-    const groupContactListItemNameElementHeight = groupContactListNameElement.clientHeight;
-    // console.log(contactListNameElementHeight)
-    const groupContactListNameTextSlice = groupContactListItemNameElementText.slice(0, 12) + ellipsis;
-    if (groupContactListItemNameElementHeight > 22) {
-        groupContactListNameElement.innerHTML = groupContactListNameTextSlice
-    }
-
-    const groupContactListNameContainerWidth = groupContactListNameContainer.clientWidth;
-    const contactEmailAddressText = contact.emailaddress;
-    const groupContactEmailAddressElementWidth = groupContactListEmailElement.clientWidth;
-    let groupContactEmailAddressTextSlice = contactEmailAddressText.slice(0, 25) + ellipsis
-    if (groupContactEmailAddressElementWidth > groupContactListNameContainerWidth) {
-        groupContactListEmailElement.innerHTML = groupContactEmailAddressTextSlice
-    } else {
-        groupContactListEmailElement.innerHTML = contact.emailaddress
-    }
-
-    const elOrg = groupContactListOrganizationAndRoleElement;
-    const elOrgHeight = elOrg.clientHeight;
-    const elOrgText = elOrg.innerText;
-    const elOrgTextSlice = elOrgText.slice(0, 22) + ellipsis
-    if (elOrgHeight > 22) {
-        elOrg.innerHTML = elOrgTextSlice
-    }
-});
-    
-        const groupContactListFavoritesStarIconContainer = document.createElement("div");
-        groupContactListFavoritesStarIconContainer.style.display = "flex";
-        groupContactListFavoritesStarIconContainer.style.justifyContent = "flex-end";
-        groupContactListFavoritesStarIconContainer.style.alignItems = "center"
-        groupContactListFavoritesStarIconContainer.style.padding = "5px"
-        groupContactListFavoritesStarIconContainer.style.width = "20%";
-        const groupContactListFavoriteStarImg = document.createElement("img");
-        groupContactListFavoriteStarImg.classList.add("contact-favorite-icon")
-        groupContactListFavoriteStarImg.style.width = "60px"
-
-        // console.log(contact.favorite)
-
-        // contactListFavoriteStarImg.addEventListener("click", function(event) {
-        //     // event.preventDefault()
-        //     updateContactFavorite()
-        // }, false)
+        contactListFavoriteStarImg.setAttribute("src", "./images/star-gold-svgrepo-com.svg"); //correct
+        if (contact.favorite === null || contact.favorite === false) { //correct
+            contactListFavoriteStarImg.style.visibility = "hidden"; //correct
+        } else { //correct
+            contactListFavoriteStarImg.style.display = "block"; //correct
+        } //correct
         
-        groupContactListFavoriteStarImg.setAttribute("src", "./images/star-gold-svgrepo-com.svg");
-        if (contact.favorite === null || contact.favorite === false) {
-            groupContactListFavoriteStarImg.style.display = "none"
-        } else {
-            groupContactListFavoriteStarImg.style.display = "block"
-        }
-        
-        groupContactListItemImageContainer.appendChild(groupContactListItemImage);
-        groupContactListNameContainer.appendChild(groupContactListNameElement);
-        groupContactListNameContainer.appendChild(groupContactListEmailElement);
-        groupContactListNameContainer.appendChild(groupContactListOrganizationAndRoleElement);
-        groupContactListItem.appendChild(groupContactListItemImageContainer);
-        groupContactListItem.appendChild(groupContactListNameContainer);
-        groupContactListFavoritesStarIconContainer.appendChild(groupContactListFavoriteStarImg);
-        groupContactListItem.appendChild(groupContactListFavoritesStarIconContainer);
-        groupContactsList.appendChild(groupContactListItem);
+        groupContactListItemImageContainer.appendChild(groupContactListItemImage); //correct
+        groupContactListNameElementContainer.appendChild(groupContactListNameElement); //correct
+        groupContactListEmailElementContainer.appendChild(groupContactListEmailElement); //correct
+        groupContactListOrganizationAndRoleElementContainer.appendChild(groupContactListOrganizationAndRoleElement); //correct
+        groupContactListNameContainer.appendChild(groupContactListNameElementContainer); //correct
+        groupContactListNameContainer.appendChild(groupContactListEmailElementContainer); //correct
+        groupContactListNameContainer.appendChild(groupContactListOrganizationAndRoleElementContainer); //correct
+        groupContactListItem.appendChild(groupContactListItemImageContainer); //correct
+        groupContactListItem.appendChild(groupContactListNameContainer); //correct
+        contactListFavoritesStarIconContainer.appendChild(contactListFavoriteStarImg); //correct
+        groupContactListItem.appendChild(contactListFavoritesStarIconContainer); //correct
+        groupContactsList.appendChild(groupContactListItem); //correct
     });
-    groupContactsListContactsHeaderContainer.append(myGroupContactsHeaderElement)
-    groupContactsListContactsHeaderContainer.appendChild(numberOfGroupContactsElement)
-    groupContactsListContainer.appendChild(groupContactsListContactsHeaderContainer)
-    groupContactsListContainer.appendChild(groupContactsList)
-    document.body.appendChild(groupContactsListContainer)
-}
+    groupContactsListContainer.appendChild(groupContactsList); //correct
+    document.body.appendChild(groupContactsListContainer); //correct
+
+    const searchGroupContactsElement = document.querySelector("#mobile-search-my-group-contacts-input") //correct
+    searchGroupContactsElement.addEventListener("input", myGroupContactsAutocompleteSearch); //correct
+
+        async function myGroupContactsAutocompleteSearch() { //correct
+        const groupContactsList = document.querySelector("#group-contacts-list"); //correct
+        let searchGroupContactsInputValue = searchGroupContactsElement.value.toLowerCase().trimEnd(); //correct
+        let filteredGroupContacts = []; //correct
+
+        finalGroupContacts.filter(function(contact) { //correct
+        let contactFirstName = contact.firstname; //correct
+        let contactLastName = contact.lastname; //correct
+        let contactName = `${contact.firstname} ${contact.lastname}` //correct
+
+        // console.log(searchGroupContactsInputValue.length)
+
+        if (searchGroupContactsInputValue === "") { //correct
+            for (let i = 0; i < finalGroupContacts.length; i++) { //correct
+                filteredGroupContacts.push(finalGroupContacts[i]) //correct
+            }; //correct
+        }; //correct
+
+        // console.log(searchContactsInputValue.length)
+
+        if (searchGroupContactsInputValue === "") {
+            for (let i = 0; i < finalGroupContacts.length; i++) {
+                filteredGroupContacts.push(finalGroupContacts[i])
+            }
+        }
+
+        // if (contactFirstName.toLowerCase().startsWith(searchContactsInputValue)) {
+        //     for (let i = 0; i < finalGroupContacts.length; i++) {
+        //         let matchContactName = `${finalGroupContacts[i].firstname} ${finalGroupContacts[i].lastname}`
+        //         if (contactName.toLowerCase() === matchContactName.toLowerCase()) {
+        //             filteredContacts.push(finalGroupContacts[i])
+        //             // console.log(filteredContacts)
+        //         }
+        //     }
+        // }
+
+        // if (contactLastName.toLowerCase().startsWith(searchContactsInputValue)) {
+        //     for (let i = 0; i < finalGroupContacts.length; i++) {
+        //         let matchContactName = `${finalGroupContacts[i].firstname} ${finalGroupContacts[i].lastname}`
+        //         if (contactName.toLowerCase() === matchContactName.toLowerCase()) {
+        //             filteredContacts.push(finalGroupContacts[i])
+        //             // console.log(filteredContacts)
+        //         }
+        //     }
+        // }
+
+        if (contactName.toLowerCase().startsWith(searchGroupContactsInputValue)) { //correct
+            for (let i = 0; i < finalGroupContacts.length; i++) { //correct
+                let matchContactName = `${finalGroupContacts[i].firstname} ${finalGroupContacts[i].lastname}` //correct
+                if (contactName.toLowerCase() === matchContactName.toLowerCase()) { //correct
+                    filteredGroupContacts.push(finalGroupContacts[i]) //correct
+                    // console.log(filteredContacts)
+                } //correct
+            } //correct
+        } //correct
+    }); //correct
+
+    // console.log(searchContactsInputValue)
+
+    const searchGroupContactsAutocompleteList = document.querySelector("#mobile-group-contacts-autocomplete-list"); //correct
+    searchGroupContactsAutocompleteList.style.listStyle = "none"; //correct
+    searchGroupContactsAutocompleteList.style.margin = "0"; //correct
+    searchGroupContactsAutocompleteList.style.padding = "0"; //correct
+    // const searchGroupContactsAutocompleteList = document.createElement("div");
+    // searchGroupContactsAutocompleteList.setAttribute("id", "my-contacts-autocomplete-list");
+   
+    searchGroupContactsAutocompleteList.innerHTML = ''; //correct
+
+    function removeDuplicates(arr) { //correct
+        return arr.reduce((unique, item) => { //correct
+          if (!unique.includes(item)) { //correct
+            unique.push(item); //correct
+          } //correct
+          return unique; //correct
+        }, []); //correct
+      }; //correct
+
+      const uniqueArray = removeDuplicates(filteredGroupContacts); //correct
+      searchGroupContactsAutocompleteList.style.display = 'block'; //correct
+      groupContactsList.style.display = "none"; //correct
+      let elementsArr = []; //correct
+
+       uniqueArray.forEach(contact => { //correct
+            const groupContactsAutoCompleteListItem = document.createElement("div"); //correct
+            groupContactsAutoCompleteListItem.style.display = "flex"; //correct
+            groupContactsAutoCompleteListItem.style.flexDirection = "row"; //correct
+            groupContactsAutoCompleteListItem.style.justifyContent = "space-between"; //correct
+            groupContactsAutoCompleteListItem.style.height = "80px"; //correct
+            groupContactsAutoCompleteListItem.style.borderTop = "1px solid grey"; //correct
+            groupContactsAutoCompleteListItem.style.borderBottom = "1px solid grey"; //correct
+            groupContactsAutoCompleteListItem.style.backgroundColor = "ghostwhite"; //correct
+            // groupContactsAutoCompleteListItem.style.marginTop = "1px"; //correct
+            // groupContactsAutoCompleteListItem.style.marginBottom = "1px"; //correct
+            groupContactsAutoCompleteListItem.setAttribute("contactId", contact.contact_id) //correct
+
+            groupContactsAutoCompleteListItem.addEventListener("mouseover", function() { //correct
+            groupContactsAutoCompleteListItem.style.backgroundColor = "lightgreen"; //correct
+            }); //correct
+
+            groupContactsAutoCompleteListItem.addEventListener("mouseout", function() { //correct
+            groupContactsAutoCompleteListItem.style.backgroundColor = "ghostwhite"; //correct
+            }); //correct
+
+            groupContactsAutoCompleteListItem.addEventListener("click", function(event) { //correct
+            
+            function saveDataToURL(url, data) { //correct
+                const urlObject = new URL(url); //correct
+                const params = new URLSearchParams(urlObject.search); //correct
+            
+                for (const key in data) { //correct
+                    if (data.hasOwnProperty(key)) { //correct
+                        params.set(key, data[key]); //correct
+                    } //correct
+                } //correct
+                urlObject.search = params.toString(); //correct
+                return urlObject.toString(); //correct
+            }; //correct
+            
+            const myURL = `${rootUrl}/contact_${contact.contact_id}`; //correct
+            const myData = { //correct
+                name: `${contact.firstname} ${contact.lastname}`, //correct
+                // age: 30,
+                // city: "New York"
+            }; //correct
+            
+            const newURL = saveDataToURL(myURL, myData); //correct
+            console.log(newURL); //correct
+            // Expected output: "https://example.com/page?name=John+Doe&age=30&city=New+York"
+            window.location.href = newURL; //correct
+        }); //correct
+
+        const groupContactsAutoCompleteListItemImageContainer = document.createElement("div"); //correct
+        groupContactsAutoCompleteListItemImageContainer.style.display = "flex"; //correct
+        groupContactsAutoCompleteListItemImageContainer.style.alignItems = "center"; //correct
+        groupContactsAutoCompleteListItemImageContainer.style.padding = "5px"; //correct
+        const groupContactsAutoCompleteListItemImage = document.createElement("img"); //correct
+        groupContactsAutoCompleteListItemImage.style.width = "60px"; //correct
+        groupContactsAutoCompleteListItemImage.style.height = "60px"; //correct
+        groupContactsAutoCompleteListItemImage.style.border = "0.5px solid grey"; //correct
+        groupContactsAutoCompleteListItemImage.style.borderRadius = "50%"; //correct
+        groupContactsAutoCompleteListItemImage.style.backgroundColor = "gainsboro"; //correct
+        groupContactsAutoCompleteListItemImage.style.border = "1px solid black"; //correct
+        groupContactsAutoCompleteListItemImage.style.objectFit = "cover"; //correct
+        groupContactsAutoCompleteListItemImage.setAttribute("src", contact.imageString); //correct
+        const groupContactAutoCompleteListNameContainer = document.createElement("div"); //correct
+        groupContactAutoCompleteListNameContainer.style.position = "relative"; //correct
+        groupContactAutoCompleteListNameContainer.style.display = "flex"; //correct
+        groupContactAutoCompleteListNameContainer.style.flexDirection = "column"; //correct
+        groupContactAutoCompleteListNameContainer.style.justifyContent = "space-around"; //correct
+        groupContactAutoCompleteListNameContainer.style.alignItems = "center"; //correct
+        groupContactAutoCompleteListNameContainer.style.minWidth = "0"; //correct
+        groupContactAutoCompleteListNameContainer.style.width = "100%"; //correct
+        const groupContactAutoCompleteListNameElementContainer = document.createElement("div"); //correct
+        groupContactAutoCompleteListNameElementContainer.style.display = "flex"; //correct
+        groupContactAutoCompleteListNameElementContainer.style.justifyContent = "center"; //correct
+        groupContactAutoCompleteListNameElementContainer.style.minWidth = "0"; //correct
+        groupContactAutoCompleteListNameElementContainer.style.width = "100%"; //correct
+        const groupContactAutoCompleteListNameElement = document.createElement("h3"); //correct
+        groupContactAutoCompleteListNameElement.style.whiteSpace = "nowrap"; //correct
+        groupContactAutoCompleteListNameElement.style.overflow = "hidden"; //correct
+        groupContactAutoCompleteListNameElement.style.textOverflow = "ellipsis"; //correct
+        groupContactAutoCompleteListNameElement.style.margin = "0"; //correct
+        groupContactAutoCompleteListNameElement.innerHTML = `${contact.firstname} ${contact.lastname}`; //correct
+        const groupContactAutoCompleteListEmailElementContainer = document.createElement("div"); //correct
+        groupContactAutoCompleteListEmailElementContainer.style.display = "flex"; //correct
+        groupContactAutoCompleteListEmailElementContainer.style.justifyContent = "center"; //correct
+        groupContactAutoCompleteListEmailElementContainer.style.minWidth = "0"; //correct
+        groupContactAutoCompleteListEmailElementContainer.style.width = "100%"; //correct
+        const groupContactAutoCompleteListEmailElement = document.createElement("p"); //correct
+        groupContactAutoCompleteListEmailElement.style.fontStyle = "italic"; //correct
+        groupContactAutoCompleteListEmailElement.style.fontSize = "small"; //correct
+        groupContactAutoCompleteListEmailElement.style.whiteSpace = "nowrap"; //correct
+        groupContactAutoCompleteListEmailElement.style.overflow = "hidden"; //correct
+        groupContactAutoCompleteListEmailElement.style.textOverflow = "ellipsis"; //correct
+        groupContactAutoCompleteListEmailElement.style.margin = "0"; //correct
+        const contactEmail = contact.email; //correct
+        groupContactAutoCompleteListEmailElement.innerHTML = contactEmail; //correct
+        if (groupContactAutoCompleteListEmailElement.innerHTML === "undefined") { //correct
+            groupContactAutoCompleteListEmailElement.style.visibility = "hidden"; //correct
+        }; //correct
+        groupContactAutoCompleteListEmailElement.innerHTML = contactEmail; //correct
+        const groupContactAutoCompleteListOrganizationAndRoleElementContainer = document.createElement("div"); //correct
+        groupContactAutoCompleteListOrganizationAndRoleElementContainer.style.display = "flex"; //correct
+        groupContactAutoCompleteListOrganizationAndRoleElementContainer.style.justifyContent = "center"; //correct
+        groupContactAutoCompleteListOrganizationAndRoleElementContainer.style.minWidth = "0"; //correct
+        groupContactAutoCompleteListOrganizationAndRoleElementContainer.style.width = "100%"; //correct
+        const groupContactAutoCompleteListOrganizationAndRoleElement = document.createElement("p"); //correct
+        groupContactAutoCompleteListOrganizationAndRoleElement.style.fontWeight = "bolder"; //correct
+        groupContactAutoCompleteListOrganizationAndRoleElement.style.fontSize = "smaller"; //correct
+        groupContactAutoCompleteListOrganizationAndRoleElement.style.whiteSpace = "nowrap"; //correct
+        groupContactAutoCompleteListOrganizationAndRoleElement.style.overflow = "hidden"; //correct
+        groupContactAutoCompleteListOrganizationAndRoleElement.style.textOverflow = "ellipsis"; //correct
+        groupContactAutoCompleteListOrganizationAndRoleElement.style.margin = "0"; //correct
+
+        //code block below correct
+        if (contact.organization !== null && contact.organization !== "" && contact.organization_role !== null && contact.organization_role !== "") {
+        groupContactAutoCompleteListOrganizationAndRoleElement.innerHTML = `${contact.organization} || ${contact.organization_role}`
+        } else if (contact.organization !== null && contact.organization !== "" || contact.organization_role === null && contact.organization_role === "") {
+        groupContactAutoCompleteListOrganizationAndRoleElement.innerHTML = `${contact.organization}`
+        } else if (contact.organization === null && contact.organization === "" || contact.organization_role !== null && contact.organization_role !== "") {
+        groupContactAutoCompleteListOrganizationAndRoleElement.innerHTML = `${contact.organization_role}`
+        } else {
+        groupContactAutoCompleteListOrganizationAndRoleElement.innerHTML = "text"
+        groupContactAutoCompleteListOrganizationAndRoleElement.style.visibility = "hidden"
+        };
+
+        //code block below correct
+        const groupContactAutoCompleteListFavoritesStarIconContainer = document.createElement("div");
+        groupContactAutoCompleteListFavoritesStarIconContainer.style.display = "flex";
+        groupContactAutoCompleteListFavoritesStarIconContainer.style.justifyContent = "center";
+        groupContactAutoCompleteListFavoritesStarIconContainer.style.alignItems = "center";
+        groupContactAutoCompleteListFavoritesStarIconContainer.style.padding = "10px";
+        const groupContactAutoCompleteListFavoriteStarImg = document.createElement("img");
+        groupContactAutoCompleteListFavoriteStarImg.classList.add("contact-favorite-icon");
+        groupContactAutoCompleteListFavoriteStarImg.style.width = "60px";
+
+        groupContactAutoCompleteListFavoriteStarImg.setAttribute("src", "./images/star-gold-svgrepo-com.svg");
+        if (contact.favorite === null || contact.favorite === false) {
+        groupContactAutoCompleteListFavoriteStarImg.style.visibility = "hidden";
+        } else {
+        groupContactAutoCompleteListFavoriteStarImg.style.display = "block";
+        };
+
+            // const contactsList = document.querySelector("#my-contacts-list-container")
+            groupContactsAutoCompleteListItemImageContainer.appendChild(groupContactsAutoCompleteListItemImage); //correct
+            groupContactAutoCompleteListNameElementContainer.appendChild(groupContactAutoCompleteListNameElement); //correct
+            groupContactAutoCompleteListEmailElementContainer.appendChild(groupContactAutoCompleteListEmailElement); //correct
+            groupContactAutoCompleteListOrganizationAndRoleElementContainer.appendChild(groupContactAutoCompleteListOrganizationAndRoleElement); //correct
+            groupContactAutoCompleteListNameContainer.appendChild(groupContactAutoCompleteListNameElementContainer); //correct
+            groupContactAutoCompleteListNameContainer.appendChild(groupContactAutoCompleteListEmailElementContainer); //correct
+            groupContactAutoCompleteListNameContainer.appendChild(groupContactAutoCompleteListOrganizationAndRoleElementContainer); //correct
+            groupContactsAutoCompleteListItem.appendChild(groupContactsAutoCompleteListItemImageContainer);
+            groupContactsAutoCompleteListItem.appendChild(groupContactAutoCompleteListNameContainer);
+            groupContactAutoCompleteListFavoritesStarIconContainer.appendChild(groupContactAutoCompleteListFavoriteStarImg);
+            groupContactsAutoCompleteListItem.appendChild(groupContactAutoCompleteListFavoritesStarIconContainer);
+            groupContactsListContainer.appendChild(searchGroupContactsAutocompleteList)
+            // searchContactsAutocompleteList.style.marginTop = "51px"
+            elementsArr.push(groupContactsAutoCompleteListItem)
+            // console.log(elementsArr)
+            elementsArr.forEach(element => {
+                // console.log(element)
+                searchGroupContactsAutocompleteList.appendChild(element);
+            });
+      });
+    };
+};
 
 async function renderCreateGroupsContent() {
-
     const groupsSelectionList = document.querySelector("#groups-selection-list");
     const groupsSelectionListChildren = groupsSelectionList.children;
     const groupsSelectionListArr = Array.from(groupsSelectionListChildren);
@@ -18483,7 +18739,7 @@ async function showPages() {
     const mobileListMenuIcon = document.querySelector("#mobile-list-menu-icon")
     if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` && window.location.href !== `${rootUrl}/recover-password` && clientwidth <= 1070) {
         mobileListMenuIcon.style.display = "block";
-        mobileSearchIcon.style.display = "block";
+        // mobileSearchIcon.style.display = "block";
         // await renderLargeSidePanelContent()
     } else {
         mobileSmallSidebar.style.display = "none";
@@ -19296,8 +19552,10 @@ async function loadingPage() {
 
     const loadingBarDoc = document.querySelector("#topbar");
     loadingBarDoc.style.display = "none";
+    // const mobileListMenuIcon = document.querySelector("#mobile-list-menu-icon")
    
     loadingTopBar.appendChild(loadingTopBarText);
+    // loadingTopBar.appendChild(mobileListMenuIcon);
     loadingNavigateUserIconContainer.appendChild(loadingNavigateUserPageIcon);
     loadingNavigateUserIconContainer.appendChild(loadingNavigateUserPageIconText);
     loadingNavigateContactsIconContainer.appendChild(loadingNavigateContactsListPageIcon);
@@ -19363,7 +19621,7 @@ async function mobileLoadingBar() {
     loadingElementContainer.setAttribute("id", "loading-element-container");
     loadingElementContainer.style.position = "absolute";
     loadingElementContainer.style.display = "flex";
-    loadingElementContainer.style.justifyContent = "space-between";
+    loadingElementContainer.style.justifyContent = "center";
     loadingElementContainer.style.alignItems = "center";
     loadingElementContainer.style.width = "165px";
     loadingElementContainer.style.top = "50%";
@@ -19406,6 +19664,11 @@ async function mobileLoadingBar() {
 }
 
 async function mobileLoadingPage() {
+    const topbar = document.querySelector("#topbar");
+    const mobileListMenuIcon = document.querySelector("#mobile-list-menu-icon");
+    mobileListMenuIcon.style.display = "flex";
+    // topbar.appendChild(mobileListMenuIcon)
+
     const sectionTags = document.getElementsByTagName("SECTION");
     const sectionTagsArr = Array.from(sectionTags);
     sectionTagsArr.forEach(element => {
@@ -19775,10 +20038,9 @@ if (navigationEntries.length > 0) {
         };
 
         if (window.location.href.startsWith(`${rootUrl}/group_`)) {
-            const groupContactsListContainer = document.querySelector("#group-contacts-list-container");
+            const groupContactsListContainer = document.querySelector("#mobile-group-contacts-list-container");
             groupContactsListContainer.style.visibility = "visible";
         };
-
     }, 400)
     } else if (window.location.href !== `${rootUrl}/login` && window.location.href !== `${rootUrl}/register` && window.location.href !== `${rootUrl}/recover-password` && previousPage === `${rootUrl}/login`) {
         // if (window.location.href.startsWith(`${rootUrl}/contacts`)) {

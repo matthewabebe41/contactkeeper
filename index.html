@@ -11,7 +11,7 @@
     <div id="topbar" style="position: fixed; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 9.5%; background-color: seagreen; border-bottom: 1px solid black; backdrop-filter: blur(10px); z-index: 3;">
             <h2 id="app-name" style="position: relative; font-size: xx-large; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; color: white; margin: 0px 0px 0px 12px;">Contactkeeper</h2>
         <div id="mobile-list-menu-icon-container" style="display: flex; height: 100%; align-items: center;">
-            <img id="mobile-search-icon" src="./images/search-svgrepo-com.svg" style="width: 45px; padding: 5px; display: none;">
+            <!-- <img id="mobile-search-icon" src="./images/search-svgrepo-com.svg" style="width: 45px; padding: 5px; display: none;"> -->
             <img id="mobile-list-menu-icon" src="./images/menu-svgrepo-com.svg" style="width: 40px; padding: 5px; display: none;">
             <img id="mobile-close-list-menu-icon" src="./images/close-svgrepo-com.svg" style="width: 40px;  padding: 5px; display: none;">
         </div>
@@ -1849,28 +1849,26 @@
         </div>
     </section>
 
-    <section id="mobile-group-contacts-list-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none; overflow: hidden;">
-        <!-- <div>Mobile Group Contacts List</div> -->
-          <div id="mobile-group-contacts-list-header-user-container" style="position: absolute; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 15%; background-color: #f9f9f9; box-shadow: 2px 2px 2px;">
-            <div id="mobile-group-contacts-list-user-image-container" style="display: flex; align-items: center; width: 20%; height: 100%; padding: 5px;">
-                <div id="mobile-group-contacts-list-header-user-image-circle" style="position: relative; display: flex; justify-content: center; align-items: center; width: 100%; border: 0.5px solid grey; box-shadow: 2px 2px 2px; border-radius: 50%; background-color: gainsboro; aspect-ratio: 1;">
-                    <img id="mobile-group-contacts-list-user-image" src="./images/user-5-svgrepo-com.svg" style="width: 100%; height: 100%; object-fit: cover;">
+    <section id="mobile-group-contacts-list-view" style="position: absolute; width: 100%; height: 90.5%; top: 9.5%; display: none;">
+        <div id="mobile-group-contacts-list-header-user-container" style="position: fixed; display: flex; justify-content: center; align-items: center; width: 100%; height: 13.5%; background-color: #f9f9f9; box-shadow: 2px 2px 2px; z-index: 2;">
+            <h2 id="mobile-group-contacts-list-header-text" style="font-family: Arial;"></h2>
+        </div>
+        <div id="mobile-group-contacts-list-search-container" style="position: fixed; display: flex; flex: 0 0 25%; align-items: center; background-color: ghostwhite; border-top: 3px solid black; border-bottom: 3px solid black; width: 100%; height: 4.5%; padding: 5px; z-index: 2;">
+            <div id="mobile-group-contacts-list-search-elements-container" style="display: flex; align-items: center; width: 100%; height: 100%">
+                <div id="mobile-group-contacts-list-search-label-container" style="display: flex; align-items: center; width: 20%;">
+                    <h2 id="mobile-my-group-contacts-number" style="display: inline-flex; justify-content: center; align-items: center; width: 15px; height: 15px; background-color: navy; color: white; padding: 10px; border-radius: 50%; cursor: default; margin: 0px 0px 0px 5px"></h2>
+                    <!-- <h2 id="mobile-my-group-contacts-label" style="width: 140px; cursor: default; margin: 0px 0px 0px 8px">Contacts</h2> -->
                 </div>
-                <!-- <div id="mobile-favorites-user-header-name-container" style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; margin: 0px 0px 00px 10px;"> -->
-                    <!-- <p id="mobile-favorites-header-user-name" style="font-weight: bold; margin: 0px;">Name</p> -->
-                    <!-- <p id="mobile-favorites-header-user-email" style="font-style: italic; margin: 0px 0px 16px 0px;">Email</p> -->
-                <!-- </div> -->
-            </div>
-            <div id="mobile-group-contacts-list-user-name-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 54.5%; height: 100%;">
-                <div></div>
-                <h2 id="mobile-group-contacts-list-user-name" style="margin: 0"></h2>
-                <p id="mobile-group-contacts-list-user-email" style="margin: 0"></p>
-            </div>
-            <div id="mobile-group-contacts-list-user-favorite-icon-container" style="display: flex; justify-content: flex-end; width: 20%; height: 100%; padding: 5px;">
-                <div id="mobile-group-contacts-list-header-user-favorite-square" style="position: relative; display: flex; justify-content: center; align-items: center; width: 100%;">
-                    <img id="mobile-group-contacts-list-user-favorite-icon" src="./images/star-gold-svgrepo-com.svg" style="width: 100%; display: none;">
+                <div id="mobile-group-contacts-list-search-element-container" style="display: flex; flex: 0 0 65%; justify-content: center; width: 60%;">
+                    <input id="mobile-search-my-group-contacts-input" type="search" name="mobile-search-my-group-contacts" placeholder="Search Group Contacts" style="width: 90%; height: 22.5px; border: 1px solid black; text-indent: 20px; background-image:url(./images/search-svgrepo-com.svg); background-repeat: no-repeat; background-size: 16px; background-position: 0.8% 2px; outline: none;">
                 </div>
+                <div id="mobile-my-group-contacts-list-spacing-element-container" style="display: flex; width: 20%;"></div>
             </div>
+        </div>
+        <div id="mobile-groupss-contacts-list-container" style="position: absolute; display: none; flex-direction: column; width: 100%; height: 96%; top: 20%;">
+            <!-- <h3>Contacts</h3> -->
+            <div id="mobile-groupss-contacts-list"></div>
+            <div id="mobile-group-contacts-autocomplete-list"></div>
         </div>
     </section>
 
